@@ -1,4 +1,4 @@
 package org.kaven.Cafeteria.persistence.crud;
 
-public class GuardarPaqueteEliminarDespues {
+public interface CrudUsuarioEntity {
 }
