@@ -1,5 +1,7 @@
 package org.kaven.Cafeteria.dominio.repository;
 
+import org.kaven.Cafeteria.dominio.dto.UsuarioDto;
+
 import java.util.List;
 
 public interface UsuarioRepository {
