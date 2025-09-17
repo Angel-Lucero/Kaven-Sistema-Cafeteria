@@ -31,31 +31,10 @@ public class UsuarioService {
     }
 
     public UsuarioDto modificarUsuario(Long codigo, ModUsuarioDto modUsuarioDto) {
-        validarModUsuario(modUsuarioDto);
         return this.usuarioRepository.modificarUsuario(codigo, modUsuarioDto);
     }
 
     public void eliminarUsuario(Long codigo) {
         this.usuarioRepository.eliminarUsuario(codigo);
-    }
-
-    private void validarUsuario(UsuarioDto usuarioDto) {
-        if (usuarioDto.nombre() == null || usuarioDto.nombre().isBlank()) {
-            throw new IllegalArgumentException("El nombre del usuario no puede estar vacío.");
-        }
-        if (usuarioDto.email() == null || !usuarioDto.email().contains("@")) {
-            throw new IllegalArgumentException("El email del usuario no es válido.");
-        }
-
-        UsuarioDto existente = usuarioRepository.obtenerUsuarioPorCodigo(usuarioDto.codigo());
-        if (existente != null) {
-            throw new UsuarioYaExisteException(usuarioDto.codigo().toString());
-        }
-    }
-
-    private void validarModUsuario(ModUsuarioDto modUsuarioDto) {
-        if (modUsuarioDto.email() != null && !modUsuarioDto.email().contains("@")) {
-            throw new IllegalArgumentException("El email del usuario modificado no es válido.");
-        }
     }
 }

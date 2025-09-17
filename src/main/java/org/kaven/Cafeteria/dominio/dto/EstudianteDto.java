@@ -1,4 +1,6 @@
 package org.kaven.Cafeteria.dominio.dto;
 
-public class EstudianteDto {
+public record EstudianteDto (
+//Atributos aquí
+) {
 }
