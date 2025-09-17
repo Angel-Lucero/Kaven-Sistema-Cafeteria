@@ -1,4 +1,4 @@
 package org.kaven.Cafeteria.persistence.entity;
 
-public class GuardarPaqueteEliminarDespues {
+public class UsuarioEntity {
 }
