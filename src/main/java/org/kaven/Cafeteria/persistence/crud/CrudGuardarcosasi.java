@@ -1,4 +1,4 @@
 package org.kaven.Cafeteria.persistence.crud;
 
-public interface CrudUsuarioEntity {
+public class CrudGuardarcosasi {
 }
