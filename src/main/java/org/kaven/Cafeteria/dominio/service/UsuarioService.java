@@ -26,7 +26,6 @@ public class UsuarioService {
     }
 
     public UsuarioDto guardarUsuario(UsuarioDto usuarioDto) {
-        validarUsuario(usuarioDto);
         return this.usuarioRepository.guardarUsuario(usuarioDto);
     }
 
