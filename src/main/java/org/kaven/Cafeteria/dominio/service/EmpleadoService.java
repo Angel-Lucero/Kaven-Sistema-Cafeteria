@@ -23,15 +23,15 @@ public class EmpleadoService {
         return this.empleadoRepository.obtenerTodoEmpleado();
     }
 
-    public EstudianteDto obtenerEstudiantePorCodigo(Long codigo) {
-        return this.estudianteRepository.obtenerEstudiantePorCodigo(codigo);
+    public EmpleadoDto obtenerEstudiantePorCodigo(Long codigo) {
+        return this.empleadoRepository.obtenerEstudiantePorCodigo(codigo);
     }
 
-    public EstudianteDto guardarEstudiante(EstudianteDto estudianteDto) {
+    public EmpleadoDto guardarEstudiante(EstudianteDto estudianteDto) {
         return this.estudianteRepository.guardarEstudiante(estudianteDto);
     }
 
-    public EstudianteDto modificarEstudiante(Long codigo, ModEstudianteDto modEstudianteDto) {
+    public EmpleadoDto modificarEstudiante(Long codigo, ModEstudianteDto modEstudianteDto) {
         return this.estudianteRepository.modificarEstudiante(codigo, modEstudianteDto);
     }
 
