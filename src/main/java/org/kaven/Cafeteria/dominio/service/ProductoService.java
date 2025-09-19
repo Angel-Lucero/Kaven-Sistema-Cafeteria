@@ -17,8 +17,8 @@ public class ProductoService {
         this.productoRepository = productoRepository;
     }
 
-    public List<ProductoDto> obtenerTodo() {
-        return this.productoRepository.obtenerTodo();
+    public List<ProductoDto> obtenerTodoProducto() {
+        return this.productoRepository.obtenerTodoProducto();
     }
 
     public ProductoDto obtenerProductoPorCodigo(Long codigo) {

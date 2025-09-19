@@ -17,8 +17,8 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public List<UsuarioDto> obtenerTodo() {
-        return this.usuarioRepository.obtenerTodo();
+    public List<UsuarioDto> obtenerTodoUsuario() {
+        return this.usuarioRepository.obtenerTodoUsuario();
     }
 
     public UsuarioDto obtenerUsuarioPorCodigo(Long codigo) {

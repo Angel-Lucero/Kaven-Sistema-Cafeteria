@@ -17,8 +17,8 @@ public class EstudianteService {
         this.estudianteRepository = estudianteRepository;
     }
 
-    public List<EstudianteDto> obtenerTodo() {
-        return this.estudianteRepository.obtnerTodo();
+    public List<EstudianteDto> obtenerTodoEstudiante() {
+        return this.estudianteRepository.obtnerTodoEstudiante();
     }
 
     public EstudianteDto obtenerEstudiantePorCodigo(Long codigo) {

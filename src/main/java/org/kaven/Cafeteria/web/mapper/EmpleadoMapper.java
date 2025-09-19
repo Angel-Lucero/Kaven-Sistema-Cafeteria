@@ -1,5 +1,6 @@
 package org.kaven.Cafeteria.web.mapper;
 
+<<<<<<< Updated upstream
 import org.kaven.Cafeteria.dominio.dto.EmpleadoDto;
 import org.kaven.Cafeteria.dominio.dto.ModEmpleadoDto;
 import org.kaven.Cafeteria.persistence.entity.EmpleadoEntity;
@@ -24,3 +25,7 @@ public interface EmpleadoMapper {
     @Mapping(source = "turno", target = "shift")
     void modificarEntityFromDto(ModEmpleadoDto dto, @MappingTarget EmpleadoEntity entity);
 }
+=======
+public interface EmpleadoMapper {
+}
+>>>>>>> Stashed changes
