@@ -1,8 +1,10 @@
 package org.kaven.Cafeteria.persistence;
 
+import org.kaven.Cafeteria.dominio.dto.ModUsuarioDto;
 import org.kaven.Cafeteria.dominio.dto.UsuarioDto;
 import org.kaven.Cafeteria.persistence.crud.CrudUsuarioEntity;
 import org.kaven.Cafeteria.persistence.entity.UsuarioEntity;
+import org.kaven.Cafeteria.web.mapper.UsuarioMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

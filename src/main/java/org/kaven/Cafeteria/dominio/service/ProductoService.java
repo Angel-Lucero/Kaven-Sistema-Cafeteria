@@ -1,5 +1,7 @@
 package org.kaven.Cafeteria.dominio.service;
 
+import org.kaven.Cafeteria.dominio.dto.ModProductoDto;
+import org.kaven.Cafeteria.dominio.dto.ProductoDto;
 import org.kaven.Cafeteria.dominio.repository.PedidoRepository;
 import org.kaven.Cafeteria.dominio.repository.ProductoRepository;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,8 @@ public class ProductoService {
         this.productoRepository = productoRepository;
     }
 
-    public List<ProductoDto> obtenerTodoProducto() {
-        return this.productoRepository.obtenerTodoProducto();
+    public List<ProductoDto> obtenerTodo() {
+        return this.productoRepository.obtenerTodo();
     }
 
     public ProductoDto obtenerProductoPorCodigo(Long codigo) {
@@ -27,7 +29,7 @@ public class ProductoService {
         return this.productoRepository.guardarProducto(productoDto);
     }
 
-    public ProductoDto modificarProducto(Long codigo, ModPedidoDto modProductoDto) {
+    public ProductoDto modificarProducto(Long codigo, ModProductoDto modProductoDto) {
         return this.productoRepository.modificarProducto(codigo, modProductoDto);
     }
 
