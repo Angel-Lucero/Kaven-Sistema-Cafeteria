@@ -62,9 +62,9 @@ public class ProductoController {
     }
 
     @DeleteMapping("{codigo}")
-    public ResponseEntity<EstudianteDto> eliminarProducto(@PathVariable Long codigo) {
-        this.productoService.obtenerProductoPorCodigo(codigo);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> eliminarProducto(@PathVariable Long codigo) {
+        this.productoService.eliminarProducto(codigo);
+        return ResponseEntity.noContent().build();
     }
 
 }

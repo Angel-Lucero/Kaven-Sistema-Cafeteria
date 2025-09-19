@@ -13,15 +13,22 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {PedidoMapper.class})
 public interface EstudianteMapper {
 
-    EstudianteDto toDto(EstudianteEntity entity);
-    List<EstudianteDto> toDto(Iterable<EstudianteEntity> entities);
-
-    @InheritInverseConfiguration
-    EstudianteEntity toEntity(EstudianteDto dto);
-
     @Mapping(source = "nombre", target = "name")
     @Mapping(source = "correo", target = "mail")
     @Mapping(source = "telefono", target = "phone")
     @Mapping(source = "carrera", target = "career")
+    EstudianteDto toDto(EstudianteEntity entity);
+
+    List<EstudianteDto> toDto(Iterable<EstudianteEntity> entities);
+
+    @InheritInverseConfiguration
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "pedidos", ignore = true)
+    EstudianteEntity toEntity(EstudianteDto dto);
+
+    @Mapping(source = "name", target = "nombre")
+    @Mapping(source = "mail", target = "correo")
+    @Mapping(source = "phone", target = "telefono")
+    @Mapping(source = "career", target = "carrera")
     void modificarEntityFromDto(ModEstudianteDto dto, @MappingTarget EstudianteEntity entity);
 }

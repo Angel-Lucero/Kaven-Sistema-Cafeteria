@@ -1,9 +1,14 @@
 package org.kaven.Cafeteria.web.mapper;
 
 import org.kaven.Cafeteria.dominio.dto.UsuarioDto;
+import org.kaven.Cafeteria.dominio.dto.ModUsuarioDto;
 import org.kaven.Cafeteria.persistence.entity.UsuarioEntity;
-import org.kaven.Cafeteria.persistence.entity.EstudianteEntity;
-import org.mapstruct.*;
+import org.mapstruct.InheritInverseConfiguration;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper {
@@ -11,19 +16,15 @@ public interface UsuarioMapper {
     @Mapping(source = "correo", target = "mail")
     @Mapping(source = "contrasena", target = "password")
     @Mapping(source = "estudiante.id", target = "studentid")
-    @Mapping(target = "id", ignore = true) // porque en UsuarioEntity no existe un campo id
-    UsuarioDto toUsuarioDto(UsuarioEntity usuarioEntity);
+    UsuarioDto toDto(UsuarioEntity entity);
+
+    List<UsuarioDto> toDto(Iterable<UsuarioEntity> entities);
+
+    @InheritInverseConfiguration
+    @Mapping(target = "id", ignore = true)
+    UsuarioEntity toEntity(UsuarioDto dto);
 
     @Mapping(source = "mail", target = "correo")
     @Mapping(source = "password", target = "contrasena")
-    @Mapping(source = "studentid", target = "estudiante", qualifiedByName = "mapStudentIdToEntity")
-    UsuarioEntity toUsuarioEntity(UsuarioDto usuarioDto);
-
-    @Named("mapStudentIdToEntity")
-    default EstudianteEntity mapStudentIdToEntity(Long id) {
-        if (id == null) return null;
-        EstudianteEntity estudiante = new EstudianteEntity();
-        estudiante.setId(id);
-        return estudiante;
-    }
+    void modificarEntityFromDto(ModUsuarioDto dto, @MappingTarget UsuarioEntity entity);
 }

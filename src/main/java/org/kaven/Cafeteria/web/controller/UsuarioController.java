@@ -43,7 +43,7 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDto> obtenerUsuarioPorCodigo
             (@Parameter(description = "Identificador del usuario a recuperar", example = "5")
              @PathVariable Long codigo){
-        return ResponseEntity.ok(this.usuarioService.obtenerUsuarioPorCodigo(codigo));
+        return ResponseEntity.ok(this.usuarioService.obtenerUsuarioPorCodigo(String.valueOf(codigo)));
     }
 
     @PostMapping
@@ -56,13 +56,13 @@ public class UsuarioController {
     @PutMapping("{codigo}")
     public ResponseEntity<UsuarioDto> modificarUsuario
             (@PathVariable Long codigo, @RequestBody @Valid ModUsuarioDto modUsuarioDto){
-        return ResponseEntity.ok(this.usuarioService.modificarUsuario(codigo, modUsuarioDto));
+        return ResponseEntity.ok(this.usuarioService.modificarUsuario(String.valueOf(codigo), modUsuarioDto));
     }
 
     @DeleteMapping("{codigo}")
-    public ResponseEntity<UsuarioDto> eliminarUsuario(@PathVariable Long codigo){
-        this.usuarioService.obtenerUsuarioPorCodigo(codigo);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> eliminarUsuario(@PathVariable Long codigo) {
+        this.usuarioService.eliminarUsuario(String.valueOf(codigo));
+        return ResponseEntity.noContent().build();
     }
 
 

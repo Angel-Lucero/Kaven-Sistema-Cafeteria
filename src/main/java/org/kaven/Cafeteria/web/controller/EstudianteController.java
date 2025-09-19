@@ -61,8 +61,8 @@ public class EstudianteController {
     }
 
     @DeleteMapping("{codigo}")
-    public ResponseEntity<EstudianteDto> eliminarEstudiante(@PathVariable Long codigo) {
-        this.estudianteService.obtenerEstudiantePorCodigo(codigo);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> eliminarEstudiante(@PathVariable Long codigo) {
+        this.estudianteService.eliminarEstudiante(codigo);
+        return ResponseEntity.noContent().build();
     }
 }

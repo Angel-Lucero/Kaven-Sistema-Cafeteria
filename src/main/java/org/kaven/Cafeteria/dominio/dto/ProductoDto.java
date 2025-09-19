@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public record ProductoDto(
         Long id,
         String name,
-        String guy, // pan, pastel, combo
+        String type, // pan, pastel, combo
         BigDecimal price,
         Boolean availability
 ) {

@@ -2,15 +2,12 @@ package org.kaven.Cafeteria.dominio.service;
 
 import org.kaven.Cafeteria.dominio.dto.ModUsuarioDto;
 import org.kaven.Cafeteria.dominio.dto.UsuarioDto;
-import org.kaven.Cafeteria.dominio.exception.UsuarioYaExisteException;
 import org.kaven.Cafeteria.dominio.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class UsuarioService {
-
     private final UsuarioRepository usuarioRepository;
 
     public UsuarioService(UsuarioRepository usuarioRepository) {
@@ -18,22 +15,22 @@ public class UsuarioService {
     }
 
     public List<UsuarioDto> obtenerTodoUsuario() {
-        return this.usuarioRepository.obtenerTodoUsuario();
+        return usuarioRepository.obtenerTodoUsuario();
     }
 
-    public UsuarioDto obtenerUsuarioPorCodigo(Long codigo) {
-        return this.usuarioRepository.obtenerUsuarioPorCodigo(codigo);
+    public UsuarioDto obtenerUsuarioPorCodigo(String codigo) {
+        return usuarioRepository.obtenerUsuarioPorCodigo(codigo);
     }
 
     public UsuarioDto guardarUsuario(UsuarioDto usuarioDto) {
-        return this.usuarioRepository.guardarUsuario(usuarioDto);
+        return usuarioRepository.guardarUsuario(usuarioDto);
     }
 
-    public UsuarioDto modificarUsuario(Long codigo, ModUsuarioDto modUsuarioDto) {
-        return this.usuarioRepository.modificarUsuario(codigo, modUsuarioDto);
+    public UsuarioDto modificarUsuario(String codigo, ModUsuarioDto modUsuarioDto) {
+        return usuarioRepository.modificarUsuario(codigo, modUsuarioDto);
     }
 
-    public void eliminarUsuario(Long codigo) {
-        this.usuarioRepository.eliminarUsuario(codigo);
+    public void eliminarUsuario(String codigo) {
+        usuarioRepository.eliminarUsuario(codigo);
     }
 }

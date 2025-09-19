@@ -2,15 +2,12 @@ package org.kaven.Cafeteria.dominio.service;
 
 import org.kaven.Cafeteria.dominio.dto.ModProductoDto;
 import org.kaven.Cafeteria.dominio.dto.ProductoDto;
-import org.kaven.Cafeteria.dominio.repository.PedidoRepository;
 import org.kaven.Cafeteria.dominio.repository.ProductoRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class ProductoService {
-
     private final ProductoRepository productoRepository;
 
     public ProductoService(ProductoRepository productoRepository) {
@@ -36,5 +33,4 @@ public class ProductoService {
     public void eliminarProducto(Long codigo) {
         this.productoRepository.eliminarProducto(codigo);
     }
-
 }
