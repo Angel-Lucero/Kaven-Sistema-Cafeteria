@@ -1,6 +1,9 @@
 package org.kaven.Cafeteria.dominio.dto;
 
 public record EmpleadoDto(
-        //Kenny aaa
+        Long id,
+        String name,
+        String role,   // barista, cajero, administrador
+        String shift  // mañana, tarde, noche
 ) {
 }
