@@ -2,15 +2,12 @@ package org.kaven.Cafeteria.dominio.service;
 
 import org.kaven.Cafeteria.dominio.dto.EstudianteDto;
 import org.kaven.Cafeteria.dominio.dto.ModEstudianteDto;
-import org.kaven.Cafeteria.dominio.exception.EstudianteYaExisteException;
 import org.kaven.Cafeteria.dominio.repository.EstudianteRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class EstudianteService {
-
     private final EstudianteRepository estudianteRepository;
 
     public EstudianteService(EstudianteRepository estudianteRepository) {
@@ -18,7 +15,7 @@ public class EstudianteService {
     }
 
     public List<EstudianteDto> obtenerTodoEstudiante() {
-        return this.estudianteRepository.obtnerTodoEstudiante();
+        return this.estudianteRepository.obtenerTodoEstudiante();
     }
 
     public EstudianteDto obtenerEstudiantePorCodigo(Long codigo) {
@@ -36,6 +33,4 @@ public class EstudianteService {
     public void eliminarEstudiante(Long codigo) {
         this.estudianteRepository.eliminarEstudiante(codigo);
     }
-
-
 }

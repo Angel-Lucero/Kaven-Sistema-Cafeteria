@@ -7,9 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.kaven.Cafeteria.dominio.dto.EmpleadoDto;
-import org.kaven.Cafeteria.dominio.dto.EstudianteDto;
 import org.kaven.Cafeteria.dominio.dto.ModEmpleadoDto;
-import org.kaven.Cafeteria.dominio.dto.ModEstudianteDto;
 import org.kaven.Cafeteria.dominio.service.EmpleadoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/empleados")
 @Tag(name = "Empleados", description = "Operaciones(CRUD) para todos los empleados")
-
 public class EmpleadoController {
     private final EmpleadoService empleadoService;
 
@@ -42,31 +39,28 @@ public class EmpleadoController {
                     @ApiResponse(responseCode = "404", description = "El empleado no fue encontrado", content = @Content)
             }
     )
-
-    public ResponseEntity<EmpleadoDto> obtenerEmpleadoPorCodigo
-            (@Parameter(description = "Identificador del empleado a recuperar", example = "5")
-             @PathVariable Long codigo) {
+    public ResponseEntity<EmpleadoDto> obtenerEmpleadoPorCodigo(
+            @Parameter(description = "Identificador del empleado a recuperar", example = "5")
+            @PathVariable Long codigo) {
         return ResponseEntity.ok(this.empleadoService.obtenerEmpleadoPorCodigo(codigo));
     }
 
     @PostMapping
     public ResponseEntity<EmpleadoDto> guardarEmpleado(
-            @RequestBody EmpleadoDto empleadoDto) {
+            @RequestBody @Valid EmpleadoDto empleadoDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.empleadoService
                 .guardarEmpleado(empleadoDto));
     }
 
     @PutMapping("{codigo}")
-    public ResponseEntity<EmpleadoDto> modificarEmpleado
-            (@PathVariable Long codigo, @RequestBody @Valid ModEmpleadoDto modEmpleadoDto) {
+    public ResponseEntity<EmpleadoDto> modificarEmpleado(
+            @PathVariable Long codigo, @RequestBody @Valid ModEmpleadoDto modEmpleadoDto) {
         return ResponseEntity.ok(this.empleadoService.modificarEmpleado(codigo, modEmpleadoDto));
     }
 
     @DeleteMapping("{codigo}")
-    public ResponseEntity<EmpleadoDto> eliminarEmpleado(@PathVariable Long codigo) {
-        this.empleadoService.obtenerEmpleadoPorCodigo(codigo);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> eliminarEmpleado(@PathVariable Long codigo) {
+        this.empleadoService.eliminarEmpleado(codigo);
+        return ResponseEntity.noContent().build();
     }
-
-
 }

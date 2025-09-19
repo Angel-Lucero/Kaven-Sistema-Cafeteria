@@ -1,8 +1,5 @@
 package org.kaven.Cafeteria.web.controller;
 
-
-package org.kaven.Cafeteria.web.controller;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -62,8 +59,8 @@ public class PedidoController {
     }
 
     @DeleteMapping("{codigo}")
-    public ResponseEntity<PedidoDto> eliminarPedido(@PathVariable Long codigo) {
+    public ResponseEntity<Void> eliminarPedido(@PathVariable Long codigo) {
         this.pedidoService.eliminarPedido(codigo);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

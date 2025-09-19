@@ -10,20 +10,25 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {OrderMapper.class})
 public interface PedidoMapper {
 
-    @Mapping(source = "estudiante.id", target = "idEstudiante")
+    @Mapping(source = "estudiante.id", target = "studentid")
+    @Mapping(source = "fechaPedido", target = "orderdate")
+    @Mapping(source = "total", target = "total")
+    @Mapping(source = "estado", target = "state")
     PedidoDto toDto(PedidoEntity entity);
+
     List<PedidoDto> toDto(Iterable<PedidoEntity> entities);
 
     @InheritInverseConfiguration
-    @Mapping(source = "idEstudiante", target = "estudiante.id")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "studentid", target = "estudiante.id")
     PedidoEntity toEntity(PedidoDto dto);
 
-    @Mapping(source = "idEstudiante", target = "estudiante.id")
-    @Mapping(source = "fechaPedido", target = "fechaPedido")
+    @Mapping(source = "studentid", target = "estudiante.id")
+    @Mapping(source = "orderdate", target = "fechaPedido")
     @Mapping(source = "total", target = "total")
-    @Mapping(source = "estado", target = "estado")
+    @Mapping(source = "state", target = "estado")
     void modificarEntityFromDto(ModPedidoDto dto, @MappingTarget PedidoEntity entity);
 }
