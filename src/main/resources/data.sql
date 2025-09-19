@@ -87,3 +87,84 @@ VALUES (14, 'Alejandra Ruiz', 'alejandra.ruiz@correo.com', 'Zona 16, Ciudad de G
 
 INSERT IGNORE INTO estudiantes (id, nombre, correo, direccion, telefono)
 VALUES (15, 'Martín Cabrera', 'martin.cabrera@correo.com', 'Zona 8, Ciudad de Guatemala', '5021478529');
+
+INSERT IGNORE INTO empleados (id, nombre, rol, turno)
+VALUES (1, 'Carlos Pérez', 'Cocinero', 'Mañana');
+
+INSERT IGNORE INTO empleados (id, nombre, rol, turno)
+VALUES (2, 'Lucía Gómez', 'Repartidora', 'Tarde');
+
+INSERT IGNORE INTO empleados (id, nombre, rol, turno)
+VALUES (3, 'Ana López', 'Gerente', 'Mañana');
+
+INSERT IGNORE INTO empleados (id, nombre, rol, turno)
+VALUES (4, 'Juan Martínez', 'Cocinero', 'Tarde');
+
+INSERT IGNORE INTO empleados (id, nombre, rol, turno)
+VALUES (5, 'Sofía Ruiz', 'Repartidora', 'Mañana');
+
+INSERT IGNORE INTO empleados (id, nombre, rol, turno)
+VALUES (6, 'Ricardo Torres', 'Administrador', 'Tarde');
+
+INSERT IGNORE INTO empleados (id, nombre, rol, turno)
+VALUES (7, 'Paola Hernández', 'Cocinera', 'Mañana');
+
+INSERT IGNORE INTO empleados (id, nombre, rol, turno)
+VALUES (8, 'Víctor Ramírez', 'Repartidor', 'Noche');
+
+INSERT IGNORE INTO empleados (id, nombre, rol, turno)
+VALUES (9, 'Martín Cabrera', 'Gerente', 'Tarde');
+
+INSERT IGNORE INTO empleados (id, nombre, rol, turno)
+VALUES (10, 'Claudia Sánchez', 'Repartidora', 'Mañana');
+
+INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
+VALUES (1, 'Salchipapas', 'SALCHIPAPA', 25.00, 50);
+
+INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
+VALUES (2, 'Torta de chocolate', 'CAKE', 35.00, 20);
+
+INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
+VALUES (3, 'Combo Pizza', 'PIZZA_COMBO', 100.00, 30);
+
+INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
+VALUES (4, 'Botella de agua pura', 'AGUAPURA_BOTTLE', 10.00, 100);
+
+INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
+VALUES (5, 'Refresco Pepsi', 'PEPSI', 15.00, 80);
+
+INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
+VALUES (6, 'Café Espresso', 'COFFEE', 20.00, 60);
+
+INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
+VALUES (7, 'Galletas de chocolate', 'COOKIE', 5.00, 200);
+
+INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
+VALUES (1, 1, '2025-09-19 10:30:00', 40.00, 'PENDIENTE');
+
+INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
+VALUES (2, 2, '2025-09-19 11:00:00', 120.00, 'EN_PROCESO');
+
+INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
+VALUES (3, 3, '2025-09-19 12:15:00', 50.00, 'ENTREGADO');
+
+INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
+VALUES (4, 4, '2025-09-19 13:30:00', 25.00, 'CANCELADO');
+
+INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
+VALUES (5, 5, '2025-09-19 14:00:00', 30.00, 'PENDIENTE');
+
+INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
+VALUES (6, 6, '2025-09-19 15:00:00', 150.00, 'EN_PROCESO');
+
+INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
+VALUES (7, 7, '2025-09-19 16:10:00', 70.00, 'PENDIENTE');
+
+INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
+VALUES (8, 8, '2025-09-19 17:00:00', 90.00, 'ENTREGADO');
+
+INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
+VALUES (9, 9, '2025-09-19 18:30:00', 55.00, 'CANCELADO');
+
+INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
+VALUES (10, 10, '2025-09-19 19:45:00', 75.00, 'EN_PROCESO');
