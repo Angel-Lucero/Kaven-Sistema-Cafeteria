@@ -1,7 +1,7 @@
 package org.kaven.Cafeteria.dominio.exception;
 
-public class EmpleadosNoExisteException extends RuntimeException {
-    public EmpleadosNoExisteException(String empleadosnocodigo) {
+public class EmpleadoNoExisteException extends RuntimeException {
+    public EmpleadoNoExisteException(String empleadosnocodigo) {
         super("El empleado" + empleadosnocodigo + "no existe en el sistema");
     }
 }
