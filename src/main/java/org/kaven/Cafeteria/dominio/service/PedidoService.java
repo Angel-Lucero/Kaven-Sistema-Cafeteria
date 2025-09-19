@@ -1,16 +1,18 @@
 package org.kaven.Cafeteria.dominio.service;
 
-import org.kaven.Cafeteria.dominio.repository.EmpleadoRepository;
+
+import org.kaven.Cafeteria.dominio.dto.ModPedidoDto;
+import org.kaven.Cafeteria.dominio.dto.PedidoDto;
 import org.kaven.Cafeteria.dominio.repository.PedidoRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PedidosService {
-
+public class PedidoService {
     private final PedidoRepository pedidoRepository;
 
-    public PedidosService(PedidoRepository pedidoRepository) {
+    public PedidoService(PedidoRepository pedidoRepository) {
         this.pedidoRepository = pedidoRepository;
     }
 

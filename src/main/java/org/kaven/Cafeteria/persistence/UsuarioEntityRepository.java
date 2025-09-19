@@ -1,13 +1,16 @@
 package org.kaven.Cafeteria.persistence;
 
+import org.kaven.Cafeteria.dominio.dto.ModUsuarioDto;
 import org.kaven.Cafeteria.dominio.dto.UsuarioDto;
 import org.kaven.Cafeteria.persistence.crud.CrudUsuarioEntity;
 import org.kaven.Cafeteria.persistence.entity.UsuarioEntity;
+import org.kaven.Cafeteria.web.mapper.UsuarioMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class UsuarioEntityRepository {
-
     private final CrudUsuarioEntity crudUsuario;
     private final UsuarioMapper usuarioMapper;
 
@@ -80,9 +83,4 @@ public class UsuarioEntityRepository {
             this.crudUsuario.deleteById(codigo);
         }*/
     }
-
-
-
-
-
 }
