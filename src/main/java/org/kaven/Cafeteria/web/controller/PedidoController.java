@@ -30,7 +30,7 @@ public class PedidoController {
 
     @GetMapping 
     public ResponseEntity<List<PedidoDto>> obtenerTodo() {
-        return ResponseEntity.ok(this.pedidoService.obtenerTodo());
+        return ResponseEntity.ok(this.pedidoService.obtenerTodoPedido());
     }
 
     @GetMapping("{codigo}")

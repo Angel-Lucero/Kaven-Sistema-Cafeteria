@@ -6,7 +6,7 @@ import org.kaven.Cafeteria.dominio.dto.ModEstudianteDto;
 import java.util.List;
 
 public interface EstudianteRepository {
-    List<EstudianteDto> obtnerTodo();
+    List<EstudianteDto> obtnerTodoEstudiante();
     EstudianteDto obtenerEstudiantePorCodigo(Long codigo);
     EstudianteDto guardarEstudiante(EstudianteDto estudianteDto);
     EstudianteDto modificarEstudiante(Long codigo, ModEstudianteDto estudianteDto);

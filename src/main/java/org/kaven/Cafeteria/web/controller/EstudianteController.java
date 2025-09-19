@@ -28,7 +28,7 @@ public class EstudianteController {
 
     @GetMapping
     public ResponseEntity<List<EstudianteDto>> obtenerTodo() {
-        return ResponseEntity.ok(this.estudianteService.obtenerTodo());
+        return ResponseEntity.ok(this.estudianteService.obtenerTodoEstudiante());
     }
 
     @GetMapping("{codigo}")

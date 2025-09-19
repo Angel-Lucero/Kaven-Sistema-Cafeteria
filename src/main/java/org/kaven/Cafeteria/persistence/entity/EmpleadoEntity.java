@@ -1,5 +1,6 @@
 package org.kaven.Cafeteria.persistence.entity;
 
+<<<<<<< Updated upstream
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,3 +23,7 @@ public class EmpleadoEntity {
     private String turno; // mañana, tarde, noche
 
 }
+=======
+public class EmpleadoEntity {
+}
+>>>>>>> Stashed changes
