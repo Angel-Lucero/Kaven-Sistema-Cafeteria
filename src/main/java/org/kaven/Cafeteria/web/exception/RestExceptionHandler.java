@@ -1,11 +1,8 @@
 package org.kaven.Cafeteria.web.exception;
 
 import org.kaven.Cafeteria.dominio.exception.*;
-<<<<<<< Updated upstream
-import org.kaven.kinal_play.dominio.exception.Error;
-=======
 import org.kaven.Cafeteria.dominio.exception.Error;
->>>>>>> Stashed changes
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,24 +32,14 @@ public class RestExceptionHandler {
         return ResponseEntity.badRequest().body(error);
     }
 
-<<<<<<< Updated upstream
-    @ExceptionHandler(PedidosYaExisteException.class)
-    public ResponseEntity<Error> handleException(PedidosYaExisteException ex) {
-=======
     @ExceptionHandler(PedidoYaExisteException.class)
     public ResponseEntity<Error> handleException(PedidoYaExisteException ex) {
->>>>>>> Stashed changes
         Error error = new Error("pedido-ya-existe", ex.getMessage());
         return ResponseEntity.badRequest().body(error);
     }
 
-<<<<<<< Updated upstream
-    @ExceptionHandler(PedidosNoExisteException.class)
-    public ResponseEntity<Error> handleException(PedidosNoExisteException ex) {
-=======
     @ExceptionHandler(PedidoNoExisteException.class)
     public ResponseEntity<Error> handleException(PedidoNoExisteException ex) {
->>>>>>> Stashed changes
         Error error = new Error("pedido-no-existe", ex.getMessage());
         return ResponseEntity.badRequest().body(error);
     }
@@ -69,25 +56,51 @@ public class RestExceptionHandler {
         return ResponseEntity.badRequest().body(error);
     }
 
-<<<<<<< Updated upstream
-    @ExceptionHandler(EmpleadosYaExisteException.class)
-    public ResponseEntity<Error> handleException(EmpleadosYaExisteException ex) {
-=======
     @ExceptionHandler(EmpleadoYaExisteException.class)
     public ResponseEntity<Error> handleException(EmpleadoYaExisteException ex) {
->>>>>>> Stashed changes
         Error error = new Error("empleado-ya-existe", ex.getMessage());
         return ResponseEntity.badRequest().body(error);
     }
 
-<<<<<<< Updated upstream
-    @ExceptionHandler(EmpleadosNoExisteException.class)
-    public ResponseEntity<Error> handleException(EmpleadosNoExisteException ex) {
-=======
     @ExceptionHandler(EmpleadoNoExisteException.class)
     public ResponseEntity<Error> handleException(EmpleadoNoExisteException ex) {
->>>>>>> Stashed changes
         Error error = new Error("empleado-no-existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(CarreraNoExisteException.class)
+    public ResponseEntity<Error> handleException(CarreraNoExisteException ex) {
+        Error error = new Error("carrera-no-existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(CarreraYaExisteException.class)
+    public ResponseEntity<Error> handleException(CarreraYaExisteException ex) {
+        Error error = new Error("carrera-ya-existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(EntregaNoExisteException.class)
+    public ResponseEntity<Error> handleException(EntregaNoExisteException ex) {
+        Error error = new Error("entrega-no-existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(EntregaYaExisteException.class)
+    public ResponseEntity<Error> handleException(EntregaYaExisteException ex) {
+        Error error = new Error("entrega-ya-existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(FacturaNoExisteException.class)
+    public ResponseEntity<Error> handleException(FacturaNoExisteException ex) {
+        Error error = new Error("factura-no-existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(FacturaYaExisteException.class)
+    public ResponseEntity<Error> handleException(FacturaYaExisteException ex) {
+        Error error = new Error("factura-ya-existe", ex.getMessage());
         return ResponseEntity.badRequest().body(error);
     }
 
@@ -105,4 +118,7 @@ public class RestExceptionHandler {
         Error error = new Error("error-desconocido", ex.getMessage());
         return ResponseEntity.internalServerError().body(error);
     }
+
+
+
 }
