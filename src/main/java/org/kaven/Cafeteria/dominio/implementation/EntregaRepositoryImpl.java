@@ -1,7 +1,7 @@
 package org.kaven.Cafeteria.dominio.implementation;
 
-import org.kaven.Cafeteria.dominio.dto.EntregasDto;
-import org.kaven.Cafeteria.dominio.dto.ModEntregasDto;
+import org.kaven.Cafeteria.dominio.dto.EntregaDto;
+import org.kaven.Cafeteria.dominio.dto.ModEntregaDto;
 import org.kaven.Cafeteria.dominio.repository.EntregaRepository;
 import org.kaven.Cafeteria.dominio.repository.JpaEntregaRepository;
 import org.kaven.Cafeteria.persistence.entity.EntregaEntity;
@@ -23,30 +23,30 @@ public class EntregaRepositoryImpl implements EntregaRepository {
     }
 
     @Override
-    public List<EntregasDto> obtenerTodoEntregas() {
+    public List<EntregaDto> obtenerTodoEntregas() {
         List<EntregaEntity> entities = jpaEntregaRepository.findAll();
         return entregaMapper.toDto(entities);
     }
 
     @Override
-    public EntregasDto obtenerEntregasPorCodigo(Long codigo) {
+    public EntregaDto obtenerEntregasPorCodigo(Long codigo) {
         Optional<EntregaEntity> entity = jpaEntregaRepository.findById(codigo);
         return entity.map(entregaMapper::toDto).orElse(null);
     }
 
     @Override
-    public EntregasDto guardarEntrega(EntregasDto entregasDto) {
-        EntregaEntity entity = entregaMapper.toEntity(entregasDto);
+    public EntregaDto guardarEntrega(EntregaDto entregaDto) {
+        EntregaEntity entity = entregaMapper.toEntity(entregaDto);
         EntregaEntity savedEntity = jpaEntregaRepository.save(entity);
         return entregaMapper.toDto(savedEntity);
     }
 
     @Override
-    public EntregasDto modificarEntrega(Long codigo, ModEntregasDto modEntregasDto) {
+    public EntregaDto modificarEntrega(Long codigo, ModEntregaDto modEntregaDto) {
         Optional<EntregaEntity> existingEntity = jpaEntregaRepository.findById(codigo);
         if (existingEntity.isPresent()) {
             EntregaEntity entity = existingEntity.get();
-            entregaMapper.modificarEntityFromDto(modEntregasDto, entity);
+            entregaMapper.modificarEntityFromDto(modEntregaDto, entity);
             EntregaEntity updatedEntity = jpaEntregaRepository.save(entity);
             return entregaMapper.toDto(updatedEntity);
         }

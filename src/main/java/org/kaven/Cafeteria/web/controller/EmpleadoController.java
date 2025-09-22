@@ -26,17 +26,26 @@ public class EmpleadoController {
     }
 
     @GetMapping
+    @Operation(
+            summary = "Obtener todos los empleados",
+            description = "Retorna una lista con todos los empleados del sistema",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de empleados obtenida exitosamente"),
+                    @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+            }
+    )
     public ResponseEntity<List<EmpleadoDto>> obtenerTodo() {
         return ResponseEntity.ok(this.empleadoService.obtenerTodoEmpleado());
     }
 
     @GetMapping("{codigo}")
     @Operation(
-            summary = "Obtener empleado a partir del codigo",
-            description = "Retorna el empleado que coincida con el codigo enviado",
+            summary = "Obtener empleado a partir del código",
+            description = "Retorna el empleado que coincida con el código enviado",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "El empleado fue encontrado con exito"),
-                    @ApiResponse(responseCode = "404", description = "El empleado no fue encontrado", content = @Content)
+                    @ApiResponse(responseCode = "200", description = "El empleado fue encontrado con éxito"),
+                    @ApiResponse(responseCode = "404", description = "El empleado no fue encontrado", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
             }
     )
     public ResponseEntity<EmpleadoDto> obtenerEmpleadoPorCodigo(
@@ -46,20 +55,55 @@ public class EmpleadoController {
     }
 
     @PostMapping
+    @Operation(
+            summary = "Crear un nuevo empleado",
+            description = "Crea un nuevo empleado en el sistema",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Empleado creado exitosamente"),
+                    @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+                    @ApiResponse(responseCode = "409", description = "El empleado ya existe", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+            }
+    )
     public ResponseEntity<EmpleadoDto> guardarEmpleado(
+            @Parameter(description = "Datos del empleado a crear")
             @RequestBody @Valid EmpleadoDto empleadoDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.empleadoService
                 .guardarEmpleado(empleadoDto));
     }
 
     @PutMapping("{codigo}")
+    @Operation(
+            summary = "Modificar un empleado existente",
+            description = "Actualiza los datos de un empleado existente",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Empleado modificado exitosamente"),
+                    @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Empleado no encontrado", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+            }
+    )
     public ResponseEntity<EmpleadoDto> modificarEmpleado(
-            @PathVariable Long codigo, @RequestBody @Valid ModEmpleadoDto modEmpleadoDto) {
+            @Parameter(description = "Identificador del empleado a modificar", example = "5")
+            @PathVariable Long codigo,
+            @Parameter(description = "Datos actualizados del empleado")
+            @RequestBody @Valid ModEmpleadoDto modEmpleadoDto) {
         return ResponseEntity.ok(this.empleadoService.modificarEmpleado(codigo, modEmpleadoDto));
     }
 
-    @DeleteMapping("{codigo}")
-    public ResponseEntity<Void> eliminarEmpleado(@PathVariable Long codigo) {
+    @DeleteMapping("{codigo")
+    @Operation(
+            summary = "Eliminar un empleado",
+            description = "Elimina un empleado del sistema",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Empleado eliminado exitosamente"),
+                    @ApiResponse(responseCode = "404", description = "Empleado no encontrado", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+            }
+    )
+    public ResponseEntity<Void> eliminarEmpleado(
+            @Parameter(description = "Identificador del empleado a eliminar", example = "5")
+            @PathVariable Long codigo) {
         this.empleadoService.eliminarEmpleado(codigo);
         return ResponseEntity.noContent().build();
     }

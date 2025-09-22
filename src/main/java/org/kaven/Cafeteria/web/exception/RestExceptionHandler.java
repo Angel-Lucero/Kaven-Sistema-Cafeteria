@@ -118,7 +118,4 @@ public class RestExceptionHandler {
         Error error = new Error("error-desconocido", ex.getMessage());
         return ResponseEntity.internalServerError().body(error);
     }
-
-
-
 }

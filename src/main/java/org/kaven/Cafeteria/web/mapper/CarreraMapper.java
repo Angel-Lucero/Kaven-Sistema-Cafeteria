@@ -1,7 +1,7 @@
 package org.kaven.Cafeteria.web.mapper;
 
-import org.kaven.Cafeteria.dominio.dto.CarrerasDto;
-import org.kaven.Cafeteria.dominio.dto.ModCarrerasDto;
+import org.kaven.Cafeteria.dominio.dto.CarreraDto;
+import org.kaven.Cafeteria.dominio.dto.ModCarreraDto;
 import org.kaven.Cafeteria.persistence.entity.CarreraEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -14,14 +14,14 @@ import java.util.List;
 public interface CarreraMapper {
 
     @Mapping(source = "degreeName", target = "degreeName", qualifiedByName = "generarNombreCarreras")
-    CarrerasDto toDto(CarreraEntity entity);
+    CarreraDto toDto(CarreraEntity entity);
 
-    List<CarrerasDto> toDto(Iterable<CarreraEntity> entities);
+    List<CarreraDto> toDto(Iterable<CarreraEntity> entities);
 
     @InheritInverseConfiguration
     @Mapping(source = "degreeName", target = "degreeName", qualifiedByName = "generarCarrera")
-    CarreraEntity toEntity(CarrerasDto dto);
+    CarreraEntity toEntity(CarreraDto dto);
 
     @Mapping(source = "degreeName", target = "degreeName", qualifiedByName = "generarCarrera")
-    void modificarEntityFromDto(ModCarrerasDto dto, @MappingTarget CarreraEntity entity);
+    void modificarEntityFromDto(ModCarreraDto dto, @MappingTarget CarreraEntity entity);
 }

@@ -1,7 +1,7 @@
 package org.kaven.Cafeteria.dominio.service;
 
-import org.kaven.Cafeteria.dominio.dto.EntregasDto;
-import org.kaven.Cafeteria.dominio.dto.ModEntregasDto;
+import org.kaven.Cafeteria.dominio.dto.EntregaDto;
+import org.kaven.Cafeteria.dominio.dto.ModEntregaDto;
 import org.kaven.Cafeteria.dominio.repository.EntregaRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +16,20 @@ public class EntregaService {
         this.entregaRepository = entregaRepository;
     }
 
-    public List<EntregasDto> obtenerTodoEntregas() {
+    public List<EntregaDto> obtenerTodoEntregas() {
         return this.entregaRepository.obtenerTodoEntregas();
     }
 
-    public EntregasDto obtenerEntregasPorCodigo(Long codigo) {
+    public EntregaDto obtenerEntregasPorCodigo(Long codigo) {
         return this.entregaRepository.obtenerEntregasPorCodigo(codigo);
     }
 
-    public EntregasDto guardarEntrega(EntregasDto entregasDto) {
-        return this.entregaRepository.guardarEntrega(entregasDto);
+    public EntregaDto guardarEntrega(EntregaDto entregaDto) {
+        return this.entregaRepository.guardarEntrega(entregaDto);
     }
 
-    public EntregasDto modificarEntrega(Long codigo, ModEntregasDto modEntregasDto) {
-        return this.entregaRepository.modificarEntrega(codigo, modEntregasDto);
+    public EntregaDto modificarEntrega(Long codigo, ModEntregaDto modEntregaDto) {
+        return this.entregaRepository.modificarEntrega(codigo, modEntregaDto);
     }
 
     public void eliminarEntrega(Long codigo) {

@@ -1,15 +1,15 @@
 package org.kaven.Cafeteria.dominio.repository;
 
-import org.kaven.Cafeteria.dominio.dto.CarrerasDto;
-import org.kaven.Cafeteria.dominio.dto.ModCarrerasDto;
+import org.kaven.Cafeteria.dominio.dto.CarreraDto;
+import org.kaven.Cafeteria.dominio.dto.ModCarreraDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
 public interface CarreraRepository {
-    List<CarrerasDto> obtenerTodoCarreras();
-    CarrerasDto obtenerCarreraPorCodigo(Long codigo);
-    CarrerasDto guardarCarreras(CarrerasDto carrerasDto);
-    CarrerasDto modificarCarreras(Long codigo, ModCarrerasDto carrerasDto);
+    List<CarreraDto> obtenerTodoCarreras();
+    CarreraDto obtenerCarreraPorCodigo(Long codigo);
+    CarreraDto guardarCarreras(CarreraDto carrerasDto);
+    CarreraDto modificarCarreras(Long codigo, ModCarreraDto carrerasDto);
     void eliminarCarreras(Long codigo);
 }

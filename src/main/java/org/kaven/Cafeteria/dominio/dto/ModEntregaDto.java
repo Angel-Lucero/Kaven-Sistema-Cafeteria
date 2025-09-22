@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
-public record ModEntregasDto(
+public record ModEntregaDto(
         @NotNull(message = "El ID de la orden es obligatorio")
         Long orderId,
 

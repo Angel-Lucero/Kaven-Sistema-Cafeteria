@@ -1,7 +1,7 @@
 package org.kaven.Cafeteria.web.mapper;
 
-import org.kaven.Cafeteria.dominio.dto.EntregasDto;
-import org.kaven.Cafeteria.dominio.dto.ModEntregasDto;
+import org.kaven.Cafeteria.dominio.dto.EntregaDto;
+import org.kaven.Cafeteria.dominio.dto.ModEntregaDto;
 import org.kaven.Cafeteria.persistence.entity.EntregaEntity;
 import org.mapstruct.*;
 import java.util.List;
@@ -12,18 +12,18 @@ public interface EntregaMapper {
     @Mapping(source = "order.id", target = "OrderId")
     @Mapping(source = "employee.id", target = "EmployeeId")
     @Mapping(source = "deliveryStatus", target = "deliveryStatus", qualifiedByName = "statusAString")
-    EntregasDto toDto(EntregaEntity entity);
+    EntregaDto toDto(EntregaEntity entity);
 
-    List<EntregasDto> toDto(Iterable<EntregaEntity> entities);
+    List<EntregaDto> toDto(Iterable<EntregaEntity> entities);
 
     @InheritInverseConfiguration
     @Mapping(source = "OrderId", target = "order.id")
     @Mapping(source = "EmployeeId", target = "employee.id")
     @Mapping(source = "deliveryStatus", target = "deliveryStatus", qualifiedByName = "stringAStatus")
-    EntregaEntity toEntity(EntregasDto dto);
+    EntregaEntity toEntity(EntregaDto dto);
 
     @Mapping(source = "orderId", target = "order.id")
     @Mapping(source = "employeeId", target = "employee.id")
     @Mapping(source = "deliveryStatus", target = "deliveryStatus", qualifiedByName = "stringAStatus")
-    void modificarEntityFromDto(ModEntregasDto dto, @MappingTarget EntregaEntity entity);
+    void modificarEntityFromDto(ModEntregaDto dto, @MappingTarget EntregaEntity entity);
 }

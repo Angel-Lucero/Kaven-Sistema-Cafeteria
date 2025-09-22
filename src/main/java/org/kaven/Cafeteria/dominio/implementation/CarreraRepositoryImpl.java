@@ -1,7 +1,7 @@
 package org.kaven.Cafeteria.dominio.implementation;
 
-import org.kaven.Cafeteria.dominio.dto.CarrerasDto;
-import org.kaven.Cafeteria.dominio.dto.ModCarrerasDto;
+import org.kaven.Cafeteria.dominio.dto.CarreraDto;
+import org.kaven.Cafeteria.dominio.dto.ModCarreraDto;
 import org.kaven.Cafeteria.dominio.repository.CarreraRepository;
 import org.kaven.Cafeteria.dominio.repository.JpaCarreraRepository;
 import org.kaven.Cafeteria.persistence.entity.CarreraEntity;
@@ -22,30 +22,30 @@ public class CarreraRepositoryImpl implements CarreraRepository {
     }
 
     @Override
-    public List<CarrerasDto> obtenerTodoCarreras() {
+    public List<CarreraDto> obtenerTodoCarreras() {
         List<CarreraEntity> entities = jpaCarreraRepository.findAll();
         return carreraMapper.toDto(entities);
     }
 
     @Override
-    public CarrerasDto obtenerCarreraPorCodigo(Long codigo) {
+    public CarreraDto obtenerCarreraPorCodigo(Long codigo) {
         Optional<CarreraEntity> entity = jpaCarreraRepository.findById(codigo);
         return entity.map(carreraMapper::toDto).orElse(null);
     }
 
     @Override
-    public CarrerasDto guardarCarreras(CarrerasDto carrerasDto) {
+    public CarreraDto guardarCarreras(CarreraDto carrerasDto) {
         CarreraEntity entity = carreraMapper.toEntity(carrerasDto);
         CarreraEntity savedEntity = jpaCarreraRepository.save(entity);
         return carreraMapper.toDto(savedEntity);
     }
 
     @Override
-    public CarrerasDto modificarCarreras(Long codigo, ModCarrerasDto modCarrerasDto) {
+    public CarreraDto modificarCarreras(Long codigo, ModCarreraDto modCarreraDto) {
         Optional<CarreraEntity> existingEntity = jpaCarreraRepository.findById(codigo);
         if (existingEntity.isPresent()) {
             CarreraEntity entity = existingEntity.get();
-            carreraMapper.modificarEntityFromDto(modCarrerasDto, entity);
+            carreraMapper.modificarEntityFromDto(modCarreraDto, entity);
             CarreraEntity updatedEntity = jpaCarreraRepository.save(entity);
             return carreraMapper.toDto(updatedEntity);
         }
