@@ -10,7 +10,7 @@ import java.util.List;
 public interface FacturaMapper {
 
     @Mapping(source = "student.id", target = "studentId")
-    @Mapping(source = "order.id", target = "orderId")
+    @Mapping(source = "order.id", target = "ordersId")
     @Mapping(source = "paymentType", target = "paymentType", qualifiedByName = "paymentAString")
     FacturaDto toDto(FacturaEntity entity);
 
@@ -18,7 +18,7 @@ public interface FacturaMapper {
 
     @InheritInverseConfiguration
     @Mapping(source = "studentId", target = "student.id")
-    @Mapping(source = "orderId", target = "order.id")
+    @Mapping(source = "ordersId", target = "order.id")
     @Mapping(source = "paymentType", target = "paymentType", qualifiedByName = "stringAPayment")
     FacturaEntity toEntity(FacturaDto dto);
 

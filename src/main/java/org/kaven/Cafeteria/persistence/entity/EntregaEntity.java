@@ -16,7 +16,7 @@ public class EntregaEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "order_id", nullable = false)
-    private OrderEntity order;
+    private PedidoEntity order;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "employee_id", nullable = false)

@@ -1,8 +1,8 @@
 package org.kaven.Cafeteria.dominio.dto;
 
-import java.util.LocalDate;
+import java.time.LocalDate;
 
-public record EntregasDto(
+public record EntregaDto(
         Long id,
         Long OrderId,
         Long EmployeeId,

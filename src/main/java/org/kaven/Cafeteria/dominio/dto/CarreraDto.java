@@ -1,6 +1,6 @@
 package org.kaven.Cafeteria.dominio.dto;
 
-public record CarrerasDto(
+public record CarreraDto(
         long id,
         String degreeName) {
 }
