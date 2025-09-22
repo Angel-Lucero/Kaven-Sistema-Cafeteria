@@ -4,5 +4,5 @@ import org.kaven.Cafeteria.persistence.entity.EntregaEntity;
 import org.springframework.data.repository.CrudRepository;
 
 public interface CrudEntregaEntity extends CrudRepository<EntregaEntity, Long> {
-    EntregaEntity findFirstByNombre(Long codgio);
+    EntregaEntity findFirstById(Long id);
 }

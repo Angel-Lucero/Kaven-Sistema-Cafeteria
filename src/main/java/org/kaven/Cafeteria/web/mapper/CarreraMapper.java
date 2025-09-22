@@ -13,14 +13,15 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = DegreeMapper.class)
 public interface CarreraMapper {
 
-    @Mapping(source = "degreeName", target = "degreeName", qualifiedByName = "degreeAString")
+    @Mapping(source = "degreeName", target = "degreeName", qualifiedByName = "generarNombreCarreras")
     CarrerasDto toDto(CarreraEntity entity);
+
     List<CarrerasDto> toDto(Iterable<CarreraEntity> entities);
 
     @InheritInverseConfiguration
-    @Mapping(source = "degreeName", target = "degreeName", qualifiedByName = "stringADegree")
+    @Mapping(source = "degreeName", target = "degreeName", qualifiedByName = "generarCarrera")
     CarreraEntity toEntity(CarrerasDto dto);
 
-    @Mapping(source = "degreeName", target = "degreeName", qualifiedByName = "stringADegree")
+    @Mapping(source = "degreeName", target = "degreeName", qualifiedByName = "generarCarrera")
     void modificarEntityFromDto(ModCarrerasDto dto, @MappingTarget CarreraEntity entity);
 }

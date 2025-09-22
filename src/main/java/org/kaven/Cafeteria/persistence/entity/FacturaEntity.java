@@ -16,11 +16,11 @@ public class FacturaEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id", nullable = false)
-    private StudentEntity student;
+    private EstudianteEntity student;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "order_id", nullable = false)
-    private OrderEntity order;
+    private PedidoEntity order;
 
     @Column(nullable = false)
     private BigDecimal total;
