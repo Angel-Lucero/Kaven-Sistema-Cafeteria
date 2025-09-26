@@ -4,63 +4,57 @@
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Kinavana 2024401</title>
+        <title>Cafetería Kaven - Gestión de Empleados</title>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+        <h:outputStylesheet name="styleweb.css"/>
     </h:head>
     <h:body>
-        <p>Hola mundo, estoy en server faces, desde spring boot</p>
         <div class="card">
             <h:form id="formulario-empleados">
-                <!-- Mensaje emergente -->
+
                 <p:growl id="mensaje_emergente" showDetails="true"/>
 
-                <!-- Barra de menús -->
                 <div class="card">
-                    <p:menubar>
-                        <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
+                    <p:menubar styleClass="cafeteria-header">
+                        <p:menuitem value="Inicio" icon="pi pi-fw pi-home"
                                     update=":formulario-empleados:tabla-empleados"
-                                    actionListener="#{indexController.cargarDatos}"/>
+                                    actionListener="#{webTablaEmpleadoController.cargarDatos}"/>
 
                         <p:menuitem value="Nuevo Empleado" icon="pi pi-fw pi-plus"
-                                    actionListener="#{indexController.agregarEmpleado}"
+                                    actionListener="#{webTablaEmpleadoController.agregarEmpleado}"
                                     update=":formulario-modal:ventana-empleado"
                                     oncomplete="PF('ventanaModalEmpleado').show()"/>
                     </p:menubar>
                 </div>
 
-                <!-- Tabla de datos -->
                 <div class="card">
-                    <p:dataTable value="#{indexController.empleados}" var="empleado" id="tabla-empleados" widgetVar="tablaEmpleados">
-                        <!-- Encabezado -->
+                    <p:dataTable value="#{webTablaEmpleadoController.empleados}" var="empleado" id="tabla-empleados" widgetVar="tablaEmpleados" styleClass="table-striped">
+
                         <f:facet name="header">
-                            <div class="flex justify-content-center flex-wrap card-container yellow-container">
-                                <div class="flex aling-items-center justify-content-center
-                                            w-20rem h-4rem bg-yellow-500 font-bold text-gray-900 border-round m-2">
-                                    <h3>Kinavana, empleados</h3>
-                                </div>
-                            </div>
+                            <div class="card-header">Empleados en Cafetería Kaven</div>
                         </f:facet>
 
-                        <!-- Columnas -->
                         <p:column headerText="ID">
-                            <h:outputText value="#{empleado.codigoempleado}"/>
+                            <h:outputText value="#{empleado.id}"/>
                         </p:column>
-                        <p:column headerText="NOMBRE">
-                            <h:outputText value="#{empleado.nombre}"/>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{empleado.name}"/>
                         </p:column>
-                        <p:column headerText="DESCRIPCIÓN">
-                            <h:outputText value="#{empleado.descripcion}"/>
+                        <p:column headerText="Rol">
+                            <h:outputText value="#{empleado.role}"/>
                         </p:column>
-                        <p:column headerText="PRECIO">
-                            <h:outputText value="#{empleado.precio}"/>
+                        <p:column headerText="Turno">
+                            <h:outputText value="#{empleado.shift}"/>
                         </p:column>
-                        <p:column headerText="CANTIDAD">
-                            <h:outputText value="#{empleado.cantidad}"/>
-                        </p:column>
-                        <p:column headerText="OPCIÓN">
-                            <p:commandButton value="Editar" icon="pi pi-pencil" class="ui-button-primary"/>
-                            <p:commandButton value="Eliminar" icon="pi pi-trash" class="ui-button-danger"/>
+
+                        <p:column headerText="Acciones">
+                            <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="button-primary"
+                                             actionListener="#{webTablaEmpleadoController.prepararEdicion(empleado)}"
+                                             update=":formulario-modal:ventana-empleado"/>
+                            <p:commandButton value="Eliminar" icon="pi pi-trash" styleClass="button-danger"
+                                             actionListener="#{webTablaEmpleadoController.eliminarEmpleado}"
+                                             update=":formulario-empleados:tabla-empleados"/>
                         </p:column>
                     </p:dataTable>
                 </div>
@@ -68,29 +62,31 @@
 
             <!-- Modal -->
             <h:form id="formulario-modal">
-                <p:dialog header="Detalle del empleado" showEffect="fade"
+                <p:dialog header="Detalles del Empleado" showEffect="fade"
                           modal="true" widgetVar="ventanaModalEmpleado" responsive="true">
                     <p:outputPanel id="ventana-empleado" class="ui-fluid">
                         <div class="field">
-                            <p:outputLabel for="nombre">NOMBRE</p:outputLabel>
-                            <p:inputText id="nombre" required="true"/>
+                            <p:outputLabel for="nombre">Nombre</p:outputLabel>
+                            <p:inputText id="nombre" value="#{webTablaEmpleadoController.editNombre}" required="true"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="descripcion">DESCRIPCIÓN</p:outputLabel>
-                            <p:inputText id="descripcion"/>
+                            <p:outputLabel for="descripcion">Descripción</p:outputLabel>
+                            <p:inputText id="descripcion" value="#{webTablaEmpleadoController.editDescripcion}"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="precio">PRECIO</p:outputLabel>
-                            <p:inputText id="precio"/>
+                            <p:outputLabel for="precio">Precio</p:outputLabel>
+                            <p:inputText id="precio" value="#{webTablaEmpleadoController.editPrecio}"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="cantidad">CANTIDAD</p:outputLabel>
-                            <p:inputText id="cantidad"/>
+                            <p:outputLabel for="cantidad">Cantidad</p:outputLabel>
+                            <p:inputText id="cantidad" value="#{webTablaEmpleadoController.editCantidad}"/>
                         </div>
                     </p:outputPanel>
                     <f:facet name="footer">
-                        <p:commandButton value="Guardar" icon="pi pi-check" class="ui-button-primary"/>
-                        <p:commandButton value="Cancelar" icon="pi pi-times" class="ui-button-primary"
+                        <p:commandButton value="Guardar" icon="pi pi-check" styleClass="button-primary"
+                                         actionListener="#{webTablaEmpleadoController.guardarEmpleado}"
+                                         update=":formulario-empleados:tabla-empleados"/>
+                        <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="button-primary"
                                          onclick="PF('ventanaModalEmpleado').hide()" type="button"/>
                     </f:facet>
                 </p:dialog>
