@@ -8,9 +8,11 @@ import org.kaven.Cafeteria.dominio.repository.CarreraRepository;
 import org.kaven.Cafeteria.persistence.crud.CrudCarreraEntity;
 import org.kaven.Cafeteria.persistence.entity.CarreraEntity;
 import org.kaven.Cafeteria.web.mapper.CarreraMapper;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 
 @Repository
 public class CarreraEntityRepository implements CarreraRepository {
