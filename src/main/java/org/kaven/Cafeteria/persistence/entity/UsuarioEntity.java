@@ -18,6 +18,9 @@ public class UsuarioEntity {
     @Column(length = 255, nullable = false)
     private String contrasena;
 
+    @Column(name = "tipo_usuario", length = 20, nullable = false)
+    private String tipoUsuario = "STUDENT";
+
     @OneToOne
     @JoinColumn(name = "id_estudiante", unique = true)
     private EstudianteEntity estudiante;

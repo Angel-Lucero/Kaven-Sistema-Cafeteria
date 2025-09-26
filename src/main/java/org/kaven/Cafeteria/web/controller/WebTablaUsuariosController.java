@@ -18,27 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Data
 @ViewScoped
-public class WebTablaUsuarioController implements Serializable {
-
-    private static final Logger logger = LoggerFactory.getLogger(WebTablaUsuarioController.class);
+@Data
+public class WebTablaUsuariosController implements Serializable {
+    private static final Logger logger = LoggerFactory.getLogger(WebTablaUsuariosController.class);
 
     @Autowired
-    private UsuarioService usuarioService;
-
+    UsuarioService usuarioService;
     private List<UsuarioDto> usuarios;
     private UsuarioDto usuarioSeleccionado;
 
     private String editMail;
     private String editPassword;
-
-    public WebTablaUsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
-    public WebTablaUsuarioController() {
-    }
+    private String editUsertype;
+    private Long editStudentid;
 
     @PostConstruct
     public void init() {
@@ -46,8 +39,8 @@ public class WebTablaUsuarioController implements Serializable {
     }
 
     public void cargarDatos() {
-        this.usuarios = usuarioService.obtenerTodoUsuario();
-        usuarios.forEach(usuario -> logger.info(usuario.toString()));
+        this.usuarios = this.usuarioService.obtenerTodoUsuario();
+        this.usuarios.forEach(usuario -> logger.info(usuario.toString()));
     }
 
     public void refresh() {
@@ -59,17 +52,21 @@ public class WebTablaUsuarioController implements Serializable {
     }
 
     public void agregarUsuario() {
-        this.usuarioSeleccionado = null; // Nuevo
+        this.usuarioSeleccionado = null;
         this.editMail = "";
         this.editPassword = "";
+        this.editUsertype = "STUDENT"; // Valor por defecto
+        this.editStudentid = null;
         PrimeFaces.current().executeScript("PF('ventanaModalUsuario').show()");
     }
 
-    public void prepararEdicion(UsuarioDto usuario) {
-        this.usuarioSeleccionado = usuario;
-        if (usuario != null) {
-            this.editMail = usuario.mail();
-            this.editPassword = usuario.password();
+    public void prepararEdicion(UsuarioDto u) {
+        this.usuarioSeleccionado = u;
+        if (u != null) {
+            this.editMail = u.mail();
+            this.editPassword = u.password();
+            this.editUsertype = u.usertype();
+            this.editStudentid = u.studentid();
         }
         PrimeFaces.current().executeScript("PF('ventanaModalUsuario').show()");
     }
@@ -78,55 +75,45 @@ public class WebTablaUsuarioController implements Serializable {
         try {
             UsuarioDto dto;
             if (this.usuarioSeleccionado == null || this.usuarioSeleccionado.id() == null) {
-                dto = new UsuarioDto(null, editMail, editPassword, null); // El campo `studentid` es opcional
+                // Nuevo usuario - todos los parámetros incluyendo usertype
+                dto = new UsuarioDto(null, editMail, editPassword, editUsertype, editStudentid);
             } else {
-                dto = new UsuarioDto(this.usuarioSeleccionado.id(), editMail, editPassword, this.usuarioSeleccionado.studentid());
+                // Usuario existente - todos los parámetros incluyendo usertype
+                dto = new UsuarioDto(this.usuarioSeleccionado.id(), editMail, editPassword, editUsertype, editStudentid);
             }
-
             UsuarioDto guardado = this.usuarioService.guardarUsuario(dto);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                    this.usuarioSeleccionado == null || this.usuarioSeleccionado.id() == null
-                            ? "Usuario Agregado"
-                            : "Usuario Modificado"
-            ));
-
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(this.usuarioSeleccionado == null || this.usuarioSeleccionado.id() == null ?
+                            "Usuario Agregado" : "Usuario Modificado"));
             refresh();
             this.usuarioSeleccionado = guardado;
             PrimeFaces.current().ajax().update("formUsuarios:tablaUsuarios", "growlMensajes");
             PrimeFaces.current().executeScript("PF('ventanaModalUsuario').hide()");
-            this.usuarioSeleccionado = null; // Limpiar la selección tras cerrar
+            this.usuarioSeleccionado = null;
         } catch (Exception e) {
             logger.error("Error al guardar usuario", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo guardar"));
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo guardar"));
         }
     }
 
     public void eliminarUsuario() {
         if (this.usuarioSeleccionado == null || this.usuarioSeleccionado.id() == null) return;
         try {
-            this.usuarioService.eliminarUsuario(this.usuarioSeleccionado.id().toString());
+            this.usuarioService.eliminarUsuario(String.valueOf(this.usuarioSeleccionado.id()));
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario Eliminado"));
             refresh();
             PrimeFaces.current().ajax().update("formUsuarios:tablaUsuarios", "growlMensajes");
             this.usuarioSeleccionado = null;
         } catch (Exception e) {
             logger.error("Error al eliminar usuario", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar"));
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar"));
         }
     }
 
     public void cancelarUsuario() {
         this.usuarioSeleccionado = null;
         PrimeFaces.current().executeScript("PF('ventanaModalUsuario').hide()");
-    }
-
-    public void delete(UsuarioDto usuario) { // Legacy
-        if (usuario == null || usuario.id() == null) return;
-        try {
-            usuarioService.eliminarUsuario(usuario.id().toString());
-            refresh();
-        } catch (Exception e) {
-            logger.error("Error legacy delete", e);
-        }
     }
 }
