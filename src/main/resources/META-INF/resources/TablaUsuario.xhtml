@@ -7,7 +7,6 @@
         <title>Cafetería Kaven - Gestión de Usuarios</title>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
-
         <h:outputStylesheet name="styleweb.css"/>
     </h:head>
     <h:body>
@@ -20,69 +19,57 @@
                     <p:menubar styleClass="cafeteria-header">
                         <p:menuitem value="Inicio" icon="pi pi-fw pi-home"
                                     update=":formulario-usuarios:tabla-usuarios"
-                                    actionListener="#{indexController.cargarDatos}"/>
+                                    actionListener="#{webTablaUsuarioController.cargarDatos}"/>
 
                         <p:menuitem value="Nuevo Usuario" icon="pi pi-fw pi-plus"
-                                    actionListener="#{indexController.agregarUsuario}"
+                                    actionListener="#{webTablaUsuarioController.agregarUsuario}"
                                     update=":formulario-modal:ventana-usuario"
                                     oncomplete="PF('ventanaModalUsuario').show()"/>
                     </p:menubar>
                 </div>
 
                 <div class="card">
-                    <p:dataTable value="#{indexController.usuarios}" var="usuario" id="tabla-usuarios" widgetVar="tablaUsuarios" styleClass="table-striped">
-
+                    <p:dataTable value="#{webTablaUsuarioController.usuarios}" var="usuario" id="tabla-usuarios" widgetVar="tablaUsuarios" styleClass="table-striped">
                         <f:facet name="header">
                             <div class="card-header">Usuarios en Cafetería Kaven</div>
                         </f:facet>
 
-                        <p:column headerText="ID" styleClass="table-header">
-                            <h:outputText value="#{usuario.codigousuario}"/>
+                        <p:column headerText="ID">
+                            <h:outputText value="#{usuario.id}"/>
                         </p:column>
-                        <p:column headerText="Nombre" styleClass="table-header">
-                            <h:outputText value="#{usuario.nombre}"/>
+                        <p:column headerText="Correo">
+                            <h:outputText value="#{usuario.mail}"/>
                         </p:column>
-                        <p:column headerText="Descripción" styleClass="table-header">
-                            <h:outputText value="#{usuario.descripcion}"/>
-                        </p:column>
-                        <p:column headerText="Precio" styleClass="table-header">
-                            <h:outputText value="#{usuario.precio}"/>
-                        </p:column>
-                        <p:column headerText="Cantidad" styleClass="table-header">
-                            <h:outputText value="#{usuario.cantidad}"/>
-                        </p:column>
-                        <p:column headerText="Acciones" styleClass="table-header">
-                            <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="button-primary"/>
-                            <p:commandButton value="Eliminar" icon="pi pi-trash" styleClass="button-danger"/>
+                        <p:column headerText="Acciones">
+                            <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="button-primary"
+                                             actionListener="#{webTablaUsuarioController.prepararEdicion(usuario)}"
+                                             update=":formulario-modal:ventana-usuario"/>
+                            <p:commandButton value="Eliminar" icon="pi pi-trash" styleClass="button-danger"
+                                             actionListener="#{webTablaUsuarioController.eliminarUsuario}"
+                                             update=":formulario-usuarios:tabla-usuarios"/>
                         </p:column>
                     </p:dataTable>
                 </div>
             </h:form>
 
-            <!-- Modal -->
+            <!-- Modal para editar o agregar usuario -->
             <h:form id="formulario-modal">
-                <p:dialog header="Detalle del Usuario" showEffect="fade"
+                <p:dialog header="Detalles del Usuario" showEffect="fade"
                           modal="true" widgetVar="ventanaModalUsuario" responsive="true">
                     <p:outputPanel id="ventana-usuario" class="ui-fluid">
                         <div class="field">
-                            <p:outputLabel for="nombre">Nombre</p:outputLabel>
-                            <p:inputText id="nombre" required="true"/>
+                            <p:outputLabel for="nombre">Correo</p:outputLabel>
+                            <p:inputText id="correo" value="#{webTablaUsuarioController.editMail}" required="true"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="descripcion">Descripción</p:outputLabel>
-                            <p:inputText id="descripcion"/>
-                        </div>
-                        <div class="field">
-                            <p:outputLabel for="precio">Precio</p:outputLabel>
-                            <p:inputText id="precio"/>
-                        </div>
-                        <div class="field">
-                            <p:outputLabel for="cantidad">Cantidad</p:outputLabel>
-                            <p:inputText id="cantidad"/>
+                            <p:outputLabel for="password">Contraseña</p:outputLabel>
+                            <p:inputText id="password" value="#{webTablaUsuarioController.editPassword}" required="true"/>
                         </div>
                     </p:outputPanel>
                     <f:facet name="footer">
-                        <p:commandButton value="Guardar" icon="pi pi-check" styleClass="button-primary"/>
+                        <p:commandButton value="Guardar" icon="pi pi-check" styleClass="button-primary"
+                                         actionListener="#{webTablaUsuarioController.guardarUsuario}"
+                                         update=":formulario-usuarios:tabla-usuarios"/>
                         <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="button-primary"
                                          onclick="PF('ventanaModalUsuario').hide()" type="button"/>
                     </f:facet>

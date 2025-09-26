@@ -7,7 +7,6 @@
         <title>Cafetería Kaven - Gestión de Facturas</title>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
-
         <h:outputStylesheet name="styleweb.css"/>
     </h:head>
     <h:body>
@@ -36,28 +35,28 @@
                             <div class="card-header">Facturas en Cafetería Kaven</div>
                         </f:facet>
 
-                        <p:column headerText="ID" styleClass="table-header">
+                        <p:column headerText="ID">
                             <h:outputText value="#{factura.codigofactura}"/>
                         </p:column>
-                        <p:column headerText="Nombre" styleClass="table-header">
+                        <p:column headerText="Nombre">
                             <h:outputText value="#{factura.nombre}"/>
                         </p:column>
-                        <p:column headerText="Apellido" styleClass="table-header">
+                        <p:column headerText="Apellido">
                             <h:outputText value="#{factura.apellido}"/>
                         </p:column>
-                        <p:column headerText="Teléfono" styleClass="table-header">
+                        <p:column headerText="Teléfono">
                             <h:outputText value="#{factura.telefono}"/>
                         </p:column>
-                        <p:column headerText="Correo" styleClass="table-header">
+                        <p:column headerText="Correo">
                             <h:outputText value="#{factura.correo}"/>
                         </p:column>
-                        <p:column headerText="Género" styleClass="table-header">
+                        <p:column headerText="Género">
                             <h:outputText value="#{factura.genero}"/>
                         </p:column>
-                        <p:column headerText="Edad" styleClass="table-header">
+                        <p:column headerText="Edad">
                             <h:outputText value="#{factura.edad}"/>
                         </p:column>
-                        <p:column headerText="Acciones" styleClass="table-header">
+                        <p:column headerText="Acciones">
                             <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="button-primary"/>
                             <p:commandButton value="Eliminar" icon="pi pi-trash" styleClass="button-danger"/>
                         </p:column>
@@ -65,6 +64,7 @@
                 </div>
             </h:form>
 
+            <!-- Modal para agregar o editar factura -->
             <h:form id="formulario-modal">
                 <p:dialog header="Detalle de la Factura" showEffect="fade"
                           modal="true" widgetVar="ventanaModalFactura" responsive="true">
