@@ -4,20 +4,21 @@
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Kinavana 2024401</title>
+        <title>Cafetería Kaven - Gestión de Facturas</title>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+
+        <h:outputStylesheet name="styleweb.css"/>
     </h:head>
     <h:body>
-        <p>Hola mundo, estoy en server faces, desde spring boot</p>
         <div class="card">
             <h:form id="formulario-facturas">
-                <!--                    Mensaje emergente-->
+
                 <p:growl id="mensaje_emergente" showDetails="true"/>
-                <!--                    Barra de menus-->
+
                 <div class="card">
-                    <p:menubar>
-                        <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
+                    <p:menubar styleClass="cafeteria-header">
+                        <p:menuitem value="Inicio" icon="pi pi-fw pi-home"
                                     update=":formulario-facturas:tabla-facturas"
                                     actionListener="#{indexController.cargarDatos}"/>
 
@@ -27,93 +28,80 @@
                                     oncomplete="PF('ventanaModalFactura').show()"/>
                     </p:menubar>
                 </div>
-                <!--                    Tabla de datos-->
+
                 <div class="card">
-                    <p:dataTable values="#{indexController.facturas}" var="factura" id="tabla-facturas" widgetVar="tablaFacturas">
-                        <!--Encabezado-->
+                    <p:dataTable value="#{indexController.facturas}" var="factura" id="tabla-facturas" widgetVar="tablaFacturas" styleClass="table-striped">
+                        <!-- Encabezado -->
                         <f:facet name="header">
-                            <div class="flex justify-content-center
-                                            flex-wrap card-container yellow-container">
-                                <div class="flex aling-items-center
-                                                justify-content-center
-                                                w-20rem h-4rem
-                                                bg-yellow-500 font-bold
-                                                text-gray-900 border-round m-2">
-                                    <h3>Kinvana, facturas</h3>
-                                </div>
-                            </div>
+                            <div class="card-header">Facturas en Cafetería Kaven</div>
                         </f:facet>
-                        <!--Todas las columnas-->
-                        <p:column headerText="ID">
-                            <h:outputText  value="#{factura.codigofactura}"/>
+
+                        <p:column headerText="ID" styleClass="table-header">
+                            <h:outputText value="#{factura.codigofactura}"/>
                         </p:column>
-                        <p:column headerText="NOMBRE">
-                            <h:outputText  value="#{factura.nombre}"/>
+                        <p:column headerText="Nombre" styleClass="table-header">
+                            <h:outputText value="#{factura.nombre}"/>
                         </p:column>
-                        <p:column headerText="APELLIDO">
-                            <h:outputText  value="#{factura.apellido}"/>
+                        <p:column headerText="Apellido" styleClass="table-header">
+                            <h:outputText value="#{factura.apellido}"/>
                         </p:column>
-                        <p:column headerText="TELEFONO">
-                            <h:outputText  value="#{factura.telefono}"/>
+                        <p:column headerText="Teléfono" styleClass="table-header">
+                            <h:outputText value="#{factura.telefono}"/>
                         </p:column>
-                        <p:column headerText="CORREO">
-                            <h:outputText  value="#{factura.correo}"/>
+                        <p:column headerText="Correo" styleClass="table-header">
+                            <h:outputText value="#{factura.correo}"/>
                         </p:column>
-                        <p:column headerText="GENERO">
-                            <h:outputText  value="#{factura.genero}"/>
+                        <p:column headerText="Género" styleClass="table-header">
+                            <h:outputText value="#{factura.genero}"/>
                         </p:column>
-                        <p:column headerText="EDAD">
-                            <h:outputText  value="#{factura.edad}"/>
+                        <p:column headerText="Edad" styleClass="table-header">
+                            <h:outputText value="#{factura.edad}"/>
                         </p:column>
-                        <p:column headerText="OPCIÓN">
-                            <p:commandButton value="Editar" icon="pi pi-pencil" class="ui-button-primary">
-                            </p:commandButton>
-                            <p:commandButton value="Eliminar" icon="pi pi-trash" class="ui-button-danger">
-                            </p:commandButton>
+                        <p:column headerText="Acciones" styleClass="table-header">
+                            <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="button-primary"/>
+                            <p:commandButton value="Eliminar" icon="pi pi-trash" styleClass="button-danger"/>
                         </p:column>
                     </p:dataTable>
                 </div>
             </h:form>
 
-            <h:from id="formulario-modal">
-                <p:dialog header="Detalle de la factura" showEffect="fade"
+            <h:form id="formulario-modal">
+                <p:dialog header="Detalle de la Factura" showEffect="fade"
                           modal="true" widgetVar="ventanaModalFactura" responsive="true">
                     <p:outputPanel id="ventana-factura" class="ui-fluid">
                         <div class="field">
-                            <p:outputLabel for="nombre">NOMBRE</p:outputLabel>
-                            <p:inputText  id="nombre" required="true"/>
+                            <p:outputLabel for="nombre">Nombre</p:outputLabel>
+                            <p:inputText id="nombre" required="true"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="apellido">APELLIDO</p:outputLabel>
-                            <p:inputText  id="apellido"/>
+                            <p:outputLabel for="apellido">Apellido</p:outputLabel>
+                            <p:inputText id="apellido"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="telefono">TELEFONO</p:outputLabel>
-                            <p:inputText  id="telefono"/>
+                            <p:outputLabel for="telefono">Teléfono</p:outputLabel>
+                            <p:inputText id="telefono"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="correo">CORREO</p:outputLabel>
-                            <p:inputText  id="correo" required="true"/>
+                            <p:outputLabel for="correo">Correo</p:outputLabel>
+                            <p:inputText id="correo" required="true"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="genero">GENERO</p:outputLabel>
-                            <p:inputText  id="genero"/>
+                            <p:outputLabel for="genero">Género</p:outputLabel>
+                            <p:inputText id="genero"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="edad">EDAD</p:outputLabel>
-                            <p:inputText  id="edad"/>
+                            <p:outputLabel for="edad">Edad</p:outputLabel>
+                            <p:inputText id="edad"/>
                         </div>
                     </p:outputPanel>
                     <f:facet name="footer">
-                        <p:commandButton value="Guardar" icon="pi pi-check" class="ui-button-primary"/>
-                        <p:commandButton value="Cancelar" icon="pi pi-times" class="ui-button-primary"
-                                         onclick="PF('ventanaModalFactura').hide" type="button"/>
+                        <p:commandButton value="Guardar" icon="pi pi-check" styleClass="button-primary"/>
+                        <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="button-primary"
+                                         onclick="PF('ventanaModalFactura').hide()" type="button"/>
                     </f:facet>
                 </p:dialog>
-            </h:from>
+            </h:form>
 
         </div>
-
     </h:body>
-
 </h:html>

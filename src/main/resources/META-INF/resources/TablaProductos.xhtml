@@ -4,97 +4,98 @@
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Kinavana 2024401</title>
+        <title>Cafetería Kaven - Gestión de Productos</title>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+
+        <h:outputStylesheet name="styleweb.css"/>
     </h:head>
     <h:body>
-        <p>Hola mundo, estoy en server faces, desde spring boot</p>
         <div class="card">
             <h:form id="formulario-productos">
-                <!-- Mensaje emergente -->
                 <p:growl id="mensaje_emergente" showDetails="true"/>
 
-                <!-- Barra de menus -->
                 <div class="card">
-                    <p:menubar>
-                        <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
+                    <p:menubar styleClass="cafeteria-header">
+                        <p:menuitem value="Inicio" icon="pi pi-fw pi-home"
                                     update=":formulario-productos:tabla-productos"
-                                    actionListener="#{indexController.cargarDatos}"/>
+                                    actionListener="#{webTablaProductosController.cargarDatos}"/>
 
                         <p:menuitem value="Nuevo Producto" icon="pi pi-fw pi-plus"
-                                    actionListener="#{indexController.agregarProducto}"
+                                    actionListener="#{webTablaProductosController.agregarProducto}"
                                     update=":formulario-modal:ventana-producto"
                                     oncomplete="PF('ventanaModalProducto').show()"/>
                     </p:menubar>
                 </div>
 
-                <!-- Tabla de datos -->
                 <div class="card">
-                    <p:dataTable values="#{indexController.productos}" var="producto" id="tabla-productos" widgetVar="tablaProductos">
-                        <!-- Encabezado -->
+                    <p:dataTable value="#{webTablaProductosController.productos}" var="producto" id="tabla-productos" widgetVar="tablaProductos" styleClass="table-striped">
                         <f:facet name="header">
-                            <div class="flex justify-content-center flex-wrap card-container yellow-container">
-                                <div class="flex aling-items-center justify-content-center
-                                            w-20rem h-4rem bg-yellow-500 font-bold text-gray-900 border-round m-2">
-                                    <h3>Kinvana, productos</h3>
-                                </div>
-                            </div>
+                            <div class="card-header">Productos en Cafetería Kaven</div>
                         </f:facet>
 
-                        <!-- Columnas -->
+                        <!-- Columnas de la tabla -->
                         <p:column headerText="ID">
-                            <h:outputText value="#{producto.codigoproducto}"/>
+                            <h:outputText value="#{producto.id}"/>
                         </p:column>
-                        <p:column headerText="NOMBRE">
-                            <h:outputText value="#{producto.nombre}"/>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{producto.name}"/>
                         </p:column>
-                        <p:column headerText="DESCRIPCIÓN">
-                            <h:outputText value="#{producto.descripcion}"/>
+                        <p:column headerText="Tipo">
+                            <h:outputText value="#{producto.type}"/>
                         </p:column>
-                        <p:column headerText="PRECIO">
-                            <h:outputText value="#{producto.precio}"/>
+                        <p:column headerText="Precio">
+                            <h:outputText value="#{producto.price}"/>
                         </p:column>
-                        <p:column headerText="CANTIDAD">
-                            <h:outputText value="#{producto.cantidad}"/>
+                        <p:column headerText="Disponibilidad">
+                            <h:outputText value="#{producto.availability}"/>
                         </p:column>
-                        <p:column headerText="OPCIÓN">
-                            <p:commandButton value="Editar" icon="pi pi-pencil" class="ui-button-primary"/>
-                            <p:commandButton value="Eliminar" icon="pi pi-trash" class="ui-button-danger"/>
+
+                        <!-- Acciones -->
+                        <p:column headerText="Acciones">
+                            <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="button-primary"
+                                             actionListener="#{webTablaProductosController.prepararEdicion(producto)}"
+                                             update=":formulario-modal:ventana-producto"/>
+                            <p:commandButton value="Eliminar" icon="pi pi-trash" styleClass="button-danger"
+                                             actionListener="#{webTablaProductosController.eliminarProducto}"
+                                             update=":formulario-productos:tabla-productos"/>
                         </p:column>
                     </p:dataTable>
                 </div>
             </h:form>
 
+            <!-- Modal para agregar/editar producto -->
             <h:form id="formulario-modal">
-                <p:dialog header="Detalle del producto" showEffect="fade"
+                <p:dialog header="Detalles del Producto" showEffect="fade"
                           modal="true" widgetVar="ventanaModalProducto" responsive="true">
                     <p:outputPanel id="ventana-producto" class="ui-fluid">
+                        <!-- Campos del formulario -->
                         <div class="field">
-                            <p:outputLabel for="nombre">NOMBRE</p:outputLabel>
-                            <p:inputText id="nombre" required="true"/>
+                            <p:outputLabel for="nombre">Nombre</p:outputLabel>
+                            <p:inputText id="nombre" value="#{webTablaProductosController.editNombre}" required="true"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="descripcion">DESCRIPCIÓN</p:outputLabel>
-                            <p:inputText id="descripcion"/>
+                            <p:outputLabel for="tipo">Tipo</p:outputLabel>
+                            <p:inputText id="tipo" value="#{webTablaProductosController.editTipo}" required="true"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="precio">PRECIO</p:outputLabel>
-                            <p:inputText id="precio"/>
+                            <p:outputLabel for="precio">Precio</p:outputLabel>
+                            <p:inputText id="precio" value="#{webTablaProductosController.editPrecio}" required="true"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="cantidad">CANTIDAD</p:outputLabel>
-                            <p:inputText id="cantidad"/>
+                            <p:outputLabel for="disponibilidad">Disponibilidad</p:outputLabel>
+                            <p:selectBooleanCheckbox id="disponibilidad" value="#{webTablaProductosController.editDisponibilidad}"/>
                         </div>
                     </p:outputPanel>
                     <f:facet name="footer">
-                        <p:commandButton value="Guardar" icon="pi pi-check" class="ui-button-primary"/>
-                        <p:commandButton value="Cancelar" icon="pi pi-times" class="ui-button-primary"
-                                         onclick="PF('ventanaModalProducto').hide" type="button"/>
+                        <p:commandButton value="Guardar" icon="pi pi-check" styleClass="button-primary"
+                                         actionListener="#{webTablaProductosController.guardarProducto}"
+                                         update=":formulario-productos:tabla-productos"/>
+                        <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="button-primary"
+                                         onclick="PF('ventanaModalProducto').hide()" type="button"/>
                     </f:facet>
                 </p:dialog>
             </h:form>
-
         </div>
     </h:body>
 </h:html>

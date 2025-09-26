@@ -4,90 +4,91 @@
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Kinavana 2024401</title>
+        <title>Cafetería Kaven - Gestión de Pedidos</title>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
         <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+        <h:outputStylesheet name="styleweb.css"/>
     </h:head>
     <h:body>
-        <p>Hola mundo, estoy en server faces, desde spring boot</p>
         <div class="card">
             <h:form id="formulario-pedidos">
-                <!-- Mensaje emergente -->
+
                 <p:growl id="mensaje_emergente" showDetails="true"/>
-                <!-- Barra de menus -->
+
                 <div class="card">
-                    <p:menubar>
-                        <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
+                    <p:menubar styleClass="cafeteria-header">
+                        <p:menuitem value="Inicio" icon="pi pi-fw pi-home"
                                     update=":formulario-pedidos:tabla-pedidos"
-                                    actionListener="#{indexController.cargarDatos}"/>
+                                    actionListener="#{webTablaPedidosController.cargarDatos}"/>
 
                         <p:menuitem value="Nuevo Pedido" icon="pi pi-fw pi-plus"
-                                    actionListener="#{indexController.agregarPedido}"
+                                    actionListener="#{webTablaPedidosController.agregarPedido}"
                                     update=":formulario-modal:ventana-pedido"
                                     oncomplete="PF('ventanaModalPedido').show()"/>
                     </p:menubar>
                 </div>
-                <!-- Tabla de datos -->
+
                 <div class="card">
-                    <p:dataTable values="#{indexController.pedidos}" var="pedido" id="tabla-pedidos" widgetVar="tablaPedidos">
-                        <!-- Encabezado -->
+                    <p:dataTable value="#{webTablaPedidosController.pedidos}" var="pedido" id="tabla-pedidos" widgetVar="tablaPedidos" styleClass="table-striped">
                         <f:facet name="header">
-                            <div class="flex justify-content-center flex-wrap card-container yellow-container">
-                                <div class="flex aling-items-center justify-content-center
-                                            w-20rem h-4rem bg-yellow-500 font-bold text-gray-900 border-round m-2">
-                                    <h3>Kinvana, pedidos</h3>
-                                </div>
-                            </div>
+                            <div class="card-header">Pedidos en Cafetería Kaven</div>
                         </f:facet>
-                        <!-- Columnas -->
+
                         <p:column headerText="ID">
-                            <h:outputText value="#{pedido.codigopedido}"/>
+                            <h:outputText value="#{pedido.id}"/>
                         </p:column>
-                        <p:column headerText="CLIENTE">
-                            <h:outputText value="#{pedido.cliente}"/>
+                        <p:column headerText="Cliente">
+                            <h:outputText value="#{pedido.studentid}"/>
                         </p:column>
-                        <p:column headerText="FECHA">
-                            <h:outputText value="#{pedido.fecha}"/>
+                        <p:column headerText="Fecha">
+                            <h:outputText value="#{pedido.orderdate}"/>
                         </p:column>
-                        <p:column headerText="TOTAL">
+                        <p:column headerText="Total">
                             <h:outputText value="#{pedido.total}"/>
                         </p:column>
-                        <p:column headerText="ESTADO">
-                            <h:outputText value="#{pedido.estado}"/>
+                        <p:column headerText="Estado">
+                            <h:outputText value="#{pedido.state}"/>
                         </p:column>
-                        <p:column headerText="OPCIÓN">
-                            <p:commandButton value="Editar" icon="pi pi-pencil" class="ui-button-primary"/>
-                            <p:commandButton value="Eliminar" icon="pi pi-trash" class="ui-button-danger"/>
+
+                        <p:column headerText="Acciones">
+                            <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="button-primary"
+                                             actionListener="#{webTablaPedidosController.prepararEdicion(pedido)}"
+                                             update=":formulario-modal:ventana-pedido"/>
+                            <p:commandButton value="Eliminar" icon="pi pi-trash" styleClass="button-danger"
+                                             actionListener="#{webTablaPedidosController.eliminarPedido}"
+                                             update=":formulario-pedidos:tabla-pedidos"/>
                         </p:column>
                     </p:dataTable>
                 </div>
             </h:form>
 
             <h:form id="formulario-modal">
-                <p:dialog header="Detalle del pedido" showEffect="fade"
+                <p:dialog header="Detalles del Pedido" showEffect="fade"
                           modal="true" widgetVar="ventanaModalPedido" responsive="true">
                     <p:outputPanel id="ventana-pedido" class="ui-fluid">
                         <div class="field">
-                            <p:outputLabel for="cliente">CLIENTE</p:outputLabel>
-                            <p:inputText id="cliente" required="true"/>
+                            <p:outputLabel for="cliente">Cliente</p:outputLabel>
+                            <p:inputText id="cliente" value="#{webTablaPedidosController.editStudentId}" required="true"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="fecha">FECHA</p:outputLabel>
-                            <p:inputText id="fecha"/>
+                            <p:outputLabel for="fecha">Fecha</p:outputLabel>
+                            <p:inputText id="fecha" value="#{webTablaPedidosController.editOrderDate}" required="true"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="total">TOTAL</p:outputLabel>
-                            <p:inputText id="total"/>
+                            <p:outputLabel for="total">Total</p:outputLabel>
+                            <p:inputText id="total" value="#{webTablaPedidosController.editTotal}" required="true"/>
                         </div>
                         <div class="field">
-                            <p:outputLabel for="estado">ESTADO</p:outputLabel>
-                            <p:inputText id="estado"/>
+                            <p:outputLabel for="estado">Estado</p:outputLabel>
+                            <p:inputText id="estado" value="#{webTablaPedidosController.editState}" required="true"/>
                         </div>
                     </p:outputPanel>
                     <f:facet name="footer">
-                        <p:commandButton value="Guardar" icon="pi pi-check" class="ui-button-primary"/>
-                        <p:commandButton value="Cancelar" icon="pi pi-times" class="ui-button-primary"
-                                         onclick="PF('ventanaModalPedido').hide" type="button"/>
+                        <p:commandButton value="Guardar" icon="pi pi-check" styleClass="button-primary"
+                                         actionListener="#{webTablaPedidosController.guardarPedido}"
+                                         update=":formulario-pedidos:tabla-pedidos"/>
+                        <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="button-primary"
+                                         onclick="PF('ventanaModalPedido').hide()" type="button"/>
                     </f:facet>
                 </p:dialog>
             </h:form>
