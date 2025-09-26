@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,6 @@ public class WebTablaPedidosController implements Serializable {
     private PedidoDto pedidoSeleccionado;
     private static final Logger logger = LoggerFactory.getLogger(WebTablaPedidosController.class);
 
-    // Variables para el formulario
     private Long editStudentId;
     private String editState;
     private String editTotal;
