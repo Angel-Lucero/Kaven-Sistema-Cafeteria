@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Kinavana 2024401</title>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+    </h:head>
+    <h:body>
+        <p>Hola mundo, estoy en server faces, desde spring boot</p>
+        <div class="card">
+            <h:form id="formulario-entregas">
+                <!-- Mensaje emergente -->
+                <p:growl id="mensaje_emergente" showDetails="true"/>
+
+                <!-- Barra de menús -->
+                <div class="card">
+                    <p:menubar>
+                        <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
+                                    update=":formulario-entregas:tabla-entregas"
+                                    actionListener="#{indexController.cargarDatos}"/>
+
+                        <p:menuitem value="Nueva Entrega" icon="pi pi-fw pi-plus"
+                                    actionListener="#{indexController.agregarEntrega}"
+                                    update=":formulario-modal:ventana-entrega"
+                                    oncomplete="PF('ventanaModalEntrega').show()"/>
+                    </p:menubar>
+                </div>
+
+                <!-- Tabla de datos -->
+                <div class="card">
+                    <p:dataTable value="#{indexController.entregas}" var="entrega" id="tabla-entregas" widgetVar="tablaEntregas">
+                        <!-- Encabezado -->
+                        <f:facet name="header">
+                            <div class="flex justify-content-center flex-wrap card-container yellow-container">
+                                <div class="flex aling-items-center justify-content-center
+                                            w-20rem h-4rem bg-yellow-500 font-bold text-gray-900 border-round m-2">
+                                    <h3>Kinavana, entregas</h3>
+                                </div>
+                            </div>
+                        </f:facet>
+
+                        <!-- Columnas -->
+                        <p:column headerText="ID">
+                            <h:outputText value="#{entrega.codigoentrega}"/>
+                        </p:column>
+                        <p:column headerText="NOMBRE">
+                            <h:outputText value="#{entrega.nombre}"/>
+                        </p:column>
+                        <p:column headerText="DESCRIPCIÓN">
+                            <h:outputText value="#{entrega.descripcion}"/>
+                        </p:column>
+                        <p:column headerText="PRECIO">
+                            <h:outputText value="#{entrega.precio}"/>
+                        </p:column>
+                        <p:column headerText="CANTIDAD">
+                            <h:outputText value="#{entrega.cantidad}"/>
+                        </p:column>
+                        <p:column headerText="OPCIÓN">
+                            <p:commandButton value="Editar" icon="pi pi-pencil" class="ui-button-primary"/>
+                            <p:commandButton value="Eliminar" icon="pi pi-trash" class="ui-button-danger"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+
+            <!-- Modal -->
+            <h:form id="formulario-modal">
+                <p:dialog header="Detalle de la entrega" showEffect="fade"
+                          modal="true" widgetVar="ventanaModalEntrega" responsive="true">
+                    <p:outputPanel id="ventana-entrega" class="ui-fluid">
+                        <div class="field">
+                            <p:outputLabel for="nombre">NOMBRE</p:outputLabel>
+                            <p:inputText id="nombre" required="true"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="descripcion">DESCRIPCIÓN</p:outputLabel>
+                            <p:inputText id="descripcion"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="precio">PRECIO</p:outputLabel>
+                            <p:inputText id="precio"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="cantidad">CANTIDAD</p:outputLabel>
+                            <p:inputText id="cantidad"/>
+                        </div>
+                    </p:outputPanel>
+                    <f:facet name="footer">
+                        <p:commandButton value="Guardar" icon="pi pi-check" class="ui-button-primary"/>
+                        <p:commandButton value="Cancelar" icon="pi pi-times" class="ui-button-primary"
+                                         onclick="PF('ventanaModalEntrega').hide()" type="button"/>
+                    </f:facet>
+                </p:dialog>
+            </h:form>
+
+        </div>
+    </h:body>
+</h:html>
