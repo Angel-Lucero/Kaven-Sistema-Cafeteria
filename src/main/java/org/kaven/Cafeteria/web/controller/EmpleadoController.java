@@ -91,7 +91,7 @@ public class EmpleadoController {
         return ResponseEntity.ok(this.empleadoService.modificarEmpleado(codigo, modEmpleadoDto));
     }
 
-    @DeleteMapping("{codigo")
+    @DeleteMapping("{codigo}")
     @Operation(
             summary = "Eliminar un empleado",
             description = "Elimina un empleado del sistema",
