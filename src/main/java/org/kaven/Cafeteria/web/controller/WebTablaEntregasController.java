@@ -36,28 +36,23 @@ public class WebTablaEntregasController implements Serializable {
     private String editDeliveryStatus;
     private LocalDate editDeliveryDate;
 
-    // Constructor con inyección de dependencia
     public WebTablaEntregasController(EntregaService entregaService) {
         this.entregaService = entregaService;
     }
 
-    // Constructor sin parámetros para Spring
     public WebTablaEntregasController() {
     }
 
-    // Inicialización después de la creación del bean
     @PostConstruct
     public void init() {
         cargarDatos();
     }
 
-    // Cargar todos los datos de las entregas
     public void cargarDatos() {
         this.entregas = entregaService.obtenerTodoEntregas();
         entregas.forEach(entrega -> logger.info(entrega.toString()));
     }
 
-    // Actualizar la lista de entregas
     public void refresh() {
         try {
             this.entregas = new ArrayList<>(entregaService.obtenerTodoEntregas());
@@ -66,7 +61,6 @@ public class WebTablaEntregasController implements Serializable {
         }
     }
 
-    // Agregar una nueva entrega
     public void agregarEntrega() {
         this.entregaSeleccionada = null; // Nueva entrega
         this.editOrderId = null;
@@ -76,7 +70,6 @@ public class WebTablaEntregasController implements Serializable {
         PrimeFaces.current().executeScript("PF('ventanaModalEntrega').show()");
     }
 
-    // Preparar la edición de una entrega
     public void prepararEdicion(EntregaDto entrega) {
         this.entregaSeleccionada = entrega;
         if (entrega != null) {
@@ -88,7 +81,6 @@ public class WebTablaEntregasController implements Serializable {
         PrimeFaces.current().executeScript("PF('ventanaModalEntrega').show()");
     }
 
-    // Guardar una entrega (nueva o modificada)
     public void guardarEntrega() {
         try {
             EntregaDto dto;
@@ -116,7 +108,6 @@ public class WebTablaEntregasController implements Serializable {
         }
     }
 
-    // Eliminar una entrega
     public void eliminarEntrega() {
         if (this.entregaSeleccionada == null || this.entregaSeleccionada.id() == null) return;
         try {
@@ -131,13 +122,11 @@ public class WebTablaEntregasController implements Serializable {
         }
     }
 
-    // Cancelar la operación de agregar o editar
     public void cancelarEntrega() {
         this.entregaSeleccionada = null;
         PrimeFaces.current().executeScript("PF('ventanaModalEntrega').hide()");
     }
 
-    // Eliminar entrega de forma legada
     public void delete(EntregaDto entrega) { // Legacy
         if (entrega == null || entrega.id() == null) return;
         try {
