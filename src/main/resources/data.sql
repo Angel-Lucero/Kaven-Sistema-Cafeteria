@@ -1,47 +1,16 @@
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('juan.perez@correo.com', 'clave123');
+-- Insertar usuarios administradores
+INSERT IGNORE INTO usuarios (id, correo, contrasena, tipo_usuario) VALUES
+(1, 'admin@cafeteria.edu', 'Admin123!', 'ADMIN'),
+(2, 'supervisor@cafeteria.edu', 'Super2025!', 'ADMIN'),
+(3, 'director@cafeteria.edu', 'Director25!', 'ADMIN');
 
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('maria.gomez@correo.com', 'maria2025');
+-- Insertar usuarios estudiantes
+INSERT IGNORE INTO usuarios (id, correo, contrasena, tipo_usuario) VALUES
+(4, 'juan.perez@estudiante.edu', 'JuanP2025!', 'STUDENT'),
+(5, 'maria.gomez@estudiante.edu', 'MariaG25!', 'STUDENT');
+-- ... resto de usuarios
 
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('carlos.lopez@correo.com', 'passCarlos');
 
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('ana.morales@correo.com', 'Ana2025!');
-
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('luis.castillo@correo.com', 'Castillo01');
-
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('sofia.mendez@correo.com', 'SofiM2025');
-
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('ricardo.ramirez@correo.com', 'ricardo#1');
-
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('paola.torres@correo.com', 'Torres2025');
-
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('andres.reyes@correo.com', 'AndresR!');
-
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('fernanda.alvarez@correo.com', 'Fer2025$');
-
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('jose.garcia@correo.com', 'JosePass');
-
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('claudia.sanchez@correo.com', 'Clau2025');
-
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('victor.hernandez@correo.com', 'VictorH#');
-
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('alejandra.ruiz@correo.com', 'AleRuiz01');
-
-INSERT IGNORE INTO usuarios (correo, contrasena)
-VALUES ('martin.cabrera@correo.com', 'Martin25');
 
 INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
 VALUES (1, 'Juan Pérez', 'juan.perez@correo.com', 'Zona 1, Ciudad de Guatemala', '5023456789');

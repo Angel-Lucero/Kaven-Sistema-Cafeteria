@@ -11,6 +11,7 @@ import org.kaven.Cafeteria.web.mapper.UsuarioMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UsuarioEntityRepository implements UsuarioRepository {
@@ -29,14 +30,24 @@ public class UsuarioEntityRepository implements UsuarioRepository {
 
     @Override
     public UsuarioDto obtenerUsuarioPorCodigo(String codigo) {
-        UsuarioEntity usuarioEntity = this.crudUsuario.findById(Long.valueOf(codigo))
-                .orElseThrow(() -> new UsuarioNoExisteException(codigo));
+        if (codigo != null && codigo.matches("\\d+")) {
+            Optional<UsuarioEntity> usuarioPorId = this.crudUsuario.findById(Long.valueOf(codigo));
+            if (usuarioPorId.isPresent()) {
+                return this.usuarioMapper.toDto(usuarioPorId.get());
+            }
+        }
+
+        UsuarioEntity usuarioEntity = this.crudUsuario.findFirstByCorreo(codigo);
+        if (usuarioEntity == null) {
+            throw new UsuarioNoExisteException(codigo);
+        }
         return this.usuarioMapper.toDto(usuarioEntity);
     }
 
     @Override
     public UsuarioDto guardarUsuario(UsuarioDto usuarioDto) {
-        if (this.crudUsuario.existsById(Long.valueOf(usuarioDto.mail()))) {
+        UsuarioEntity usuarioExistente = this.crudUsuario.findFirstByCorreo(usuarioDto.mail());
+        if (usuarioExistente != null) {
             throw new UsuarioYaExisteException(usuarioDto.mail());
         }
 
@@ -47,8 +58,17 @@ public class UsuarioEntityRepository implements UsuarioRepository {
 
     @Override
     public UsuarioDto modificarUsuario(String codigo, ModUsuarioDto usuarioDto) {
-        UsuarioEntity usuarioEntity = this.crudUsuario.findById(Long.valueOf(codigo))
-                .orElseThrow(() -> new UsuarioNoExisteException(codigo));
+        UsuarioEntity usuarioEntity;
+
+        if (codigo != null && codigo.matches("\\d+")) {
+            usuarioEntity = this.crudUsuario.findById(Long.valueOf(codigo))
+                    .orElseThrow(() -> new UsuarioNoExisteException(codigo));
+        } else {
+            usuarioEntity = this.crudUsuario.findFirstByCorreo(codigo);
+            if (usuarioEntity == null) {
+                throw new UsuarioNoExisteException(codigo);
+            }
+        }
 
         usuarioEntity.setCorreo(usuarioDto.mail());
         usuarioEntity.setContrasena(usuarioDto.password());
@@ -59,9 +79,19 @@ public class UsuarioEntityRepository implements UsuarioRepository {
 
     @Override
     public void eliminarUsuario(String codigo) {
-        if (!this.crudUsuario.existsById(Long.valueOf(codigo))) {
-            throw new UsuarioNoExisteException(codigo);
+        UsuarioEntity usuarioEntity;
+
+        if (codigo != null && codigo.matches("\\d+")) {
+            if (!this.crudUsuario.existsById(Long.valueOf(codigo))) {
+                throw new UsuarioNoExisteException(codigo);
+            }
+            this.crudUsuario.deleteById(Long.valueOf(codigo));
+        } else {
+            usuarioEntity = this.crudUsuario.findFirstByCorreo(codigo);
+            if (usuarioEntity == null) {
+                throw new UsuarioNoExisteException(codigo);
+            }
+            this.crudUsuario.delete(usuarioEntity);
         }
-        this.crudUsuario.deleteById(Long.valueOf(codigo));
     }
 }
