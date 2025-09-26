@@ -21,7 +21,7 @@ public class UserMapper {
     public String userTypeToString(UserType type) {
         if (type == null) return null;
         return switch (type) {
-            case ADMIN -> "ADMINiSTRACION";
+            case ADMIN -> "ADMINISTRACION";
             case STUDENT -> "ESTUDIANTE";
         };
     }
