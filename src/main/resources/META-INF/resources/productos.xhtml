@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Comida Escolar - Catálogo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family:'Inter', sans-serif; }
+        h1,h2,h3 { font-family:'Playfair Display', serif; }
+        .card { background:white; border-radius:0.5rem; overflow:hidden; box-shadow:0 4px 6px rgba(0,0,0,0.1); transition:transform 0.3s; }
+        .card:hover { transform:translateY(-5px); }
+        .card-img { width:100%; height:200px; object-fit:cover; }
+        .btn-action { width:100%; border-radius:9999px; font-weight:600; }
+    </style>
+</h:head>
+
+<h:body class="bg-gray-100 text-gray-800">
+
+    <!-- Sección Hero -->
+    <section class="relative h-80 flex items-center justify-center text-white" style="background-image:url('https://placehold.co/1920x500/FF6B6B/FFE66D?text=Comida+Escolar'); background-size:cover; background-position:center;">
+        <div class="overlay absolute inset-0" style="background-color:rgba(0,0,0,0.4)"></div>
+        <div class="z-10 text-center space-y-4">
+            <h1 class="text-4xl sm:text-5xl font-bold">Catálogo de Comida Escolar</h1>
+            <p class="text-xl sm:text-2xl font-light italic">Snacks y Bebidas para Estudiantes</p>
+        </div>
+    </section>
+
+    <!-- Catálogo de productos -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Nuestros Productos</h2>
+
+            <h:form id="productForm">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Producto 1: Sandwich -->
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/FFB6B6/FFF5EE?text=Sandwich" alt="Sandwich" class="card-img" />
+                        <div class="p-4 text-left">
+                            <h3 class="text-2xl font-bold">Sandwich</h3>
+                            <p class="text-lg font-semibold text-green-600 my-2">$2.50</p>
+                            <p:commandButton value="Detalles" styleClass="ui-button-secondary btn-action" actionListener="#{productBean.selectProduct}" update=":productDetailsDialog">
+                                <f:setPropertyActionListener value="Sandwich" target="#{productBean.productName}" />
+                            </p:commandButton>
+                            <p:commandButton value="Agregar" styleClass="ui-button-primary btn-action mt-2" actionListener="#{cartBean.addProduct}">
+                                <f:setPropertyActionListener value="Sandwich" target="#{productBean.productName}" />
+                            </p:commandButton>
+                        </div>
+                    </div>
+
+                    <!-- Producto 2: Jugo -->
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/6BCB77/FFF5EE?text=Jugo+Natural" alt="Jugo" class="card-img" />
+                        <div class="p-4 text-left">
+                            <h3 class="text-2xl font-bold">Jugo Natural</h3>
+                            <p class="text-lg font-semibold text-green-600 my-2">$1.50</p>
+                            <p:commandButton value="Detalles" styleClass="ui-button-secondary btn-action" actionListener="#{productBean.selectProduct}" update=":productDetailsDialog">
+                                <f:setPropertyActionListener value="Jugo Natural" target="#{productBean.productName}" />
+                            </p:commandButton>
+                            <p:commandButton value="Agregar" styleClass="ui-button-primary btn-action mt-2" actionListener="#{cartBean.addProduct}">
+                                <f:setPropertyActionListener value="Jugo Natural" target="#{productBean.productName}" />
+                            </p:commandButton>
+                        </div>
+                    </div>
+
+                    <!-- Producto 3: Fruta -->
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/FFD93D/FFF5EE?text=Fruta+Fresca" alt="Fruta" class="card-img" />
+                        <div class="p-4 text-left">
+                            <h3 class="text-2xl font-bold">Fruta Fresca</h3>
+                            <p class="text-lg font-semibold text-green-600 my-2">$1.00</p>
+                            <p:commandButton value="Detalles" styleClass="ui-button-secondary btn-action" actionListener="#{productBean.selectProduct}" update=":productDetailsDialog">
+                                <f:setPropertyActionListener value="Fruta Fresca" target="#{productBean.productName}" />
+                            </p:commandButton>
+                            <p:commandButton value="Agregar" styleClass="ui-button-primary btn-action mt-2" actionListener="#{cartBean.addProduct}">
+                                <f:setPropertyActionListener value="Fruta Fresca" target="#{productBean.productName}" />
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </section>
+
+    <!-- Modal de detalles del producto -->
+    <p:dialog header="Detalles del Producto" widgetVar="productDetailsDialog" modal="true" resizable="false">
+        <h:panelGrid columns="1" cellpadding="5">
+            <h:outputText value="Nombre: #{productBean.productName}" styleClass="font-bold text-lg mb-2" />
+            <h:outputText value="Descripción: #{productBean.productDescription}" styleClass="text-gray-600 mb-2" />
+            <h:outputText value="Precio: $#{productBean.productPrice}" styleClass="text-green-600 font-semibold" />
+        </h:panelGrid>
+        <f:facet name="footer">
+            <p:commandButton value="Cerrar" onclick="PF('productDetailsDialog').hide();" type="button" />
+        </f:facet>
+    </p:dialog>
+
+</h:body>
+</html>
