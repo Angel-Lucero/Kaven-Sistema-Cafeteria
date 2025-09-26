@@ -1,11 +1,9 @@
 package org.kaven.Cafeteria.dominio.service;
 
-
 import org.kaven.Cafeteria.dominio.dto.ModPedidoDto;
 import org.kaven.Cafeteria.dominio.dto.PedidoDto;
 import org.kaven.Cafeteria.dominio.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -24,8 +22,8 @@ public class PedidoService {
         return this.pedidoRepository.obtenerPedidoPorCodigo(codigo);
     }
 
-    public PedidoDto guardarPedido(PedidoDto empleadoDto) {
-        return this.pedidoRepository.guardarPedido(empleadoDto);
+    public PedidoDto guardarPedido(PedidoDto pedidoDto) {
+        return this.pedidoRepository.guardarPedido(pedidoDto);
     }
 
     public PedidoDto modificarPedido(Long codigo, ModPedidoDto modPedidoDto) {
@@ -35,5 +33,4 @@ public class PedidoService {
     public void eliminarPedido(Long codigo) {
         this.pedidoRepository.eliminarPedido(codigo);
     }
-
 }

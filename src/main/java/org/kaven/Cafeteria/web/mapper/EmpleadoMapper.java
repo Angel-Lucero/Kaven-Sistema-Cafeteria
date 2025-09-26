@@ -10,17 +10,22 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = EmployeeMapper.class)
 public interface EmpleadoMapper {
-
-    EmpleadoDto toDto(EmpleadoEntity entity);
-    List<EmpleadoDto> toDto(Iterable<EmpleadoEntity> entities);
-
-    @InheritInverseConfiguration
-    EmpleadoEntity toEntity(EmpleadoDto dto);
 
     @Mapping(source = "nombre", target = "name")
     @Mapping(source = "rol", target = "role")
     @Mapping(source = "turno", target = "shift")
+    EmpleadoDto toDto(EmpleadoEntity entity);
+
+    List<EmpleadoDto> toDto(Iterable<EmpleadoEntity> entities);
+
+    @InheritInverseConfiguration
+    @Mapping(target = "id", ignore = true)
+    EmpleadoEntity toEntity(EmpleadoDto dto);
+
+    @Mapping(source = "name", target = "nombre")
+    @Mapping(source = "role", target = "rol")
+    @Mapping(source = "shift", target = "turno")
     void modificarEntityFromDto(ModEmpleadoDto dto, @MappingTarget EmpleadoEntity entity);
 }

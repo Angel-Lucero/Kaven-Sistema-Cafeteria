@@ -13,7 +13,7 @@ public record ModProductoDto(
 
         @NotBlank(message = "El tipo de producto es obligatorio")
         @Size(max = 50, message = "El tipo no puede superar los 50 caracteres")
-        String guy,
+        String type,
 
         @NotNull(message = "El precio es obligatorio")
         @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
