@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Kinavana 2024401</title>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+    </h:head>
+    <h:body>
+        <p>Hola mundo, estoy en server faces, desde spring boot</p>
+        <div class="card">
+            <h:form id="formulario-productos">
+                <!-- Mensaje emergente -->
+                <p:growl id="mensaje_emergente" showDetails="true"/>
+
+                <!-- Barra de menus -->
+                <div class="card">
+                    <p:menubar>
+                        <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
+                                    update=":formulario-productos:tabla-productos"
+                                    actionListener="#{indexController.cargarDatos}"/>
+
+                        <p:menuitem value="Nuevo Producto" icon="pi pi-fw pi-plus"
+                                    actionListener="#{indexController.agregarProducto}"
+                                    update=":formulario-modal:ventana-producto"
+                                    oncomplete="PF('ventanaModalProducto').show()"/>
+                    </p:menubar>
+                </div>
+
+                <!-- Tabla de datos -->
+                <div class="card">
+                    <p:dataTable values="#{indexController.productos}" var="producto" id="tabla-productos" widgetVar="tablaProductos">
+                        <!-- Encabezado -->
+                        <f:facet name="header">
+                            <div class="flex justify-content-center flex-wrap card-container yellow-container">
+                                <div class="flex aling-items-center justify-content-center
+                                            w-20rem h-4rem bg-yellow-500 font-bold text-gray-900 border-round m-2">
+                                    <h3>Kinvana, productos</h3>
+                                </div>
+                            </div>
+                        </f:facet>
+
+                        <!-- Columnas -->
+                        <p:column headerText="ID">
+                            <h:outputText value="#{producto.codigoproducto}"/>
+                        </p:column>
+                        <p:column headerText="NOMBRE">
+                            <h:outputText value="#{producto.nombre}"/>
+                        </p:column>
+                        <p:column headerText="DESCRIPCIÓN">
+                            <h:outputText value="#{producto.descripcion}"/>
+                        </p:column>
+                        <p:column headerText="PRECIO">
+                            <h:outputText value="#{producto.precio}"/>
+                        </p:column>
+                        <p:column headerText="CANTIDAD">
+                            <h:outputText value="#{producto.cantidad}"/>
+                        </p:column>
+                        <p:column headerText="OPCIÓN">
+                            <p:commandButton value="Editar" icon="pi pi-pencil" class="ui-button-primary"/>
+                            <p:commandButton value="Eliminar" icon="pi pi-trash" class="ui-button-danger"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+
+            <h:form id="formulario-modal">
+                <p:dialog header="Detalle del producto" showEffect="fade"
+                          modal="true" widgetVar="ventanaModalProducto" responsive="true">
+                    <p:outputPanel id="ventana-producto" class="ui-fluid">
+                        <div class="field">
+                            <p:outputLabel for="nombre">NOMBRE</p:outputLabel>
+                            <p:inputText id="nombre" required="true"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="descripcion">DESCRIPCIÓN</p:outputLabel>
+                            <p:inputText id="descripcion"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="precio">PRECIO</p:outputLabel>
+                            <p:inputText id="precio"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="cantidad">CANTIDAD</p:outputLabel>
+                            <p:inputText id="cantidad"/>
+                        </div>
+                    </p:outputPanel>
+                    <f:facet name="footer">
+                        <p:commandButton value="Guardar" icon="pi pi-check" class="ui-button-primary"/>
+                        <p:commandButton value="Cancelar" icon="pi pi-times" class="ui-button-primary"
+                                         onclick="PF('ventanaModalProducto').hide" type="button"/>
+                    </f:facet>
+                </p:dialog>
+            </h:form>
+
+        </div>
+    </h:body>
+</h:html>
