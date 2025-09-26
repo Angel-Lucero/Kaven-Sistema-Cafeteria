@@ -4,6 +4,7 @@ public record UsuarioDto (
         Long id,
         String mail,
         String password,
-        Long studentid //
+        String usertype,
+        Long studentid
 ) {
 }

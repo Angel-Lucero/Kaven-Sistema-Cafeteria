@@ -15,6 +15,7 @@ public interface UsuarioMapper {
 
     @Mapping(source = "correo", target = "mail")
     @Mapping(source = "contrasena", target = "password")
+    @Mapping(source = "rol", target = "usertype")
     @Mapping(source = "estudiante.id", target = "studentid")
     UsuarioDto toDto(UsuarioEntity entity);
 
@@ -26,5 +27,6 @@ public interface UsuarioMapper {
 
     @Mapping(source = "mail", target = "correo")
     @Mapping(source = "password", target = "contrasena")
+    @Mapping(source = "usertype", target = "rol")
     void modificarEntityFromDto(ModUsuarioDto dto, @MappingTarget UsuarioEntity entity);
 }
