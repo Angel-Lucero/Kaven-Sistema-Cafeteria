@@ -3,6 +3,9 @@ package org.kaven.Cafeteria.dominio.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.aspectj.bridge.IMessage;
+import org.aspectj.weaver.ast.Not;
+import org.springframework.context.annotation.Role;
 
 public record ModUsuarioDto(
         @NotBlank(message = "El correo es obligatorio")
@@ -11,6 +14,9 @@ public record ModUsuarioDto(
 
         @NotBlank(message = "La contraseña es obligatoria")
         @Size(min = 6, max = 255, message = "La contraseña debe tener entre 6 y 255 caracteres")
-        String password
+        String password,
+
+        @NotBlank(message = "El rol es obligatorio")
+        String usertype
 ) {
 }
