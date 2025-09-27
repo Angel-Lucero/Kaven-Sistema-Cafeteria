@@ -15,6 +15,7 @@ public interface UsuarioMapper {
 
     @Mapping(source = "correo", target = "mail")
     @Mapping(source = "contrasena", target = "password")
+    @Mapping(source = "tipoUsuario", target = "usertype")
     @Mapping(source = "estudiante.id", target = "studentid")
     UsuarioDto toDto(UsuarioEntity entity);
 
@@ -22,6 +23,7 @@ public interface UsuarioMapper {
 
     @InheritInverseConfiguration
     @Mapping(target = "id", ignore = true)
+    @Mapping(source = "usertype", target = "tipoUsuario")
     UsuarioEntity toEntity(UsuarioDto dto);
 
     @Mapping(source = "mail", target = "correo")

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Registrarse</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            background-color: #f5f5f5;
+            border-radius: 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            width: 50rem;
+        }
+
+        h1 {
+            color: #1E3A8A;
+        }
+
+        .ui-inputfield {
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+        }
+
+        .ui-button-success {
+            background: #1E3A8A !important;
+            border: none !important;
+            color: white !important;
+        }
+
+        .ui-button-success:hover {
+            background: #2563EB !important;
+        }
+
+        .ui-button-outlined {
+            border: 2px solid #6b7280 !important;
+            color: #374151 !important;
+            border-radius: 0.5rem;
+        }
+
+        .ui-button-outlined:hover {
+            background: #e5e7eb !important;
+        }
+
+        .text-color-secondary {
+            color: #6b7280;
+        }
+    </style>
+</h:head>
+<h:body>
+    <div class="flex justify-content-center align-items-center h-screen">
+        <div class="card p-5">
+            <h:form id="form-register">
+                <p:growl id="growlMessages" showDetail="true"/>
+                <div class="flex justify-content-center mb-5">
+                    <h1 class="text-5xl font-bold">Registrarse</h1>
+                </div>
+                <div class="grid mb-4">
+                    <div class="col-6">
+                        <p:outputLabel for="nombre" value="Nombre:" styleClass="block font-semibold mb-2"/>
+                        <p:inputText id="nombre"
+                                     value="#{webRegistrarseController.nombre}"
+                                     placeholder="Ingresa tu nombre"
+                                     styleClass="w-full p-3"/>
+                    </div>
+                    <div class="col-6">
+                        <p:outputLabel for="apellido" value="Apellido:" styleClass="block font-semibold mb-2"/>
+                        <p:inputText id="apellido"
+                                     value="#{webRegistrarseController.apellido}"
+                                     placeholder="Ingresa tu apellido"
+                                     styleClass="w-full p-3"/>
+                    </div>
+                </div>
+                <div class="grid mb-4">
+                    <div class="col-6">
+                        <p:outputLabel for="telefono" value="Teléfono:" styleClass="block font-semibold mb-2"/>
+                        <p:inputMask id="telefono"
+                                     value="#{webRegistrarseController.telefono}"
+                                     mask="(999) 999-9999"
+                                     placeholder="(502) 123-4567"
+                                     styleClass="w-full p-3"/>
+                    </div>
+                    <div class="col-6">
+                        <p:outputLabel for="genero" value="Género:" styleClass="block font-semibold mb-2"/>
+                        <p:selectOneMenu id="genero"
+                                         value="#{webRegistrarseController.genero}"
+                                         styleClass="w-full p-3">
+                            <f:selectItem itemLabel="Seleccione..." itemValue=""/>
+                            <f:selectItem itemLabel="Masculino" itemValue="M"/>
+                            <f:selectItem itemLabel="Femenino" itemValue="F"/>
+                            <f:selectItem itemLabel="Otro" itemValue="O"/>
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+                <div class="grid mb-4">
+                    <div class="col-6">
+                        <p:outputLabel for="fechaNacimiento" value="Fecha de Nacimiento:" styleClass="block font-semibold mb-2"/>
+                        <p:datePicker id="fechaNacimiento"
+                                      value="#{webRegistrarseController.fechaNacimiento}"
+                                      showIcon="true"
+                                      placeholder="Selecciona tu fecha"
+                                      styleClass="w-full p-3"/>
+                    </div>
+                    <div class="col-6">
+                        <p:outputLabel for="correo" value="Correo electrónico:" styleClass="block font-semibold mb-2"/>
+                        <p:inputText id="correo"
+                                     value="#{webRegistrarseController.correo}"
+                                     placeholder="ejemplo@correo.com"
+                                     required="true" requiredMessage="El correo es obligatorio"
+                                     styleClass="w-full p-3"/>
+                    </div>
+                </div>
+                <div class="field mb-5">
+                    <p:outputLabel for="contrasena" value="Contraseña:" styleClass="block font-semibold mb-2"/>
+                    <p:password id="contrasena"
+                                value="#{webRegistrarseController.contrasena}"
+                                placeholder="Crea una contraseña"
+                                feedback="true"
+                                required="true" requiredMessage="La contraseña es obligatoria"
+                                styleClass="w-full p-3"/>
+                </div>
+                <div class="flex justify-content-center mb-4">
+                    <p:commandButton value="Registrar"
+                                     icon="pi pi-user-plus"
+                                     actionListener="#{webRegistrarseController.guardarUsuario}"
+                                     update="growlMessages"
+                                     styleClass="ui-button-success w-full p-3 font-semibold"/>
+                </div>
+                <div class="flex justify-content-center align-items-center gap-2">
+                    <span class="text-color-secondary">¿Ya tienes cuenta?</span>
+                    <p:button value="Inicia Sesión"
+                              outcome="/Index.xhtml"
+                              styleClass="ui-button-outlined p-2"/>
+                </div>
+
+            </h:form>
+        </div>
+    </div>
+</h:body>
+</html>

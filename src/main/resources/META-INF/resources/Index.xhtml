@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            background-color: #f5f5f5;
+            border-radius: 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #1E3A8A;
+        }
+
+        .ui-inputfield {
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+        }
+
+        .ui-button-success {
+            background: #1E3A8A !important;
+            border: none !important;
+            color: white !important;
+        }
+
+        .ui-button-success:hover {
+            background: #2563EB !important;
+        }
+
+        .ui-button-outlined {
+            border: 2px solid #6b7280 !important;
+            color: #374151 !important;
+            border-radius: 0.5rem;
+        }
+
+        .ui-button-outlined:hover {
+            background: #e5e7eb !important;
+        }
+
+        .text-color-secondary {
+            color: #6b7280;
+        }
+    </style>
+</h:head>
+<h:body>
+    <div class="flex justify-content-center align-items-center h-screen">
+        <div class="card w-30rem p-4">
+            <h:form id="form-login">
+                <p:growl id="growlMessages" showDetail="true" life="3000"/>
+                <div class="flex justify-content-center mb-5">
+                    <h1 class="text-5xl font-bold">Inicio Sesión</h1>
+                </div>
+                <div class="field mb-4">
+                    <p:outputLabel for="usuario" value="Correo electrónico:" styleClass="block font-semibold mb-2"/>
+                    <p:inputText id="usuario"
+                                 value="#{webIndexController.usuario}"
+                                 placeholder="Coloca tu @gmail aca pues rey"
+                                 required="true" requiredMessage="El correo es requerido"
+                                 styleClass="w-full p-3"/>
+                </div>
+                <div class="field mb-5">
+                    <p:outputLabel for="password" value="Contraseña:" styleClass="block font-semibold mb-2"/>
+                    <p:password id="password"
+                                value="#{webIndexController.password}"
+                                placeholder="Ingresa tu contraseña aca mi rey"
+                                feedback="false"
+                                required="true" requiredMessage="La contraseña es requerida"
+                                styleClass="w-full p-3"/>
+                </div>
+                <div class="flex justify-content-center mb-4">
+                    <p:commandButton value="Iniciar Sesión"
+                                     icon="pi pi-sign-in"
+                                     action="#{webIndexController.iniciarSesion}"
+                                     update="growlMessages"
+                                     styleClass="ui-button-success w-full p-3 font-semibold"/>
+                </div>
+                <div class="flex justify-content-center align-items-center gap-2">
+                    <span class="text-color-secondary">¿No tienes cuenta?</span>
+                    <p:button value="Regístrate"
+                              outcome="/Registrarse.xhtml"
+                              styleClass="ui-button-outlined p-2"/>
+                </div>
+
+            </h:form>
+        </div>
+    </div>
+</h:body>
+</html>
