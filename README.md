@@ -8,6 +8,9 @@ Maven: 3.5.5
 MySQl: 8.0 CE
 Spring Boot: para el desarrollo de la API
 
+Lin del video
+https://youtu.be/51n20Sa_4fw
+
 Funcionalidades
 
 El sistema proporciona las siguientes características:
