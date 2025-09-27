@@ -6,6 +6,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import lombok.Data;
 import org.kaven.Cafeteria.dominio.dto.EntregaDto;
+import org.kaven.Cafeteria.dominio.dto.ModEntregaDto;
 import org.kaven.Cafeteria.dominio.service.EntregaService;
 import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
@@ -36,11 +37,8 @@ public class WebTablaEntregasController implements Serializable {
     private String editDeliveryStatus;
     private LocalDate editDeliveryDate;
 
-    public WebTablaEntregasController(EntregaService entregaService) {
-        this.entregaService = entregaService;
-    }
-
-    public WebTablaEntregasController() {
+    public List<String> getEstadosEntrega() {
+        return List.of("PENDING", "DELIVERED", "CANCELLED");
     }
 
     @PostConstruct
@@ -49,62 +47,60 @@ public class WebTablaEntregasController implements Serializable {
     }
 
     public void cargarDatos() {
-        this.entregas = entregaService.obtenerTodoEntregas();
-        entregas.forEach(entrega -> logger.info(entrega.toString()));
-    }
-
-    public void refresh() {
         try {
-            this.entregas = new ArrayList<>(entregaService.obtenerTodoEntregas());
+            this.entregas = this.entregaService.obtenerTodoEntregas();
         } catch (Exception e) {
+            logger.error("Error al cargar las entregas", e);
             this.entregas = new ArrayList<>();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudieron cargar las entregas."));
         }
     }
 
     public void agregarEntrega() {
-        this.entregaSeleccionada = null; // Nueva entrega
+        this.entregaSeleccionada = null;
         this.editOrderId = null;
         this.editEmployeeId = null;
-        this.editDeliveryStatus = "";
-        this.editDeliveryDate = null;
+        this.editDeliveryStatus = "PENDING";
+        this.editDeliveryDate = LocalDate.now();
         PrimeFaces.current().executeScript("PF('ventanaModalEntrega').show()");
     }
 
     public void prepararEdicion(EntregaDto entrega) {
         this.entregaSeleccionada = entrega;
         if (entrega != null) {
-            this.editOrderId = entrega.OrderId();
-            this.editEmployeeId = entrega.EmployeeId();
+            this.editOrderId = entrega.orderId();
+            this.editEmployeeId = entrega.employeeId();
             this.editDeliveryStatus = entrega.deliveryStatus();
-            this.editDeliveryDate = entrega.devliveryDate();
+            this.editDeliveryDate = entrega.deliveryDate();
         }
         PrimeFaces.current().executeScript("PF('ventanaModalEntrega').show()");
     }
 
     public void guardarEntrega() {
         try {
-            EntregaDto dto;
+            EntregaDto entregaGuardada;
+            String mensajeExito;
+
             if (this.entregaSeleccionada == null || this.entregaSeleccionada.id() == null) {
-                dto = new EntregaDto(null, editOrderId, editEmployeeId, editDeliveryStatus, editDeliveryDate);
+                EntregaDto nuevoDto = new EntregaDto(null, editOrderId, editEmployeeId, editDeliveryStatus, editDeliveryDate);
+                entregaGuardada = this.entregaService.guardarEntrega(nuevoDto);
+                mensajeExito = "Entrega Agregada";
             } else {
-                dto = new EntregaDto(this.entregaSeleccionada.id(), editOrderId, editEmployeeId, editDeliveryStatus, editDeliveryDate);
+                ModEntregaDto modDto = new ModEntregaDto(editOrderId, editEmployeeId, editDeliveryStatus, editDeliveryDate);
+                entregaGuardada = this.entregaService.modificarEntrega(this.entregaSeleccionada.id(), modDto);
+                mensajeExito = "Entrega Modificada";
             }
 
-            EntregaDto guardada = this.entregaService.guardarEntrega(dto);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                    this.entregaSeleccionada == null || this.entregaSeleccionada.id() == null
-                            ? "Entrega Agregada"
-                            : "Entrega Modificada"
-            ));
-
-            refresh();
-            this.entregaSeleccionada = guardada;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensajeExito));
+            cargarDatos();
             PrimeFaces.current().ajax().update("formEntregas:tablaEntregas", "growlMensajes");
             PrimeFaces.current().executeScript("PF('ventanaModalEntrega').hide()");
-            this.entregaSeleccionada = null; // Limpiar la selección tras cerrar
+            this.entregaSeleccionada = null;
+
         } catch (Exception e) {
-            logger.error("Error al guardar entrega", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo guardar"));
+            logger.error("Error al guardar/modificar entrega", e);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage() != null ? e.getMessage() : "No se pudo guardar la entrega."));
+            PrimeFaces.current().ajax().update("growlMensajes");
         }
     }
 
@@ -113,27 +109,18 @@ public class WebTablaEntregasController implements Serializable {
         try {
             this.entregaService.eliminarEntrega(this.entregaSeleccionada.id());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Entrega Eliminada"));
-            refresh();
+            cargarDatos();
             PrimeFaces.current().ajax().update("formEntregas:tablaEntregas", "growlMensajes");
             this.entregaSeleccionada = null;
         } catch (Exception e) {
             logger.error("Error al eliminar entrega", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage() != null ? e.getMessage() : "No se pudo eliminar la entrega."));
+            PrimeFaces.current().ajax().update("growlMensajes");
         }
     }
 
     public void cancelarEntrega() {
         this.entregaSeleccionada = null;
         PrimeFaces.current().executeScript("PF('ventanaModalEntrega').hide()");
-    }
-
-    public void delete(EntregaDto entrega) { // Legacy
-        if (entrega == null || entrega.id() == null) return;
-        try {
-            entregaService.eliminarEntrega(entrega.id());
-            refresh();
-        } catch (Exception e) {
-            logger.error("Error legacy delete", e);
-        }
     }
 }

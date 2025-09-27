@@ -1,0 +1,169 @@
+:root {
+    --github-dark-bg: #0d1117;
+    --github-dark-text: #c9d1d9;
+    --github-dark-border: #30363d;
+    --github-dark-header: #161b22;
+    --github-dark-primary: #58a6ff;
+    --github-dark-success: #3fb950;
+    --github-dark-danger: #f85149;
+    --github-dark-warning: #d29922;
+    --github-dark-hover: #1c2128;
+    --github-dark-table: #21262d;
+}
+
+body {
+    background-color: var(--github-dark-bg);
+    color: var(--github-dark-text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.card {
+    background: var(--github-dark-bg);
+    border: 1px solid var(--github-dark-border);
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ui-button-success {
+    background: var(--github-dark-success) !important;
+    border-color: var(--github-dark-success) !important;
+}
+
+.ui-button-danger {
+    background: var(--github-dark-danger) !important;
+    border-color: var(--github-dark-danger) !important;
+}
+
+.ui-button-warning {
+    background: var(--github-dark-warning) !important;
+    border-color: var(--github-dark-warning) !important;
+}
+
+.ui-button-outlined {
+    background: transparent !important;
+    color: var(--github-dark-primary) !important;
+    border-color: var(--github-dark-primary) !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+    background: var(--github-dark-header) !important;
+    border-color: var(--github-dark-border) !important;
+    color: var(--github-dark-text) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr {
+    border-color: var(--github-dark-border) !important;
+    background: var(--github-dark-table) !important;
+    color: var(--github-dark-text) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+    background: var(--github-dark-hover) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+    border-color: var(--github-dark-border) !important;
+}
+
+.p-datatable .p-datatable-wrapper {
+    background: var(--github-dark-table) !important;
+    border: 1px solid var(--github-dark-border) !important;
+}
+
+.p-datatable .p-datatable-empty-message {
+    background: var(--github-dark-table) !important;
+    color: var(--github-dark-text) !important;
+    border-color: var(--github-dark-border) !important;
+}
+
+.p-datatable .p-paginator {
+    background: var(--github-dark-header) !important;
+    border: 1px solid var(--github-dark-border) !important;
+    color: var(--github-dark-text) !important;
+}
+
+.p-datatable .p-paginator .p-paginator-page,
+.p-datatable .p-paginator .p-paginator-first,
+.p-datatable .p-paginator .p-paginator-prev,
+.p-datatable .p-paginator .p-paginator-next,
+.p-datatable .p-paginator .p-paginator-last {
+    background: var(--github-dark-bg) !important;
+    border-color: var(--github-dark-border) !important;
+    color: var(--github-dark-text) !important;
+}
+
+.p-datatable .p-paginator .p-paginator-page:hover,
+.p-datatable .p-paginator .p-paginator-first:hover,
+.p-datatable .p-paginator .p-paginator-prev:hover,
+.p-datatable .p-paginator .p-paginator-next:hover,
+.p-datatable .p-paginator .p-paginator-last:hover {
+    background: var(--github-dark-hover) !important;
+}
+
+.p-datatable .p-paginator .p-paginator-page.p-highlight {
+    background: var(--github-dark-primary) !important;
+    color: white !important;
+}
+
+.p-inputtext, .p-inputnumber-input, .p-selectonemenu {
+    background: var(--github-dark-bg) !important;
+    border-color: var(--github-dark-border) !important;
+    color: var(--github-dark-text) !important;
+}
+
+.p-inputtext:focus, .p-inputnumber-input:focus, .p-selectonemenu:focus {
+    box-shadow: 0 0 0 2px var(--github-dark-primary) !important;
+}
+
+.p-selectonemenu-panel {
+    background: var(--github-dark-bg) !important;
+    border: 1px solid var(--github-dark-border) !important;
+}
+
+.p-selectonemenu-item {
+    background: var(--github-dark-bg) !important;
+    color: var(--github-dark-text) !important;
+}
+
+.p-selectonemenu-item:hover {
+    background: var(--github-dark-hover) !important;
+}
+
+.payment-efectivo { color: #3fb950; font-weight: 600; }
+.payment-tarjeta { color: #58a6ff; font-weight: 600; }
+.payment-transferencia { color: #a371f7; font-weight: 600; }
+.payment-movil { color: #d29922; font-weight: 600; }
+.price-column { text-align: right; font-family: monospace; }
+
+h1 { color: var(--github-dark-text); }
+.p-dialog .p-dialog-header {
+    background: var(--github-dark-header) !important;
+    color: var(--github-dark-text) !important;
+    border-bottom: 1px solid var(--github-dark-border) !important;
+}
+.p-dialog .p-dialog-content {
+    background: var(--github-dark-bg) !important;
+    color: var(--github-dark-text) !important;
+}
+.p-dialog .p-dialog-footer {
+    background: var(--github-dark-header) !important;
+    border-top: 1px solid var(--github-dark-border) !important;
+}
+.p-growl {
+    color: var(--github-dark-text) !important;
+}
+.p-growl .p-growl-item-container {
+    background: var(--github-dark-header) !important;
+    border: 1px solid var(--github-dark-border) !important;
+}
+.p-confirm-dialog .p-dialog-content {
+    background: var(--github-dark-bg) !important;
+    color: var(--github-dark-text) !important;
+}
+.p-confirm-dialog .p-dialog-header {
+    background: var(--github-dark-header) !important;
+    color: var(--github-dark-text) !important;
+}
+.p-confirm-dialog .p-dialog-footer {
+    background: var(--github-dark-header) !important;
+}

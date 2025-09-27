@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <h:outputStylesheet library="css" name="Style_Tablas.css"/>
+</h:head>
+
+<h:body>
+    <div class="flex justify-content-center align-items-start min-h-screen p-3">
+        <div class="card w-full max-w-7xl p-4">
+            <h:form id="formUsuarios">
+                <p:growl id="growlMensajes" showDetail="true"/>
+
+                <div class="flex justify-content-between align-items-center mb-4">
+                    <div class="flex-1 text-center">
+                        <h1 class="text-3xl font-semibold">Gestión de Usuarios</h1>
+                    </div>
+                    <p:commandButton value="Administración"
+                                     icon="pi pi-cog"
+                                     action="Administracion"
+                                     styleClass="ui-button-outlined"/>
+                </div>
+                <div class="flex justify-content-end mb-3">
+                    <p:commandButton value="Nuevo Usuario"
+                                     icon="pi pi-plus"
+                                     actionListener="#{webTablaUsuariosController.agregarUsuario}"
+                                     styleClass="ui-button-success"
+                                     update="@form"/>
+                </div>
+
+                <p:dataTable id="tablaUsuarios"
+                             var="usuario"
+                             value="#{webTablaUsuariosController.usuarios}"
+                             selection="#{webTablaUsuariosController.usuarioSeleccionado}"
+                             rowKey="#{usuario.id()}"
+                             paginator="true"
+                             rows="10"
+                             emptyMessage="No se encontraron usuarios."
+                             reflow="true"
+                             styleClass="p-datatable-gridlines"
+                             widgetVar="tablaUsuariosWv">
+
+                    <p:column headerText="ID" sortBy="#{usuario.id()}" style="width: 5rem; text-align: center;">
+                        <h:outputText value="#{usuario.id()}"/>
+                    </p:column>
+
+                    <p:column headerText="Correo" sortBy="#{usuario.mail()}" style="width: 15rem;">
+                        <h:outputText value="#{usuario.mail()}"/>
+                    </p:column>
+
+                    <p:column headerText="Tipo de Usuario" sortBy="#{usuario.usertype()}" style="width: 10rem; text-align: center;">
+                        <h:outputText value="#{usuario.usertype()}"
+                                      styleClass="#{usuario.usertype() eq 'ADMINISTRACION' ? 'payment-efectivo' : 'payment-tarjeta'}"/>
+                    </p:column>
+
+                    <p:column headerText="ID Estudiante" sortBy="#{usuario.studentid()}" style="width: 8rem;">
+                        <h:outputText value="#{usuario.studentid()}"/>
+                    </p:column>
+
+                    <p:column headerText="Acciones" exportable="false" style="width: 12rem; text-align: center;">
+                        <p:commandButton icon="pi pi-pencil"
+                                         title="Editar"
+                                         styleClass="ui-button-warning p-mr-2"
+                                         actionListener="#{webTablaUsuariosController.prepararEdicion(usuario)}"
+                                         update="@form"/>
+
+                        <p:commandButton icon="pi pi-trash"
+                                         title="Eliminar"
+                                         styleClass="ui-button-danger"
+                                         oncomplete="PF('confirmacionEliminar').show()"
+                                         update=":formConfirmacionEliminar:confirmacionPanel :formConfirmacionEliminar:aceptarEliminacionBtn">
+                            <f:setPropertyActionListener value="#{usuario}" target="#{webTablaUsuariosController.usuarioSeleccionado}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </div>
+
+    <p:dialog header="#{webTablaUsuariosController.usuarioSeleccionado eq null ? 'Crear Nuevo Usuario' : 'Editar Usuario'}"
+              widgetVar="ventanaModalUsuario"
+              modal="true"
+              responsive="true"
+              fitViewport="true"
+              width="450"
+              styleClass="card">
+        <h:form id="formModalUsuario">
+            <p:panelGrid columns="1" layout="grid" styleClass="p-nogutter p-field">
+                <div class="field mb-3">
+                    <p:outputLabel for="mail" value="Correo:" styleClass="block font-semibold mb-2"/>
+                    <p:inputText id="mail"
+                                 value="#{webTablaUsuariosController.editMail}"
+                                 required="true"
+                                 requiredMessage="El correo es obligatorio"
+                                 validatorMessage="Debe ser un correo válido"
+                                 styleClass="w-full p-2">
+                        <f:validateRegex pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"/>
+                    </p:inputText>
+                    <p:message for="mail"/>
+                </div>
+
+                <div class="field mb-3">
+                    <p:outputLabel for="password" value="Contraseña:" styleClass="block font-semibold mb-2"/>
+                    <p:password id="password"
+                                value="#{webTablaUsuariosController.editPassword}"
+                                required="true"
+                                requiredMessage="La contraseña es obligatoria"
+                                validatorMessage="La contraseña debe tener entre 6 y 255 caracteres"
+                                styleClass="w-full p-2"
+                                feedback="false">
+                        <f:validateLength minimum="6" maximum="255"/>
+                    </p:password>
+                    <p:message for="password"/>
+                </div>
+
+                <div class="field mb-4">
+                    <p:outputLabel for="userType" value="Tipo de Usuario:" styleClass="block font-semibold mb-2"/>
+                    <p:selectOneMenu id="userType"
+                                     value="#{webTablaUsuariosController.editUserType}"
+                                     required="true"
+                                     requiredMessage="El tipo de usuario es obligatorio"
+                                     styleClass="w-full p-2">
+                        <f:selectItems value="#{webTablaUsuariosController.tiposUsuario}" var="tipo"
+                                       itemLabel="#{tipo}" itemValue="#{tipo}"/>
+                    </p:selectOneMenu>
+                    <p:message for="userType"/>
+                </div>
+
+            </p:panelGrid>
+
+            <div class="flex justify-content-end gap-2 mt-3">
+                <p:commandButton value="Cancelar"
+                                 icon="pi pi-times"
+                                 actionListener="#{webTablaUsuariosController.cancelarUsuario}"
+                                 styleClass="ui-button-outlined"
+                                 process="@this"
+                                 update="@form"/>
+                <p:commandButton value="Guardar"
+                                 icon="pi pi-check"
+                                 actionListener="#{webTablaUsuariosController.guardarUsuario}"
+                                 styleClass="ui-button-success"
+                                 update=":formUsuarios:tablaUsuarios growlMensajes"
+                                 oncomplete="if (!args.validationFailed) PF('ventanaModalUsuario').hide()"/>
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:confirmDialog global="true" widgetVar="confirmacionEliminar" header="Confirmación" severity="alert" styleClass="card">
+        <f:facet name="message">
+            <h:form id="formConfirmacionEliminar">
+                <p:outputPanel id="confirmacionPanel">
+                    <h:outputText value="¿Estás seguro que deseas eliminar el usuario ID: #{webTablaUsuariosController.usuarioSeleccionado.id()} - Correo: #{webTablaUsuariosController.usuarioSeleccionado.mail()}?"
+                                  rendered="#{webTablaUsuariosController.usuarioSeleccionado != null}"/>
+                </p:outputPanel>
+
+                <p:commandButton value="Sí"
+                                 id="aceptarEliminacionBtn"
+                                 styleClass="ui-confirmdialog-yes ui-button-danger mr-2"
+                                 icon="pi pi-check"
+                                 actionListener="#{webTablaUsuariosController.eliminarUsuario}"
+                                 process="@this"
+                                 update=":formUsuarios:tablaUsuarios growlMensajes"
+                                 oncomplete="PF('confirmacionEliminar').hide();"/>
+
+                <p:commandButton value="No"
+                                 type="button"
+                                 styleClass="ui-confirmdialog-no ui-button-outlined"
+                                 icon="pi pi-times"
+                                 onclick="PF('confirmacionEliminar').hide();"/>
+            </h:form>
+        </f:facet>
+    </p:confirmDialog>
+</h:body>
+</html>
