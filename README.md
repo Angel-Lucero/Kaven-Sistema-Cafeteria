@@ -112,3 +112,4 @@ Realiza tus cambios y haz commit (git commit -am 'Añadir nueva funcionalidad').
 Sube tu rama (git push origin feature/nueva-caracteristica).
 Crea un Pull Request.
 Desarrollado por Kaven S.A. Si tienes alguna pregunta, no dudes en contactarnos
+se agregaron vista para cada tabla para sgregar, eliminar, esitar y buscar
