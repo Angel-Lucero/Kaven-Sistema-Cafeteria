@@ -2,11 +2,12 @@ package org.kaven.Cafeteria.dominio.dto;
 
 import java.time.LocalDate;
 
+
 public record EntregaDto(
         Long id,
-        Long OrderId,
-        Long EmployeeId,
+        Long orderId,
+        Long employeeId,
         String deliveryStatus,
-        LocalDate devliveryDate
+        LocalDate deliveryDate
 ) {
 }

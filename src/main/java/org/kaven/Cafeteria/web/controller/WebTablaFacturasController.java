@@ -6,6 +6,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import lombok.Data;
 import org.kaven.Cafeteria.dominio.dto.FacturaDto;
+import org.kaven.Cafeteria.dominio.dto.ModFacturaDto;
 import org.kaven.Cafeteria.dominio.service.FacturaService;
 import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
@@ -32,15 +33,12 @@ public class WebTablaFacturasController implements Serializable {
     private FacturaDto facturaSeleccionada;
 
     private Long editStudentId;
-    private Long editOrderId;
+    private Long editOrdersId;
     private BigDecimal editTotal;
     private String editPaymentType;
 
-    public WebTablaFacturasController(FacturaService facturaService) {
-        this.facturaService = facturaService;
-    }
-
-    public WebTablaFacturasController() {
+    public List<String> getTiposPago() {
+        return List.of("EFECTIVO", "TARJETA_CREDITO", "TRANSFERENCIA", "PAGO_MOVIL");
     }
 
     @PostConstruct
@@ -49,24 +47,21 @@ public class WebTablaFacturasController implements Serializable {
     }
 
     public void cargarDatos() {
-        this.facturas = facturaService.obtenerTodoFactura();
-        facturas.forEach(factura -> logger.info(factura.toString()));
-    }
-
-    public void refresh() {
         try {
-            this.facturas = new ArrayList<>(facturaService.obtenerTodoFactura());
+            this.facturas = this.facturaService.obtenerTodoFactura();
         } catch (Exception e) {
+            logger.error("Error al cargar las facturas", e);
             this.facturas = new ArrayList<>();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudieron cargar las facturas."));
         }
     }
 
     public void agregarFactura() {
-        this.facturaSeleccionada = null; // Nuevo
+        this.facturaSeleccionada = null;
         this.editStudentId = null;
-        this.editOrderId = null;
+        this.editOrdersId = null;
         this.editTotal = BigDecimal.ZERO;
-        this.editPaymentType = "";
+        this.editPaymentType = "EFECTIVO";
         PrimeFaces.current().executeScript("PF('ventanaModalFactura').show()");
     }
 
@@ -74,7 +69,7 @@ public class WebTablaFacturasController implements Serializable {
         this.facturaSeleccionada = factura;
         if (factura != null) {
             this.editStudentId = factura.studentId();
-            this.editOrderId = factura.ordersId();
+            this.editOrdersId = factura.ordersId();
             this.editTotal = factura.total();
             this.editPaymentType = factura.paymentType();
         }
@@ -83,28 +78,29 @@ public class WebTablaFacturasController implements Serializable {
 
     public void guardarFactura() {
         try {
-            FacturaDto dto;
+            FacturaDto facturaGuardada;
+            String mensajeExito;
+
             if (this.facturaSeleccionada == null || this.facturaSeleccionada.id() == null) {
-                dto = new FacturaDto(null, editStudentId, editOrderId, editTotal, editPaymentType);
+                FacturaDto nuevoDto = new FacturaDto(null, editStudentId, editOrdersId, editTotal, editPaymentType);
+                facturaGuardada = this.facturaService.guardarFactura(nuevoDto);
+                mensajeExito = "Factura Agregada";
             } else {
-                dto = new FacturaDto(this.facturaSeleccionada.id(), editStudentId, editOrderId, editTotal, editPaymentType);
+                ModFacturaDto modDto = new ModFacturaDto(editStudentId, editOrdersId, editTotal, editPaymentType);
+                facturaGuardada = this.facturaService.modificarFactura(this.facturaSeleccionada.id(), modDto);
+                mensajeExito = "Factura Modificada";
             }
 
-            FacturaDto guardado = this.facturaService.guardarFactura(dto);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                    this.facturaSeleccionada == null || this.facturaSeleccionada.id() == null
-                            ? "Factura Agregada"
-                            : "Factura Modificada"
-            ));
-
-            refresh();
-            this.facturaSeleccionada = guardado;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensajeExito));
+            cargarDatos();
             PrimeFaces.current().ajax().update("formFacturas:tablaFacturas", "growlMensajes");
             PrimeFaces.current().executeScript("PF('ventanaModalFactura').hide()");
-            this.facturaSeleccionada = null; // Limpiar la selección tras cerrar
+            this.facturaSeleccionada = null;
+
         } catch (Exception e) {
-            logger.error("Error al guardar factura", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo guardar"));
+            logger.error("Error al guardar/modificar factura", e);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage() != null ? e.getMessage() : "No se pudo guardar la factura."));
+            PrimeFaces.current().ajax().update("growlMensajes");
         }
     }
 
@@ -113,27 +109,18 @@ public class WebTablaFacturasController implements Serializable {
         try {
             this.facturaService.eliminarFactura(this.facturaSeleccionada.id());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Factura Eliminada"));
-            refresh();
+            cargarDatos();
             PrimeFaces.current().ajax().update("formFacturas:tablaFacturas", "growlMensajes");
             this.facturaSeleccionada = null;
         } catch (Exception e) {
             logger.error("Error al eliminar factura", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage() != null ? e.getMessage() : "No se pudo eliminar la factura."));
+            PrimeFaces.current().ajax().update("growlMensajes");
         }
     }
 
     public void cancelarFactura() {
         this.facturaSeleccionada = null;
         PrimeFaces.current().executeScript("PF('ventanaModalFactura').hide()");
-    }
-
-    public void delete(FacturaDto factura) { // Legacy
-        if (factura == null || factura.id() == null) return;
-        try {
-            facturaService.eliminarFactura(factura.id());
-            refresh();
-        } catch (Exception e) {
-            logger.error("Error legacy delete", e);
-        }
     }
 }

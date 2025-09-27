@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Gestión de Pedidos</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <h:outputStylesheet library="css" name="Style_Tablas.css"/>
+</h:head>
+
+<h:body>
+    <div class="flex justify-content-center align-items-start min-h-screen p-3">
+        <div class="card w-full max-w-7xl p-4">
+            <h:form id="formPedidos">
+                <p:growl id="growlMensajes" showDetail="true"/>
+
+                <div class="flex justify-content-between align-items-center mb-4">
+                    <div class="flex-1 text-center">
+                        <h1 class="text-3xl font-semibold">Gestión de Pedidos</h1>
+                    </div>
+                    <p:commandButton value="Administración"
+                                     icon="pi pi-cog"
+                                     action="Administracion"
+                                     styleClass="ui-button-outlined"/>
+                </div>
+                <div class="flex justify-content-end mb-3">
+                    <p:commandButton value="Nuevo Pedido"
+                                     icon="pi pi-plus"
+                                     actionListener="#{webTablaPedidosController.agregarPedido}"
+                                     styleClass="ui-button-success"
+                                     update="@form"/>
+                </div>
+
+                <p:dataTable id="tablaPedidos"
+                             var="pedido"
+                             value="#{webTablaPedidosController.pedidos}"
+                             selection="#{webTablaPedidosController.pedidoSeleccionado}"
+                             rowKey="#{pedido.id()}"
+                             paginator="true"
+                             rows="10"
+                             emptyMessage="No se encontraron pedidos."
+                             reflow="true"
+                             styleClass="p-datatable-gridlines"
+                             widgetVar="tablaPedidosWv">
+
+                    <p:column headerText="ID" sortBy="#{pedido.id()}" style="width: 5rem; text-align: center;">
+                        <h:outputText value="#{pedido.id()}"/>
+                    </p:column>
+
+                    <p:column headerText="ID Estudiante" sortBy="#{pedido.studentid()}" style="width: 8rem;">
+                        <h:outputText value="#{pedido.studentid()}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha Pedido" sortBy="#{pedido.orderdate()}" style="width: 10rem;">
+                        <h:outputText value="#{pedido.orderdate()}">
+                            <f:converter converterId="localDateConverter" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Total" sortBy="#{pedido.total()}" style="width: 8rem;" styleClass="price-column">
+                        <h:outputText value="#{pedido.total()}">
+                            <f:convertNumber type="currency" currencySymbol="$" minFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Estado" sortBy="#{pedido.state()}" style="width: 10rem; text-align: center;">
+                        <h:outputText value="#{pedido.state()}"
+                                      styleClass="#{pedido.state() eq 'PENDIENTE' ? 'state-pendiente' :
+                                                  pedido.state() eq 'EN_PROCESO' ? 'state-proceso' :
+                                                  pedido.state() eq 'ENTREGADO' ? 'state-entregado' : 'state-cancelado'}"/>
+                    </p:column>
+
+                    <p:column headerText="Acciones" exportable="false" style="width: 12rem; text-align: center;">
+                        <p:commandButton icon="pi pi-pencil"
+                                         title="Editar"
+                                         styleClass="ui-button-warning p-mr-2"
+                                         actionListener="#{webTablaPedidosController.prepararEdicion(pedido)}"
+                                         update="@form"/>
+
+                        <p:commandButton icon="pi pi-trash"
+                                         title="Eliminar"
+                                         styleClass="ui-button-danger"
+                                         oncomplete="PF('confirmacionEliminar').show()"
+                                         update=":formConfirmacionEliminar:confirmacionPanel :formConfirmacionEliminar:aceptarEliminacionBtn">
+                            <f:setPropertyActionListener value="#{pedido}" target="#{webTablaPedidosController.pedidoSeleccionado}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </div>
+
+    <p:dialog header="#{webTablaPedidosController.pedidoSeleccionado eq null ? 'Crear Nuevo Pedido' : 'Editar Pedido'}"
+              widgetVar="ventanaModalPedido"
+              modal="true"
+              responsive="true"
+              fitViewport="true"
+              width="450"
+              styleClass="card">
+        <h:form id="formModalPedido">
+            <p:panelGrid columns="1" layout="grid" styleClass="p-nogutter p-field">
+                <div class="field mb-3">
+                    <p:outputLabel for="studentid" value="ID Estudiante:" styleClass="block font-semibold mb-2"/>
+                    <p:inputText id="studentid"
+                                 value="#{webTablaPedidosController.editStudentid}"
+                                 required="true"
+                                 requiredMessage="El ID del estudiante es obligatorio"
+                                 styleClass="w-full p-2"/>
+                </div>
+
+                <div class="field mb-3">
+                    <p:outputLabel for="orderdate" value="Fecha Pedido:" styleClass="block font-semibold mb-2"/>
+                    <p:calendar id="orderdate"
+                                value="#{webTablaPedidosController.editOrderdate}"
+                                required="true"
+                                requiredMessage="La fecha es obligatoria"
+                                styleClass="w-full p-2"
+                                pattern="yyyy-MM-dd"/>
+                </div>
+
+                <div class="field mb-3">
+                    <p:outputLabel for="total" value="Total:" styleClass="block font-semibold mb-2"/>
+                    <p:inputNumber id="total"
+                                   value="#{webTablaPedidosController.editTotal}"
+                                   required="true"
+                                   requiredMessage="El total es obligatorio"
+                                   styleClass="w-full p-2"
+                                   minValue="0"
+                                   maxValue="10000"
+                                   decimalPlaces="2"
+                                   currencySymbol="$"/>
+                </div>
+
+                <div class="field mb-4">
+                    <p:outputLabel for="state" value="Estado:" styleClass="block font-semibold mb-2"/>
+                    <p:selectOneMenu id="state"
+                                     value="#{webTablaPedidosController.editState}"
+                                     required="true"
+                                     requiredMessage="El estado es obligatorio"
+                                     styleClass="w-full p-2">
+                        <f:selectItems value="#{webTablaPedidosController.estadosPedido}" var="estado"
+                                       itemLabel="#{estado}" itemValue="#{estado}"/>
+                    </p:selectOneMenu>
+                </div>
+
+            </p:panelGrid>
+
+            <div class="flex justify-content-end gap-2 mt-3">
+                <p:commandButton value="Cancelar"
+                                 icon="pi pi-times"
+                                 actionListener="#{webTablaPedidosController.cancelarPedido}"
+                                 styleClass="ui-button-outlined"
+                                 process="@this"
+                                 update="@form"/>
+                <p:commandButton value="Guardar"
+                                 icon="pi pi-check"
+                                 actionListener="#{webTablaPedidosController.guardarPedido}"
+                                 styleClass="ui-button-success"
+                                 update=":formPedidos:tablaPedidos growlMensajes"
+                                 oncomplete="if (!args.validationFailed) PF('ventanaModalPedido').hide()"/>
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:confirmDialog global="true" widgetVar="confirmacionEliminar" header="Confirmación" severity="alert" styleClass="card">
+        <f:facet name="message">
+            <h:form id="formConfirmacionEliminar">
+                <p:outputPanel id="confirmacionPanel">
+                    <h:outputText value="¿Estás seguro que deseas eliminar el pedido ID: #{webTablaPedidosController.pedidoSeleccionado.id()} - Estudiante: #{webTablaPedidosController.pedidoSeleccionado.studentid()}?"
+                                  rendered="#{webTablaPedidosController.pedidoSeleccionado != null}"/>
+                </p:outputPanel>
+
+                <p:commandButton value="Sí"
+                                 id="aceptarEliminacionBtn"
+                                 styleClass="ui-confirmdialog-yes ui-button-danger mr-2"
+                                 icon="pi pi-check"
+                                 actionListener="#{webTablaPedidosController.eliminarPedido}"
+                                 process="@this"
+                                 update=":formPedidos:tablaPedidos growlMensajes"
+                                 oncomplete="PF('confirmacionEliminar').hide();"/>
+
+                <p:commandButton value="No"
+                                 type="button"
+                                 styleClass="ui-confirmdialog-no ui-button-outlined"
+                                 icon="pi pi-times"
+                                 onclick="PF('confirmacionEliminar').hide();"/>
+            </h:form>
+        </f:facet>
+    </p:confirmDialog>
+</h:body>
+</html>
