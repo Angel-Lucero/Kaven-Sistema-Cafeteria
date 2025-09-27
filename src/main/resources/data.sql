@@ -31,13 +31,13 @@ INSERT IGNORE INTO Usuarios (id, correo, contrasena, tipo_usuario, id_estudiante
 (1, 'ana.garcia@university.edu', 'encrypted123', 'ESTUDIANTE', 1),
 (2, 'carlos.lopez@university.edu', 'securepass456', 'ESTUDIANTE', 2),
 (3, 'maria.rodriguez@university.edu', 'mypassword789', 'ESTUDIANTE', 3),
-(4, 'admin@cafeteria.edu', 'adminpass123', 'ADMIN', NULL),
+(4, 'admin@cafeteria.edu', 'adminpass123', 'ADMINISTRACION', NULL),
 (5, 'juan.martinez@university.edu', 'juanpass321', 'ESTUDIANTE', 4),
 (6, 'laura.sanchez@university.edu', 'laura654', 'ESTUDIANTE', 5),
-(7, 'empleado1@cafeteria.edu', 'emp123', 'ADMIN', NULL),
+(7, 'empleado1@cafeteria.edu', 'emp123', 'ADMINISTRACION', NULL),
 (8, 'pedro.diaz@university.edu', 'pedro987', 'ESTUDIANTE', 6),
 (9, 'sofia.hernandez@university.edu', 'sofia321', 'ESTUDIANTE', 7),
-(10, 'empleado2@cafeteria.edu', 'emp456', 'ADMIN', NULL),
+(10, 'empleado2@cafeteria.edu', 'emp456', 'ADMINISTRACION', NULL),
 (11, 'isabel.morales@university.edu', 'isabel789', 'ESTUDIANTE', 11),
 (12, 'roberto.silva@university.edu', 'roberto012', 'ESTUDIANTE', 12),
 (13, 'carmen.vargas@university.edu', 'carmen345', 'ESTUDIANTE', 13),
@@ -109,12 +109,7 @@ INSERT IGNORE INTO Pedidos (id, id_estudiante, fecha_pedido, total, estado) VALU
 (12, 10, '2024-01-20', 4.75, 'PENDIENTE'),
 (13, 11, '2024-01-21', 8.25, 'EN_PROCESO'),
 (14, 12, '2024-01-21', 6.80, 'ENTREGADO'),
-(15, 13, '2024-01-22', 3.50, 'CANCELADO'),
-(16, 14, '2024-01-22', 9.00, 'PENDIENTE'),
-(17, 15, '2024-01-23', 5.25, 'EN_PROCESO'),
-(18, 16, '2024-01-23', 7.75, 'ENTREGADO'),
-(19, 17, '2024-01-24', 4.50, 'PENDIENTE'),
-(20, 18, '2024-01-24', 11.00, 'EN_PROCESO');
+(15, 13, '2024-01-22', 3.50, 'CANCELADO');
 
 
 INSERT IGNORE INTO Facturas (id, student_id, order_id, total, payment_type) VALUES
@@ -132,12 +127,7 @@ INSERT IGNORE INTO Facturas (id, student_id, order_id, total, payment_type) VALU
 (12, 10, 12, 4.75, 'CREDIT_CARD'),
 (13, 11, 13, 8.25, 'BANK_TRANSFER'),
 (14, 12, 14, 6.80, 'MOBILE_PAYMENT'),
-(15, 13, 15, 3.50, 'CASH'),
-(16, 14, 16, 9.00, 'CREDIT_CARD'),
-(17, 15, 17, 5.25, 'BANK_TRANSFER'),
-(18, 16, 18, 7.75, 'MOBILE_PAYMENT'),
-(19, 17, 19, 4.50, 'CASH'),
-(20, 18, 20, 11.00, 'CREDIT_CARD');
+(15, 13, 15, 3.50, 'CASH');
 
 INSERT IGNORE INTO Entregas (id, order_id, employee_id, delivery_status, delivery_date) VALUES
 (1, 1, 6, 'DELIVERED', '2024-01-15'),
@@ -154,8 +144,6 @@ INSERT IGNORE INTO Entregas (id, order_id, employee_id, delivery_status, deliver
 (12, 14, 17, 'DELIVERED', '2024-01-21'),
 (13, 18, 13, 'DELIVERED', '2024-01-23'),
 (14, 13, 17, 'PENDING', '2024-01-21'),
-(15, 17, 13, 'PENDING', '2024-01-23'),
-(16, 20, 17, 'PENDING', '2024-01-24'),
-(17, 12, 13, 'CANCELLED', '2024-01-20');
+(15, 17, 13, 'PENDING', '2024-01-23');
 
 
