@@ -1,139 +1,149 @@
--- Insertar usuarios administradores
-INSERT IGNORE INTO usuarios (id, correo, contrasena, tipo_usuario) VALUES
-(1, 'admin@cafeteria.edu', 'Admin123!', 'ADMIN'),
-(2, 'supervisor@cafeteria.edu', 'Super2025!', 'ADMIN'),
-(3, 'director@cafeteria.edu', 'Director25!', 'ADMIN');
+INSERT IGNORE INTO Carreras (id, degree_name) VALUES
+(1, 'COMPUTER_SCIENCE'),
+(2, 'TECHNICAL_DESIGN'),
+(3, 'MECHANICS'),
+(4, 'ELECTRONICS'),
+(5, 'ELECTRICAL_STUDIES');
 
--- Insertar usuarios estudiantes
-INSERT IGNORE INTO usuarios (id, correo, contrasena, tipo_usuario) VALUES
-(4, 'juan.perez@estudiante.edu', 'JuanP2025!', 'STUDENT'),
-(5, 'maria.gomez@estudiante.edu', 'MariaG25!', 'STUDENT');
--- ... resto de usuarios
+INSERT IGNORE INTO Estudiantes (id, nombre, correo, telefono, carrera) VALUES
+(1, 'Ana García', 'ana.garcia@university.edu', '555-0101', 'INFORMATICA'),
+(2, 'Carlos López', 'carlos.lopez@university.edu', '555-0102', 'MECANICA'),
+(3, 'María Rodríguez', 'maria.rodriguez@university.edu', '555-0103', 'ELECTRONICA'),
+(4, 'Juan Martínez', 'juan.martinez@university.edu', '555-0104', 'ELECTRICIDAD'),
+(5, 'Laura Sánchez', 'laura.sanchez@university.edu', '555-0105', 'DIBUJO_TECNICO'),
+(6, 'Pedro Díaz', 'pedro.diaz@university.edu', '555-0106', 'INFORMATICA'),
+(7, 'Sofía Hernández', 'sofia.hernandez@university.edu', '555-0107', 'MECANICA'),
+(8, 'Miguel Torres', 'miguel.torres@university.edu', '555-0108', 'ELECTRONICA'),
+(9, 'Elena Castro', 'elena.castro@university.edu', '555-0109', 'ELECTRICIDAD'),
+(10, 'David Romero', 'david.romero@university.edu', '555-0110', 'DIBUJO_TECNICO'),
+(11, 'Isabel Morales', 'isabel.morales@university.edu', '555-0111', 'INFORMATICA'),
+(12, 'Roberto Silva', 'roberto.silva@university.edu', '555-0112', 'MECANICA'),
+(13, 'Carmen Vargas', 'carmen.vargas@university.edu', '555-0113', 'ELECTRONICA'),
+(14, 'Javier Ruiz', 'javier.ruiz@university.edu', '555-0114', 'ELECTRICIDAD'),
+(15, 'Patricia León', 'patricia.leon@university.edu', '555-0115', 'DIBUJO_TECNICO'),
+(16, 'Ricardo Mendoza', 'ricardo.mendoza@university.edu', '555-0116', 'INFORMATICA'),
+(17, 'Gabriela Ortega', 'gabriela.ortega@university.edu', '555-0117', 'MECANICA'),
+(18, 'Fernando Castro', 'fernando.castro@university.edu', '555-0118', 'ELECTRONICA'),
+(19, 'Diana Paredes', 'diana.paredes@university.edu', '555-0119', 'ELECTRICIDAD'),
+(20, 'Oscar Jiménez', 'oscar.jimenez@university.edu', '555-0120', 'DIBUJO_TECNICO');
+
+INSERT IGNORE INTO Usuarios (id, correo, contrasena, tipo_usuario, id_estudiante) VALUES
+(1, 'ana.garcia@university.edu', 'encrypted123', 'ESTUDIANTE', 1),
+(2, 'carlos.lopez@university.edu', 'securepass456', 'ESTUDIANTE', 2),
+(3, 'maria.rodriguez@university.edu', 'mypassword789', 'ESTUDIANTE', 3),
+(4, 'admin@cafeteria.edu', 'adminpass123', 'ADMINISTRACION', NULL),
+(5, 'juan.martinez@university.edu', 'juanpass321', 'ESTUDIANTE', 4),
+(6, 'laura.sanchez@university.edu', 'laura654', 'ESTUDIANTE', 5),
+(7, 'empleado1@cafeteria.edu', 'emp123', 'ADMINISTRACION', NULL),
+(8, 'pedro.diaz@university.edu', 'pedro987', 'ESTUDIANTE', 6),
+(9, 'sofia.hernandez@university.edu', 'sofia321', 'ESTUDIANTE', 7),
+(10, 'empleado2@cafeteria.edu', 'emp456', 'ADMINISTRACION', NULL),
+(11, 'isabel.morales@university.edu', 'isabel789', 'ESTUDIANTE', 11),
+(12, 'roberto.silva@university.edu', 'roberto012', 'ESTUDIANTE', 12),
+(13, 'carmen.vargas@university.edu', 'carmen345', 'ESTUDIANTE', 13),
+(14, 'javier.ruiz@university.edu', 'javier678', 'ESTUDIANTE', 14),
+(15, 'patricia.leon@university.edu', 'patricia901', 'ESTUDIANTE', 15),
+(16, 'ricardo.mendoza@university.edu', 'ricardo234', 'ESTUDIANTE', 16),
+(17, 'gabriela.ortega@university.edu', 'gabriela567', 'ESTUDIANTE', 17),
+(18, 'fernando.castro@university.edu', 'fernando890', 'ESTUDIANTE', 18),
+(19, 'diana.paredes@university.edu', 'diana123', 'ESTUDIANTE', 19),
+(20, 'oscar.jimenez@university.edu', 'oscar456', 'ESTUDIANTE', 20);
 
 
+INSERT IGNORE INTO Productos (id, nombre, tipo, precio, disponibilidad) VALUES
+(1, 'Café Americano', 'CAFE', 2.50, true),
+(2, 'Capuchino', 'CAFE', 3.00, true),
+(3, 'Croissant', 'GALLETA', 1.80, true),
+(4, 'Salchipapa Especial', 'SALCHIPAPA', 4.50, true),
+(5, 'Tarta de Chocolate', 'PASTEL', 3.50, true),
+(6, 'Agua Pura 500ml', 'AGUA_PURA', 1.00, true),
+(7, 'Pepsi 355ml', 'PEPSI', 1.50, true),
+(8, 'Combo Pizza Personal', 'COMBO_PIZZA', 6.00, true),
+(9, 'Cheesecake', 'PASTEL', 4.00, true),
+(10, 'Galletas de Avena', 'GALLETA', 2.00, true),
+(11, 'Café Latte', 'CAFE', 3.25, true),
+(12, 'Salchipapa Familiar', 'SALCHIPAPA', 7.00, true),
+(13, 'Tarta de Queso', 'PASTEL', 3.75, false),
+(14, 'Agua Pura 1L', 'AGUA_PURA', 1.50, true),
+(15, 'Pepsi 500ml', 'PEPSI', 2.00, true),
+(16, 'Combo Pizza Mediana', 'COMBO_PIZZA', 9.50, true),
+(17, 'Brownie', 'GALLETA', 2.50, true),
+(18, 'Café Mocha', 'CAFE', 3.50, true),
+(19, 'Salchipapa Picante', 'SALCHIPAPA', 5.00, true),
+(20, 'Tarta de Manzana', 'PASTEL', 3.25, true);
 
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (1, 'Juan Pérez', 'juan.perez@correo.com', 'Zona 1, Ciudad de Guatemala', '5023456789');
+INSERT IGNORE INTO Empleados (id, nombre, rol, turno) VALUES
+(1, 'Roberto Jiménez', 'CAJERO', 'mañana'),
+(2, 'Carmen Vargas', 'CAJERO', 'mañana'),
+(3, 'Javier Morales', 'ADMINISTRADOR', 'tarde'),
+(4, 'Isabel Ruiz', 'COCINERO', 'tarde'),
+(5, 'Fernando Castro', 'CAJERO', 'tarde'),
+(6, 'Patricia León', 'REPARTIDOR', 'noche'),
+(7, 'Ricardo Mendoza', 'CAJERO', 'noche'),
+(8, 'Gabriela Ortega', 'ADMINISTRADOR', 'mañana'),
+(9, 'Oscar Silva', 'COCINERO', 'mañana'),
+(10, 'Diana Paredes', 'REPARTIDOR', 'tarde'),
+(11, 'Luis García', 'CAJERO', 'mañana'),
+(12, 'Marta Hernández', 'COCINERO', 'tarde'),
+(13, 'Andrés López', 'REPARTIDOR', 'noche'),
+(14, 'Sandra Martínez', 'ADMINISTRADOR', 'mañana'),
+(15, 'Pablo Rodríguez', 'CAJERO', 'tarde'),
+(16, 'Elena Sánchez', 'COCINERO', 'noche'),
+(17, 'Daniel Torres', 'REPARTIDOR', 'mañana'),
+(18, 'Laura Díaz', 'CAJERO', 'tarde'),
+(19, 'Miguel Castro', 'ADMINISTRADOR', 'noche'),
+(20, 'Ana Morales', 'COCINERO', 'mañana');
 
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (2, 'María Gómez', 'maria.gomez@correo.com', 'Zona 10, Ciudad de Guatemala', '5029876543');
+INSERT IGNORE INTO Pedidos (id, id_estudiante, fecha_pedido, total, estado) VALUES
+(1, 1, '2024-01-15', 5.50, 'ENTREGADO'),
+(2, 2, '2024-01-15', 7.00, 'PENDIENTE'),
+(3, 3, '2024-01-16', 3.80, 'EN_PROCESO'),
+(4, 1, '2024-01-16', 9.50, 'ENTREGADO'),
+(5, 4, '2024-01-17', 6.25, 'PENDIENTE'),
+(6, 5, '2024-01-17', 4.00, 'ENTREGADO'),
+(7, 6, '2024-01-18', 8.75, 'EN_PROCESO'),
+(8, 2, '2024-01-18', 3.00, 'CANCELADO'),
+(9, 7, '2024-01-19', 5.80, 'PENDIENTE'),
+(10, 8, '2024-01-19', 10.25, 'EN_PROCESO'),
+(11, 9, '2024-01-20', 7.50, 'ENTREGADO'),
+(12, 10, '2024-01-20', 4.75, 'PENDIENTE'),
+(13, 11, '2024-01-21', 8.25, 'EN_PROCESO'),
+(14, 12, '2024-01-21', 6.80, 'ENTREGADO'),
+(15, 13, '2024-01-22', 3.50, 'CANCELADO');
 
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (3, 'Carlos López', 'carlos.lopez@correo.com', 'Zona 7, Mixco', '5024561237');
 
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (4, 'Ana Morales', 'ana.morales@correo.com', 'Zona 5, Villa Nueva', '5023217894');
+INSERT IGNORE INTO Facturas (id, student_id, order_id, total, payment_type) VALUES
+(1, 1, 1, 5.50, 'CASH'),
+(2, 1, 4, 9.50, 'CREDIT_CARD'),
+(3, 5, 6, 4.00, 'BANK_TRANSFER'),
+(4, 2, 8, 3.00, 'CASH'),
+(5, 3, 3, 3.80, 'CREDIT_CARD'),
+(6, 6, 7, 8.75, 'MOBILE_PAYMENT'),
+(7, 4, 5, 6.25, 'CASH'),
+(8, 7, 9, 5.80, 'BANK_TRANSFER'),
+(9, 8, 10, 10.25, 'MOBILE_PAYMENT'),
+(10, 2, 2, 7.00, 'CREDIT_CARD'),
+(11, 9, 11, 7.50, 'CASH'),
+(12, 10, 12, 4.75, 'CREDIT_CARD'),
+(13, 11, 13, 8.25, 'BANK_TRANSFER'),
+(14, 12, 14, 6.80, 'MOBILE_PAYMENT'),
+(15, 13, 15, 3.50, 'CASH');
 
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (5, 'Luis Castillo', 'luis.castillo@correo.com', 'Zona 18, Ciudad de Guatemala', '5027418529');
+INSERT IGNORE INTO Entregas (id, order_id, employee_id, delivery_status, delivery_date) VALUES
+(1, 1, 6, 'DELIVERED', '2024-01-15'),
+(2, 4, 10, 'DELIVERED', '2024-01-16'),
+(3, 6, 6, 'DELIVERED', '2024-01-17'),
+(4, 3, 10, 'PENDING', '2024-01-16'),
+(5, 7, 6, 'PENDING', '2024-01-18'),
+(6, 10, 10, 'PENDING', '2024-01-19'),
+(7, 2, 6, 'CANCELLED', '2024-01-15'),
+(8, 5, 10, 'CANCELLED', '2024-01-17'),
+(9, 9, 6, 'PENDING', '2024-01-19'),
+(10, 8, 10, 'DELIVERED', '2024-01-18'),
+(11, 11, 13, 'DELIVERED', '2024-01-20'),
+(12, 14, 17, 'DELIVERED', '2024-01-21'),
+(13, 18, 13, 'DELIVERED', '2024-01-23'),
+(14, 13, 17, 'PENDING', '2024-01-21'),
+(15, 17, 13, 'PENDING', '2024-01-23');
 
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (6, 'Sofía Méndez', 'sofia.mendez@correo.com', 'Amatitlán', '5029632581');
 
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (7, 'Ricardo Ramírez', 'ricardo.ramirez@correo.com', 'Zona 12, Ciudad de Guatemala', '5021597534');
-
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (8, 'Paola Torres', 'paola.torres@correo.com', 'Zona 2, Santa Catarina Pinula', '5028523697');
-
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (9, 'Andrés Reyes', 'andres.reyes@correo.com', 'San Miguel Petapa', '5023692587');
-
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (10, 'Fernanda Álvarez', 'fernanda.alvarez@correo.com', 'Zona 13, Ciudad de Guatemala', '5027531598');
-
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (11, 'José García', 'jose.garcia@correo.com', 'Zona 21, Ciudad de Guatemala', '5029517536');
-
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (12, 'Claudia Sánchez', 'claudia.sanchez@correo.com', 'Mixco', '5023571594');
-
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (13, 'Víctor Hernández', 'victor.hernandez@correo.com', 'Villa Canales', '5022587419');
-
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (14, 'Alejandra Ruiz', 'alejandra.ruiz@correo.com', 'Zona 16, Ciudad de Guatemala', '5026547891');
-
-INSERT IGNORE INTO estudiantes (id, nombre, correo, carrera, telefono)
-VALUES (15, 'Martín Cabrera', 'martin.cabrera@correo.com', 'Zona 8, Ciudad de Guatemala', '5021478529');
-
-INSERT IGNORE INTO empleados (id, nombre, rol, turno)
-VALUES (1, 'Carlos Pérez', 'Cocinero', 'Mañana');
-
-INSERT IGNORE INTO empleados (id, nombre, rol, turno)
-VALUES (2, 'Lucía Gómez', 'Repartidora', 'Tarde');
-
-INSERT IGNORE INTO empleados (id, nombre, rol, turno)
-VALUES (3, 'Ana López', 'Gerente', 'Mañana');
-
-INSERT IGNORE INTO empleados (id, nombre, rol, turno)
-VALUES (4, 'Juan Martínez', 'Cocinero', 'Tarde');
-
-INSERT IGNORE INTO empleados (id, nombre, rol, turno)
-VALUES (5, 'Sofía Ruiz', 'Repartidora', 'Mañana');
-
-INSERT IGNORE INTO empleados (id, nombre, rol, turno)
-VALUES (6, 'Ricardo Torres', 'Administrador', 'Tarde');
-
-INSERT IGNORE INTO empleados (id, nombre, rol, turno)
-VALUES (7, 'Paola Hernández', 'Cocinera', 'Mañana');
-
-INSERT IGNORE INTO empleados (id, nombre, rol, turno)
-VALUES (8, 'Víctor Ramírez', 'Repartidor', 'Noche');
-
-INSERT IGNORE INTO empleados (id, nombre, rol, turno)
-VALUES (9, 'Martín Cabrera', 'Gerente', 'Tarde');
-
-INSERT IGNORE INTO empleados (id, nombre, rol, turno)
-VALUES (10, 'Claudia Sánchez', 'Repartidora', 'Mañana');
-
-INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
-VALUES (1, 'Salchipapas', 'SALCHIPAPA', 25.00, 50);
-
-INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
-VALUES (2, 'Torta de chocolate', 'CAKE', 35.00, 20);
-
-INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
-VALUES (3, 'Combo Pizza', 'PIZZA_COMBO', 100.00, 30);
-
-INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
-VALUES (4, 'Botella de agua pura', 'AGUAPURA_BOTTLE', 10.00, 100);
-
-INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
-VALUES (5, 'Refresco Pepsi', 'PEPSI', 15.00, 80);
-
-INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
-VALUES (6, 'Café Espresso', 'COFFEE', 20.00, 60);
-
-INSERT IGNORE INTO productos (id, nombre, tipo, precio, disponibilidad)
-VALUES (7, 'Galletas de chocolate', 'COOKIE', 5.00, 200);
-
-INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
-VALUES (1, 1, '2025-09-19 10:30:00', 40.00, 'PENDIENTE');
-
-INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
-VALUES (2, 2, '2025-09-19 11:00:00', 120.00, 'EN_PROCESO');
-
-INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
-VALUES (3, 3, '2025-09-19 12:15:00', 50.00, 'ENTREGADO');
-
-INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
-VALUES (4, 4, '2025-09-19 13:30:00', 25.00, 'CANCELADO');
-
-INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
-VALUES (5, 5, '2025-09-19 14:00:00', 30.00, 'PENDIENTE');
-
-INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
-VALUES (6, 6, '2025-09-19 15:00:00', 150.00, 'EN_PROCESO');
-
-INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
-VALUES (7, 7, '2025-09-19 16:10:00', 70.00, 'PENDIENTE');
-
-INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
-VALUES (8, 8, '2025-09-19 17:00:00', 90.00, 'ENTREGADO');
-
-INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
-VALUES (9, 9, '2025-09-19 18:30:00', 55.00, 'CANCELADO');
-
-INSERT IGNORE INTO pedidos (id, id_estudiante, fecha_pedido, total, estado)
-VALUES (10, 10, '2025-09-19 19:45:00', 75.00, 'EN_PROCESO');

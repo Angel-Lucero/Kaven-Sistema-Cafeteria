@@ -34,7 +34,6 @@ public class WebRegistrarseController implements Serializable {
 
     public void guardarUsuario() {
         try {
-            // Validaciones básicas
             if (correo == null || correo.trim().isEmpty()) {
                 mostrarError("El correo es requerido");
                 return;
@@ -45,7 +44,6 @@ public class WebRegistrarseController implements Serializable {
                 return;
             }
 
-            // Crear nuevo usuario - todos los 5 parámetros requeridos
             UsuarioDto nuevoUsuario = new UsuarioDto(null, correo, contrasena, "STUDENT", null);
             UsuarioDto usuarioGuardado = usuarioService.guardarUsuario(nuevoUsuario);
 

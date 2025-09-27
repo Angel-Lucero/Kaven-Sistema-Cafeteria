@@ -25,17 +25,22 @@ import java.util.List;
 @ViewScoped
 public class WebTablaPedidosController implements Serializable {
 
+    private static final Logger logger = LoggerFactory.getLogger(WebTablaPedidosController.class);
+
     @Autowired
     private PedidoService pedidoService;
 
     private List<PedidoDto> pedidos;
     private PedidoDto pedidoSeleccionado;
-    private static final Logger logger = LoggerFactory.getLogger(WebTablaPedidosController.class);
 
-    private Long editStudentId;
+    private Long editStudentid;
+    private LocalDate editOrderdate;
+    private BigDecimal editTotal;
     private String editState;
-    private String editTotal;
-    private String editOrderDate;
+
+    public List<String> getEstadosPedido() {
+        return List.of("PENDIENTE", "EN_PROCESO", "ENTREGADO", "CANCELADO");
+    }
 
     @PostConstruct
     public void init() {
@@ -43,63 +48,60 @@ public class WebTablaPedidosController implements Serializable {
     }
 
     public void cargarDatos() {
-        this.pedidos = this.pedidoService.obtenerTodoPedido();
-        this.pedidos.forEach(pedido -> logger.info(pedido.toString()));
-    }
-
-    public void refresh() {
         try {
-            this.pedidos = new ArrayList<>(pedidoService.obtenerTodoPedido());
+            this.pedidos = this.pedidoService.obtenerTodoPedido();
         } catch (Exception e) {
+            logger.error("Error al cargar los pedidos", e);
             this.pedidos = new ArrayList<>();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudieron cargar los pedidos."));
         }
     }
 
     public void agregarPedido() {
-        this.pedidoSeleccionado = null;  // Nuevo pedido
-        this.editStudentId = null;
-        this.editState = "Pendiente";
-        this.editTotal = "0.0";
-        this.editOrderDate = "";
+        this.pedidoSeleccionado = null;
+        this.editStudentid = null;
+        this.editOrderdate = LocalDate.now();
+        this.editTotal = BigDecimal.ZERO;
+        this.editState = "PENDIENTE";
         PrimeFaces.current().executeScript("PF('ventanaModalPedido').show()");
     }
 
-    public void prepararEdicion(PedidoDto p) {
-        this.pedidoSeleccionado = p;
-        if (p != null) {
-            this.editStudentId = p.studentid();
-            this.editState = p.state();
-            this.editTotal = String.valueOf(p.total());
-            this.editOrderDate = p.orderdate().toString();
+    public void prepararEdicion(PedidoDto pedido) {
+        this.pedidoSeleccionado = pedido;
+        if (pedido != null) {
+            this.editStudentid = pedido.studentid();
+            this.editOrderdate = pedido.orderdate();
+            this.editTotal = pedido.total();
+            this.editState = pedido.state();
         }
         PrimeFaces.current().executeScript("PF('ventanaModalPedido').show()");
     }
 
     public void guardarPedido() {
         try {
-            ModPedidoDto modPedidoDto = new ModPedidoDto(
-                    this.editStudentId,
-                    LocalDate.parse(this.editOrderDate),
-                    new BigDecimal(this.editTotal),
-                    this.editState
-            );
-
             PedidoDto pedidoGuardado;
-            if (this.pedidoSeleccionado != null && this.pedidoSeleccionado.id() != null) {
-                pedidoGuardado = this.pedidoService.modificarPedido(this.pedidoSeleccionado.id(), modPedidoDto);
+            String mensajeExito;
+
+            if (this.pedidoSeleccionado == null || this.pedidoSeleccionado.id() == null) {
+                PedidoDto nuevoDto = new PedidoDto(null, editStudentid, editOrderdate, editTotal, editState);
+                pedidoGuardado = this.pedidoService.guardarPedido(nuevoDto);
+                mensajeExito = "Pedido Agregado";
             } else {
-                pedidoGuardado = this.pedidoService.guardarPedido(new PedidoDto(null, this.editStudentId, LocalDate.parse(this.editOrderDate), new BigDecimal(this.editTotal), this.editState));
+                ModPedidoDto modDto = new ModPedidoDto(editStudentid, editOrderdate, editTotal, editState);
+                pedidoGuardado = this.pedidoService.modificarPedido(this.pedidoSeleccionado.id(), modDto);
+                mensajeExito = "Pedido Modificado";
             }
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pedido " + (this.pedidoSeleccionado == null ? "Agregado" : "Modificado")));
-            refresh();
-            this.pedidoSeleccionado = pedidoGuardado;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensajeExito));
+            cargarDatos();
             PrimeFaces.current().ajax().update("formPedidos:tablaPedidos", "growlMensajes");
             PrimeFaces.current().executeScript("PF('ventanaModalPedido').hide()");
-            this.pedidoSeleccionado = null; // Limpiar selección
+            this.pedidoSeleccionado = null;
+
         } catch (Exception e) {
-            logger.error("Error al guardar pedido", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo guardar"));
+            logger.error("Error al guardar/modificar pedido", e);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage() != null ? e.getMessage() : "No se pudo guardar el pedido."));
+            PrimeFaces.current().ajax().update("growlMensajes");
         }
     }
 
@@ -108,12 +110,13 @@ public class WebTablaPedidosController implements Serializable {
         try {
             this.pedidoService.eliminarPedido(this.pedidoSeleccionado.id());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pedido Eliminado"));
-            refresh();
+            cargarDatos();
             PrimeFaces.current().ajax().update("formPedidos:tablaPedidos", "growlMensajes");
             this.pedidoSeleccionado = null;
         } catch (Exception e) {
             logger.error("Error al eliminar pedido", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage() != null ? e.getMessage() : "No se pudo eliminar el pedido."));
+            PrimeFaces.current().ajax().update("growlMensajes");
         }
     }
 

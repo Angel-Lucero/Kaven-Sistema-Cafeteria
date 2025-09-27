@@ -5,95 +5,61 @@
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-    <title>Iniciar Sesión</title>
+    <title>Iniciar Sesión - Cafetería</title>
+    <h:outputStylesheet name="css/styleweb.css"/>
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
-    <style>
-        body {
-            background: linear-gradient(135deg, #1E3A8A, #3B82F6);
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        .card {
-            background-color: #f5f5f5;
-            border-radius: 1rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-
-        h1 {
-            color: #1E3A8A;
-        }
-
-        .ui-inputfield {
-            border: 1px solid #ccc;
-            border-radius: 0.5rem;
-        }
-
-        .ui-button-success {
-            background: #1E3A8A !important;
-            border: none !important;
-            color: white !important;
-        }
-
-        .ui-button-success:hover {
-            background: #2563EB !important;
-        }
-
-        .ui-button-outlined {
-            border: 2px solid #6b7280 !important;
-            color: #374151 !important;
-            border-radius: 0.5rem;
-        }
-
-        .ui-button-outlined:hover {
-            background: #e5e7eb !important;
-        }
-
-        .text-color-secondary {
-            color: #6b7280;
-        }
-    </style>
 </h:head>
-<h:body>
-    <div class="flex justify-content-center align-items-center h-screen">
-        <div class="card w-30rem p-4">
+
+<h:body class="login-container">
+    <div class="flex justify-content-center align-items-center min-h-screen">
+        <div class="login-card w-30rem p-5">
             <h:form id="form-login">
-                <p:growl id="growlMessages" showDetail="true" life="3000"/>
-                <div class="flex justify-content-center mb-5">
-                    <h1 class="text-5xl font-bold">Inicio Sesión</h1>
+                <p:growl id="growlMessages" showDetail="true" life="3000"
+                         styleClass="custom-growl"/>
+
+                <div class="text-center mb-5">
+                    <i class="pi pi-user text-6xl text-color-secondary mb-3"></i>
+                    <h1 class="text-3xl font-bold m-0">Iniciar Sesión</h1>
+                    <p class="text-color-secondary mt-2">Sistema de Cafetería</p>
                 </div>
+
                 <div class="field mb-4">
-                    <p:outputLabel for="usuario" value="Correo electrónico:" styleClass="block font-semibold mb-2"/>
+                    <p:outputLabel for="usuario" value="Correo electrónico"
+                                   styleClass="block font-semibold mb-2 text-color-secondary"/>
                     <p:inputText id="usuario"
                                  value="#{webIndexController.usuario}"
-                                 placeholder="Coloca tu @gmail aca pues rey"
-                                 required="true" requiredMessage="El correo es requerido"
-                                 styleClass="w-full p-3"/>
+                                 placeholder="usuario@cafeteria.edu"
+                                 required="true"
+                                 requiredMessage="El correo es requerido"
+                                 styleClass="w-full p-3 border-1 border-300 bg-gray-900 text-white"/>
                 </div>
+
                 <div class="field mb-5">
-                    <p:outputLabel for="password" value="Contraseña:" styleClass="block font-semibold mb-2"/>
+                    <p:outputLabel for="password" value="Contraseña"
+                                   styleClass="block font-semibold mb-2 text-color-secondary"/>
                     <p:password id="password"
                                 value="#{webIndexController.password}"
-                                placeholder="Ingresa tu contraseña aca mi rey"
+                                placeholder="Ingresa tu contraseña"
                                 feedback="false"
-                                required="true" requiredMessage="La contraseña es requerida"
-                                styleClass="w-full p-3"/>
+                                required="true"
+                                requiredMessage="La contraseña es requerida"
+                                styleClass="w-full p-3 border-1 border-300 bg-gray-900 text-white"/>
                 </div>
-                <div class="flex justify-content-center mb-4">
+
+                <div class="mb-4">
                     <p:commandButton value="Iniciar Sesión"
                                      icon="pi pi-sign-in"
                                      action="#{webIndexController.iniciarSesion}"
                                      update="growlMessages"
-                                     styleClass="ui-button-success w-full p-3 font-semibold"/>
-                </div>
-                <div class="flex justify-content-center align-items-center gap-2">
-                    <span class="text-color-secondary">¿No tienes cuenta?</span>
-                    <p:button value="Regístrate"
-                              outcome="/Registrarse.xhtml"
-                              styleClass="ui-button-outlined p-2"/>
+                                     styleClass="w-full p-3 btn-primary font-semibold"/>
                 </div>
 
+                <div class="text-center">
+                    <span class="text-color-secondary">¿No tienes cuenta? </span>
+                    <p:button value="Regístrate"
+                              outcome="/Registrarse.xhtml"
+                              styleClass="p-button-link text-blue-400"/>
+                </div>
             </h:form>
         </div>
     </div>

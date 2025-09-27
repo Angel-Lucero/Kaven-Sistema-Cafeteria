@@ -6,6 +6,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import lombok.Data;
 import org.kaven.Cafeteria.dominio.dto.EstudianteDto;
+import org.kaven.Cafeteria.dominio.dto.ModEstudianteDto;
 import org.kaven.Cafeteria.dominio.service.EstudianteService;
 import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
@@ -20,9 +21,9 @@ import java.util.List;
 @Component
 @Data
 @ViewScoped
-public class WebTablaEstudianteController implements Serializable {
+public class WebTablaEstudiantesController implements Serializable {
 
-    private static final Logger logger = LoggerFactory.getLogger(WebTablaEstudianteController.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebTablaEstudiantesController.class);
 
     @Autowired
     private EstudianteService estudianteService;
@@ -35,11 +36,8 @@ public class WebTablaEstudianteController implements Serializable {
     private String editPhone;
     private String editCareer;
 
-    public WebTablaEstudianteController(EstudianteService estudianteService) {
-        this.estudianteService = estudianteService;
-    }
-
-    public WebTablaEstudianteController() {
+    public List<String> getCarreras() {
+        return List.of("INFORMATICA", "DIBUJO_TECNICO", "MECANICA", "ELECTRONICA", "ELECTRICIDAD");
     }
 
     @PostConstruct
@@ -48,24 +46,21 @@ public class WebTablaEstudianteController implements Serializable {
     }
 
     public void cargarDatos() {
-        this.estudiantes = estudianteService.obtenerTodoEstudiante();
-        estudiantes.forEach(estudiante -> logger.info(estudiante.toString()));
-    }
-
-    public void refresh() {
         try {
-            this.estudiantes = new ArrayList<>(estudianteService.obtenerTodoEstudiante());
+            this.estudiantes = this.estudianteService.obtenerTodoEstudiante();
         } catch (Exception e) {
+            logger.error("Error al cargar los estudiantes", e);
             this.estudiantes = new ArrayList<>();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudieron cargar los estudiantes."));
         }
     }
 
     public void agregarEstudiante() {
-        this.estudianteSeleccionado = null; // Nuevo
+        this.estudianteSeleccionado = null;
         this.editName = "";
         this.editMail = "";
         this.editPhone = "";
-        this.editCareer = "";
+        this.editCareer = "INFORMATICA";
         PrimeFaces.current().executeScript("PF('ventanaModalEstudiante').show()");
     }
 
@@ -82,28 +77,29 @@ public class WebTablaEstudianteController implements Serializable {
 
     public void guardarEstudiante() {
         try {
-            EstudianteDto dto;
+            EstudianteDto estudianteGuardado;
+            String mensajeExito;
+
             if (this.estudianteSeleccionado == null || this.estudianteSeleccionado.id() == null) {
-                dto = new EstudianteDto(null, editName, editMail, editPhone, editCareer, null);
+                EstudianteDto nuevoDto = new EstudianteDto(null, editName, editMail, editPhone, editCareer, null);
+                estudianteGuardado = this.estudianteService.guardarEstudiante(nuevoDto);
+                mensajeExito = "Estudiante Agregado";
             } else {
-                dto = new EstudianteDto(this.estudianteSeleccionado.id(), editName, editMail, editPhone, editCareer, null);
+                ModEstudianteDto modDto = new ModEstudianteDto(editName, editMail, editPhone, editCareer);
+                estudianteGuardado = this.estudianteService.modificarEstudiante(this.estudianteSeleccionado.id(), modDto);
+                mensajeExito = "Estudiante Modificado";
             }
 
-            EstudianteDto guardado = this.estudianteService.guardarEstudiante(dto);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                    this.estudianteSeleccionado == null || this.estudianteSeleccionado.id() == null
-                            ? "Estudiante Agregado"
-                            : "Estudiante Modificado"
-            ));
-
-            refresh();
-            this.estudianteSeleccionado = guardado;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensajeExito));
+            cargarDatos();
             PrimeFaces.current().ajax().update("formEstudiantes:tablaEstudiantes", "growlMensajes");
             PrimeFaces.current().executeScript("PF('ventanaModalEstudiante').hide()");
-            this.estudianteSeleccionado = null; // Limpiar la selección tras cerrar
+            this.estudianteSeleccionado = null;
+
         } catch (Exception e) {
-            logger.error("Error al guardar estudiante", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo guardar"));
+            logger.error("Error al guardar/modificar estudiante", e);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage() != null ? e.getMessage() : "No se pudo guardar el estudiante."));
+            PrimeFaces.current().ajax().update("growlMensajes");
         }
     }
 
@@ -112,27 +108,18 @@ public class WebTablaEstudianteController implements Serializable {
         try {
             this.estudianteService.eliminarEstudiante(this.estudianteSeleccionado.id());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Estudiante Eliminado"));
-            refresh();
+            cargarDatos();
             PrimeFaces.current().ajax().update("formEstudiantes:tablaEstudiantes", "growlMensajes");
             this.estudianteSeleccionado = null;
         } catch (Exception e) {
             logger.error("Error al eliminar estudiante", e);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage() != null ? e.getMessage() : "No se pudo eliminar el estudiante."));
+            PrimeFaces.current().ajax().update("growlMensajes");
         }
     }
 
     public void cancelarEstudiante() {
         this.estudianteSeleccionado = null;
         PrimeFaces.current().executeScript("PF('ventanaModalEstudiante').hide()");
-    }
-
-    public void delete(EstudianteDto estudiante) { // Legacy
-        if (estudiante == null || estudiante.id() == null) return;
-        try {
-            estudianteService.eliminarEstudiante(estudiante.id());
-            refresh();
-        } catch (Exception e) {
-            logger.error("Error legacy delete", e);
-        }
     }
 }

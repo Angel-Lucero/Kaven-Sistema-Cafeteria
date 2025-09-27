@@ -10,11 +10,12 @@ public class DeliveryMapper {
     @Named("stringAStatus")
     public DeliveryStatus stringAStatus(String status) {
         if (status == null) return null;
-        return switch (status.toUpperCase()) {
-            case "PENDIENTE" -> DeliveryStatus.PENDING;
-            case "ENTREGADO" -> DeliveryStatus.DELIVERED;
-            case "CANCELADO" -> DeliveryStatus.CANCELLED;
-            default -> null;
+        String statusUpper = status.trim().toUpperCase();
+        return switch (statusUpper) {
+            case "PENDIENTE", "PENDING" -> DeliveryStatus.PENDING;
+            case "ENTREGADO", "DELIVERED" -> DeliveryStatus.DELIVERED;
+            case "CANCELADO", "CANCELLED" -> DeliveryStatus.CANCELLED;
+            default -> throw new IllegalArgumentException("Estado de entrega no válido: " + status);
         };
     }
 

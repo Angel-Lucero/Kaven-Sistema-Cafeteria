@@ -21,7 +21,7 @@ public class UsuarioEntity {
     @Column(name = "tipo_usuario", length = 20, nullable = false)
     private String tipoUsuario = "STUDENT";
 
-    @OneToOne
-    @JoinColumn(name = "id_estudiante", unique = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_estudiante", unique = true, nullable = true)
     private EstudianteEntity estudiante;
 }

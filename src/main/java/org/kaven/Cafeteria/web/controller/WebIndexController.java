@@ -16,12 +16,12 @@ import java.io.Serializable;
 @ViewScoped
 @Data
 public class WebIndexController implements Serializable {
-    private static final long serialVersionUID = 1L; // Agregar serialVersionUID
+    private static final long serialVersionUID = 1L;
 
     private static final Logger logger = LoggerFactory.getLogger(WebIndexController.class);
 
     @Autowired
-    private transient UsuarioService usuarioService; // Agregar transient
+    private transient UsuarioService usuarioService;
 
     private String usuario;
     private String password;
@@ -30,7 +30,7 @@ public class WebIndexController implements Serializable {
         try {
             if (usuario == null || usuario.trim().isEmpty()) {
                 FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El usuario es requerido"));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El correo es requerido"));
                 return null;
             }
 
@@ -47,13 +47,12 @@ public class WebIndexController implements Serializable {
                         new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Inicio de sesión exitoso"));
                 logger.info("Usuario {} inició sesión correctamente", usuario);
 
-                // Verificar si es administrador basado en usertype
-                if ("ADMIN".equalsIgnoreCase(usuarioDto.usertype())) {
+                if ("ADMINISTRACION".equalsIgnoreCase(usuarioDto.usertype())) {
                     logger.info("Usuario {} identificado como administrador", usuario);
-                    return "Administracion?faces-redirect=true"; // Cambiar la ruta
+                    return "Administracion?faces-redirect=true";
                 } else {
                     logger.info("Usuario {} identificado como usuario normal", usuario);
-                    return "Inicio?faces-redirect=true"; // Cambiar la ruta
+                    return "Inicio?faces-redirect=true";
                 }
 
             } else {
@@ -68,5 +67,10 @@ public class WebIndexController implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario o contraseña incorrectos"));
             return null;
         }
+    }
+
+    public String cerrarSesion() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "/Index.xhtml?faces-redirect=true";
     }
 }
