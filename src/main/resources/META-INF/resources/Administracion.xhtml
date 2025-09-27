@@ -1,28 +1,113 @@
 <!DOCTYPE html>
-<h:html xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:h="http://xmlns.jcp.org/jsf/html"
-        xmlns:f="http://xmlns.jcp.org/jsf/core"
-        xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Administración - Kinavana 2024401</title>
-        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
-        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
-    </h:head>
-    <h:body>
-        <div class="card">
-            <h3 class="text-center">Panel de Administración</h3>
-            <h:form id="formulario-admin">
-                <div class="flex flex-wrap justify-content-center gap-3">
-                    <p:commandButton value="Clientes" icon="pi pi-users" styleClass="p-button-lg p-button-info"
-                                     action="#{adminController.irClientes}" />
-                    <p:commandButton value="Productos" icon="pi pi-box" styleClass="p-button-lg p-button-success"
-                                     action="#{adminController.irProductos}" />
-                    <p:commandButton value="Pedidos" icon="pi pi-shopping-cart" styleClass="p-button-lg p-button-warning"
-                                     action="#{adminController.irPedidos}" />
-                    <p:commandButton value="Estudiantes" icon="pi pi-user" styleClass="p-button-lg p-button-primary"
-                                     action="#{adminController.irEstudiantes}" />
-                </div>
-            </h:form>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Panel de Administración - Cafetería</title>
+    <h:outputStylesheet name="css/styleweb.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+</h:head>
+
+<h:body class="admin-panel">
+    <div class="admin-header">
+        <div class="flex align-items-center justify-content-between px-5">
+            <div>
+                <h1 class="text-2xl font-bold m-0">
+                    <i class="pi pi-cog mr-2"></i>Panel de Administración
+                </h1>
+                <p class="text-color-secondary m-0">Sistema de Cafetería</p>
+            </div>
+            <p:commandButton value="Cerrar Sesión"
+                             icon="pi pi-sign-out"
+                             action="#{webIndexController.cerrarSesion}"
+                             styleClass="p-button-danger"/>
         </div>
-    </h:body>
-</h:html>
+    </div>
+
+    <div class="admin-grid">
+        <h:form id="form-admin">
+            <div class="admin-card p-4" onclick="location.href='TablaUsuarios.xhtml'">
+                <div class="flex align-items-center">
+                    <i class="pi pi-users text-3xl text-blue-400 mr-3"></i>
+                    <div>
+                        <h3 class="m-0 font-semibold">Usuarios</h3>
+                        <p class="text-color-secondary m-0">Gestionar usuarios del sistema</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card p-4" onclick="location.href='TablaEstudiantes.xhtml'">
+                <div class="flex align-items-center">
+                    <i class="pi pi-user text-3xl text-green-400 mr-3"></i>
+                    <div>
+                        <h3 class="m-0 font-semibold">Estudiantes</h3>
+                        <p class="text-color-secondary m-0">Gestionar estudiantes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card p-4" onclick="location.href='TablaProductos.xhtml'">
+                <div class="flex align-items-center">
+                    <i class="pi pi-shopping-bag text-3xl text-orange-400 mr-3"></i>
+                    <div>
+                        <h3 class="m-0 font-semibold">Productos</h3>
+                        <p class="text-color-secondary m-0">Gestionar productos</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card p-4" onclick="location.href='TablaPedidos.xhtml'">
+                <div class="flex align-items-center">
+                    <i class="pi pi-shopping-cart text-3xl text-purple-400 mr-3"></i>
+                    <div>
+                        <h3 class="m-0 font-semibold">Pedidos</h3>
+                        <p class="text-color-secondary m-0">Gestionar pedidos</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card p-4" onclick="location.href='TablaFacturas.xhtml'">
+                <div class="flex align-items-center">
+                    <i class="pi pi-file text-3xl text-red-400 mr-3"></i>
+                    <div>
+                        <h3 class="m-0 font-semibold">Facturas</h3>
+                        <p class="text-color-secondary m-0">Gestionar facturas</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card p-4" onclick="location.href='TablaCarreras.xhtml'">
+                <div class="flex align-items-center">
+                    <i class="pi pi-book text-3xl text-yellow-400 mr-3"></i>
+                    <div>
+                        <h3 class="m-0 font-semibold">Carreras</h3>
+                        <p class="text-color-secondary m-0">Gestionar carreras</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card p-4" onclick="location.href='TablaEmpleados.xhtml'">
+                <div class="flex align-items-center">
+                    <i class="pi pi-id-card text-3xl text-cyan-400 mr-3"></i>
+                    <div>
+                        <h3 class="m-0 font-semibold">Empleados</h3>
+                        <p class="text-color-secondary m-0">Gestionar empleados</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card p-4" onclick="location.href='TablaEntregas.xhtml'">
+                <div class="flex align-items-center">
+                    <i class="pi pi-truck text-3xl text-pink-400 mr-3"></i>
+                    <div>
+                        <h3 class="m-0 font-semibold">Entregas</h3>
+                        <p class="text-color-secondary m-0">Gestionar entregas</p>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </div>
+</h:body>
+</html>

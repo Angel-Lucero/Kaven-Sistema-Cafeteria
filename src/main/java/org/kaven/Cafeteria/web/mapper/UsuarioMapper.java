@@ -24,9 +24,11 @@ public interface UsuarioMapper {
     @InheritInverseConfiguration
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "usertype", target = "tipoUsuario")
+    @Mapping(target = "estudiante", ignore = true)
     UsuarioEntity toEntity(UsuarioDto dto);
 
     @Mapping(source = "mail", target = "correo")
     @Mapping(source = "password", target = "contrasena")
+    @Mapping(target = "estudiante", ignore = true)
     void modificarEntityFromDto(ModUsuarioDto dto, @MappingTarget UsuarioEntity entity);
 }

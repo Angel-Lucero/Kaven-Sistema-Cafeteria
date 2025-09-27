@@ -49,22 +49,22 @@
                         <h:outputText value="#{producto.id()}"/>
                     </p:column>
 
-                    <p:column headerText="Nombre" sortBy="#{producto.nombre()}" style="width: 12rem;">
-                        <h:outputText value="#{producto.nombre()}"/>
+                    <p:column headerText="Nombre" sortBy="#{producto.name()}" style="width: 12rem;">
+                        <h:outputText value="#{producto.name()}"/>
                     </p:column>
 
-                    <p:column headerText="Precio" sortBy="#{producto.precio()}" style="width: 8rem;" styleClass="price-column">
-                        <h:outputText value="#{producto.precio()}">
+                    <p:column headerText="Precio" sortBy="#{producto.price()}" style="width: 8rem;" styleClass="price-column">
+                        <h:outputText value="#{producto.price()}">
                             <f:convertNumber type="currency" currencySymbol="$" minFractionDigits="2"/>
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Stock" sortBy="#{producto.stock()}" style="width: 6rem; text-align: center;">
-                        <h:outputText value="#{producto.stock()}"/>
+                    <p:column headerText="Tipo" sortBy="#{producto.type()}" style="width: 10rem;">
+                        <h:outputText value="#{producto.type()}"/>
                     </p:column>
 
-                    <p:column headerText="Categoría" sortBy="#{producto.categoria()}" style="width: 10rem;">
-                        <h:outputText value="#{producto.categoria()}"/>
+                    <p:column headerText="Disponibilidad" sortBy="#{producto.availability()}" style="width: 8rem; text-align: center;">
+                        <h:outputText value="#{producto.availability() ? 'Disponible' : 'No disponible'}"/>
                     </p:column>
 
                     <p:column headerText="Acciones" exportable="false" style="width: 12rem; text-align: center;">
@@ -99,16 +99,28 @@
                 <div class="field mb-3">
                     <p:outputLabel for="nombre" value="Nombre:" styleClass="block font-semibold mb-2"/>
                     <p:inputText id="nombre"
-                                 value="#{webTablaProductosController.editNombre}"
+                                 value="#{webTablaProductosController.editName}"
                                  required="true"
                                  requiredMessage="El nombre es obligatorio"
                                  styleClass="w-full p-2"/>
                 </div>
 
                 <div class="field mb-3">
+                    <p:outputLabel for="tipo" value="Tipo:" styleClass="block font-semibold mb-2"/>
+                    <p:selectOneMenu id="tipo"
+                                     value="#{webTablaProductosController.editType}"
+                                     required="true"
+                                     requiredMessage="El tipo es obligatorio"
+                                     styleClass="w-full p-2">
+                        <f:selectItem itemLabel="Seleccione un tipo" itemValue=""/>
+                        <f:selectItems value="#{webTablaProductosController.tiposProducto}"/>
+                    </p:selectOneMenu>
+                </div>
+
+                <div class="field mb-3">
                     <p:outputLabel for="precio" value="Precio:" styleClass="block font-semibold mb-2"/>
                     <p:inputNumber id="precio"
-                                   value="#{webTablaProductosController.editPrecio}"
+                                   value="#{webTablaProductosController.editPrice}"
                                    required="true"
                                    requiredMessage="El precio es obligatorio"
                                    styleClass="w-full p-2"
@@ -118,24 +130,11 @@
                                    currencySymbol="$"/>
                 </div>
 
-                <div class="field mb-3">
-                    <p:outputLabel for="stock" value="Stock:" styleClass="block font-semibold mb-2"/>
-                    <p:inputNumber id="stock"
-                                   value="#{webTablaProductosController.editStock}"
-                                   required="true"
-                                   requiredMessage="El stock es obligatorio"
-                                   styleClass="w-full p-2"
-                                   minValue="0"
-                                   integerOnly="true"/>
-                </div>
-
                 <div class="field mb-4">
-                    <p:outputLabel for="categoria" value="Categoría:" styleClass="block font-semibold mb-2"/>
-                    <p:inputText id="categoria"
-                                 value="#{webTablaProductosController.editCategoria}"
-                                 required="true"
-                                 requiredMessage="La categoría es obligatoria"
-                                 styleClass="w-full p-2"/>
+                    <p:outputLabel for="disponibilidad" value="Disponibilidad:" styleClass="block font-semibold mb-2"/>
+                    <p:selectBooleanCheckbox id="disponibilidad"
+                                             value="#{webTablaProductosController.editAvailability}"
+                                             styleClass="w-full p-2"/>
                 </div>
 
             </p:panelGrid>
@@ -161,7 +160,7 @@
         <f:facet name="message">
             <h:form id="formConfirmacionEliminar">
                 <p:outputPanel id="confirmacionPanel">
-                    <h:outputText value="¿Estás seguro que deseas eliminar el producto ID: #{webTablaProductosController.productoSeleccionado.id()} - Nombre: #{webTablaProductosController.productoSeleccionado.nombre()}?"
+                    <h:outputText value="¿Estás seguro que deseas eliminar el producto ID: #{webTablaProductosController.productoSeleccionado.id()} - Nombre: #{webTablaProductosController.productoSeleccionado.name()}?"
                                   rendered="#{webTablaProductosController.productoSeleccionado != null}"/>
                 </p:outputPanel>
 

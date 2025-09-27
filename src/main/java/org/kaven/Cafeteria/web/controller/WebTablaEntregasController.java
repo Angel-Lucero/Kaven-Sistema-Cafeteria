@@ -9,8 +9,6 @@ import org.kaven.Cafeteria.dominio.dto.EntregaDto;
 import org.kaven.Cafeteria.dominio.dto.ModEntregaDto;
 import org.kaven.Cafeteria.dominio.service.EntregaService;
 import org.primefaces.PrimeFaces;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,22 +22,19 @@ import java.util.List;
 @ViewScoped
 public class WebTablaEntregasController implements Serializable {
 
-    private static final Logger logger = LoggerFactory.getLogger(WebTablaEntregasController.class);
+    private static final long serialVersionUID = 1L;
 
     @Autowired
     private EntregaService entregaService;
 
     private List<EntregaDto> entregas;
+    private List<EntregaDto> entregasFiltradas;
     private EntregaDto entregaSeleccionada;
 
     private Long editOrderId;
     private Long editEmployeeId;
     private String editDeliveryStatus;
     private LocalDate editDeliveryDate;
-
-    public List<String> getEstadosEntrega() {
-        return List.of("PENDING", "DELIVERED", "CANCELLED");
-    }
 
     @PostConstruct
     public void init() {
@@ -49,9 +44,10 @@ public class WebTablaEntregasController implements Serializable {
     public void cargarDatos() {
         try {
             this.entregas = this.entregaService.obtenerTodoEntregas();
+            this.entregasFiltradas = new ArrayList<>(this.entregas);
         } catch (Exception e) {
-            logger.error("Error al cargar las entregas", e);
             this.entregas = new ArrayList<>();
+            this.entregasFiltradas = new ArrayList<>();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudieron cargar las entregas."));
         }
     }
@@ -98,22 +94,20 @@ public class WebTablaEntregasController implements Serializable {
             this.entregaSeleccionada = null;
 
         } catch (Exception e) {
-            logger.error("Error al guardar/modificar entrega", e);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage() != null ? e.getMessage() : "No se pudo guardar la entrega."));
             PrimeFaces.current().ajax().update("growlMensajes");
         }
     }
 
-    public void eliminarEntrega() {
-        if (this.entregaSeleccionada == null || this.entregaSeleccionada.id() == null) return;
+    public void eliminarEntrega(EntregaDto entrega) {
+        if (entrega == null || entrega.id() == null) return;
         try {
-            this.entregaService.eliminarEntrega(this.entregaSeleccionada.id());
+            this.entregaService.eliminarEntrega(entrega.id());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Entrega Eliminada"));
             cargarDatos();
             PrimeFaces.current().ajax().update("formEntregas:tablaEntregas", "growlMensajes");
             this.entregaSeleccionada = null;
         } catch (Exception e) {
-            logger.error("Error al eliminar entrega", e);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage() != null ? e.getMessage() : "No se pudo eliminar la entrega."));
             PrimeFaces.current().ajax().update("growlMensajes");
         }
@@ -122,5 +116,13 @@ public class WebTablaEntregasController implements Serializable {
     public void cancelarEntrega() {
         this.entregaSeleccionada = null;
         PrimeFaces.current().executeScript("PF('ventanaModalEntrega').hide()");
+    }
+
+    public boolean isModoEdicion() {
+        return this.entregaSeleccionada != null && this.entregaSeleccionada.id() != null;
+    }
+
+    public List<String> getEstadosEntrega() {
+        return List.of("PENDING", "DELIVERED", "CANCELLED");
     }
 }

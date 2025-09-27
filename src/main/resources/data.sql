@@ -31,13 +31,13 @@ INSERT IGNORE INTO Usuarios (id, correo, contrasena, tipo_usuario, id_estudiante
 (1, 'ana.garcia@university.edu', 'encrypted123', 'ESTUDIANTE', 1),
 (2, 'carlos.lopez@university.edu', 'securepass456', 'ESTUDIANTE', 2),
 (3, 'maria.rodriguez@university.edu', 'mypassword789', 'ESTUDIANTE', 3),
-(4, 'admin@cafeteria.edu', 'adminpass123', 'ADMINISTRACION', NULL),
+(4, 'admin@cafeteria.edu', 'adminpass123', 'ADMIN', NULL),
 (5, 'juan.martinez@university.edu', 'juanpass321', 'ESTUDIANTE', 4),
 (6, 'laura.sanchez@university.edu', 'laura654', 'ESTUDIANTE', 5),
-(7, 'empleado1@cafeteria.edu', 'emp123', 'ADMINISTRACION', NULL),
+(7, 'empleado1@cafeteria.edu', 'emp123', 'ADMIN', NULL),
 (8, 'pedro.diaz@university.edu', 'pedro987', 'ESTUDIANTE', 6),
 (9, 'sofia.hernandez@university.edu', 'sofia321', 'ESTUDIANTE', 7),
-(10, 'empleado2@cafeteria.edu', 'emp456', 'ADMINISTRACION', NULL),
+(10, 'empleado2@cafeteria.edu', 'emp456', 'ADMIN', NULL),
 (11, 'isabel.morales@university.edu', 'isabel789', 'ESTUDIANTE', 11),
 (12, 'roberto.silva@university.edu', 'roberto012', 'ESTUDIANTE', 12),
 (13, 'carmen.vargas@university.edu', 'carmen345', 'ESTUDIANTE', 13),
@@ -156,8 +156,6 @@ INSERT IGNORE INTO Entregas (id, order_id, employee_id, delivery_status, deliver
 (14, 13, 17, 'PENDING', '2024-01-21'),
 (15, 17, 13, 'PENDING', '2024-01-23'),
 (16, 20, 17, 'PENDING', '2024-01-24'),
-(17, 12, 13, 'CANCELLED', '2024-01-20'),
-(18, 16, 17, 'CANCELLED', '2024-01-22'),
-(19, 19, 13, 'PENDING', '2024-01-24'),
-(20, 15, 17, 'DELIVERED', '2024-01-22');
+(17, 12, 13, 'CANCELLED', '2024-01-20');
+
 

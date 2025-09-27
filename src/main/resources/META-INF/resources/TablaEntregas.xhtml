@@ -1,204 +1,164 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
     <title>Gestión de Entregas</title>
-    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <h:outputStylesheet library="css" name="Style_Tablas.css"/>
 </h:head>
 
 <h:body>
-    <h:form id="formEntregas">
-        <p:growl id="growl" showDetail="true" />
+    <div class="flex justify-content-center align-items-start min-h-screen p-3">
+        <div class="card w-full max-w-7xl p-4">
+            <h:form id="formEntregas">
+                <p:growl id="growlMensajes" showDetail="true"/>
 
-        <p:panel header="Lista de Entregas" style="margin: 20px;">
-            <p:dataTable id="tablaEntregas"
-                         value="#{entregaBean.listaEntregas}"
-                         var="entrega"
-                         paginator="true"
-                         rows="10"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15"
-                         emptyMessage="No hay entregas registradas"
-                         filteredValue="#{entregaBean.entregasFiltradas}">
+                <div class="flex justify-content-between align-items-center mb-4">
+                    <div class="flex-1 text-center">
+                        <h1 class="text-3xl font-semibold">Gestión de Entregas</h1>
+                    </div>
+                    <p:commandButton value="Administración"
+                                     icon="pi pi-cog"
+                                     action="Administracion"
+                                     styleClass="ui-button-outlined"/>
+                </div>
 
-                <!-- Columna ID -->
-                <p:column headerText="ID" sortBy="#{entrega.id}" filterBy="#{entrega.id}" width="80">
-                    <h:outputText value="#{entrega.id}" />
-                </p:column>
-
-                <!-- Columna ID del Pedido -->
-                <p:column headerText="ID Pedido" sortBy="#{entrega.orderId}" filterBy="#{entrega.orderId}" width="100">
-                    <h:outputText value="#{entrega.orderId}" />
-                </p:column>
-
-                <!-- Columna ID del Empleado -->
-                <p:column headerText="ID Empleado" sortBy="#{entrega.employeeId}" filterBy="#{entrega.employeeId}" width="120">
-                    <h:outputText value="#{entrega.employeeId}" />
-                </p:column>
-
-                <!-- Columna Fecha de Entrega -->
-                <p:column headerText="Fecha de Entrega" sortBy="#{entrega.deliveryDate}" width="120">
-                    <h:outputText value="#{entrega.deliveryDate}">
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                    </h:outputText>
-                </p:column>
-
-                <!-- Columna Estado de Entrega -->
-                <p:column headerText="Estado" sortBy="#{entrega.deliveryStatus}" filterBy="#{entrega.deliveryStatus}" width="120">
-                    <p:tag value="#{entrega.deliveryStatus}"
-                           severity="#{entrega.deliveryStatus == 'DELIVERED' ? 'success' : entrega.deliveryStatus == 'PENDING' ? 'warning' : 'danger'}" />
-                </p:column>
-
-                <!-- Columna Acciones -->
-                <p:column headerText="Acciones" style="width: 150px; text-align: center;">
-                    <p:commandButton icon="pi pi-pencil"
-                                     title="Editar"
-                                     styleClass="ui-button-success"
-                                     update=":formEntregas:dlgEntrega"
-                                     action="#{entregaBean.prepararEdicion(entrega)}">
-                        <f:ajax execute="@this" />
-                    </p:commandButton>
-
-                    <p:commandButton icon="pi pi-trash"
-                                     title="Eliminar"
-                                     styleClass="ui-button-danger"
-                                     action="#{entregaBean.eliminarEntrega(entrega)}">
-                        <p:confirm header="Confirmación"
-                                   message="¿Está seguro de eliminar esta entrega?"
-                                   icon="pi pi-exclamation-triangle" />
-                    </p:commandButton>
-                </p:column>
-
-            </p:dataTable>
-
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                <p:commandButton value="Sí" type="button"
-                                 styleClass="ui-confirmdialog-yes"
-                                 icon="pi pi-check" />
-                <p:commandButton value="No" type="button"
-                                 styleClass="ui-confirmdialog-no"
-                                 icon="pi pi-times" />
-            </p:confirmDialog>
-
-            <p:toolbar style="margin-top: 20px;">
-                <p:toolbarGroup>
+                <div class="flex justify-content-end mb-3">
                     <p:commandButton value="Nueva Entrega"
                                      icon="pi pi-plus"
-                                     action="#{entregaBean.prepararNuevaEntrega}"
-                                     update=":formEntregas:dlgEntrega"
-                                     styleClass="ui-button-primary" />
-                </p:toolbarGroup>
+                                     actionListener="#{webTablaEntregasController.agregarEntrega}"
+                                     styleClass="ui-button-success"
+                                     update=":formModalEntrega"
+                                     oncomplete="PF('ventanaModalEntrega').show()"/>
+                </div>
 
-                <p:toolbarGroup align="right">
-                    <p:commandButton value="Recargar"
-                                     icon="pi pi-refresh"
-                                     action="#{entregaBean.cargarEntregas}"
-                                     update=":formEntregas:tablaEntregas"
-                                     styleClass="ui-button-info" />
-                </p:toolbarGroup>
-            </p:toolbar>
-        </p:panel>
+                <p:dataTable id="tablaEntregas"
+                             var="entrega"
+                             value="#{webTablaEntregasController.entregas}"
+                             selection="#{webTablaEntregasController.entregaSeleccionada}"
+                             rowKey="#{entrega.id()}"
+                             paginator="true"
+                             rows="10"
+                             emptyMessage="No se encontraron entregas."
+                             reflow="true"
+                             styleClass="p-datatable-gridlines"
+                             widgetVar="tablaEntregasWv"
+                             filteredValue="#{webTablaEntregasController.entregasFiltradas}">
 
-        <!-- Dialog para editar/crear entrega -->
-        <p:dialog id="dlgEntrega"
-                  header="#{entregaBean.modoEdicion ? 'Editar Entrega' : 'Nueva Entrega'}"
-                  widgetVar="dlgEntrega"
-                  modal="true"
-                  resizable="false"
-                  style="width: 500px">
+                    <p:column headerText="ID" sortBy="#{entrega.id()}" style="width: 5rem; text-align: center;">
+                        <h:outputText value="#{entrega.id()}"/>
+                    </p:column>
 
-            <h:panelGrid columns="2" cellpadding="5" style="width: 100%;">
-                <!-- Solo mostrar ID cuando esté editando -->
-                <h:outputLabel for="id" value="ID:" rendered="#{entregaBean.modoEdicion}" />
-                <h:outputText id="id" value="#{entregaBean.entregaSeleccionada.id}" rendered="#{entregaBean.modoEdicion}" />
+                    <p:column headerText="ID Pedido" sortBy="#{entrega.orderId()}" style="width: 8rem;">
+                        <h:outputText value="#{entrega.orderId()}"/>
+                    </p:column>
 
-                <h:outputLabel for="orderId" value="ID del Pedido: *" />
+                    <p:column headerText="ID Empleado" sortBy="#{entrega.employeeId()}" style="width: 8rem;">
+                        <h:outputText value="#{entrega.employeeId()}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha Entrega" sortBy="#{entrega.deliveryDate()}" style="width: 10rem;">
+                        <h:outputText value="#{entrega.deliveryDate()}">
+                            <!-- Usa el conversor personalizado -->
+                            <f:converter converterId="localDateConverter" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Estado" sortBy="#{entrega.deliveryStatus()}" style="width: 10rem; text-align: center;">
+                        <span class="#{entrega.deliveryStatus() eq 'PENDING' ? 'delivery-pending' :
+                                      entrega.deliveryStatus() eq 'DELIVERED' ? 'delivery-delivered' :
+                                      'delivery-cancelled'}">
+                            #{entrega.deliveryStatus()}
+                        </span>
+                    </p:column>
+
+                    <p:column headerText="Acciones" exportable="false" style="width: 12rem; text-align: center;">
+                        <p:commandButton icon="pi pi-pencil"
+                                         title="Editar"
+                                         styleClass="ui-button-warning p-mr-2"
+                                         actionListener="#{webTablaEntregasController.prepararEdicion(entrega)}"
+                                         update=":formModalEntrega"
+                                         oncomplete="PF('ventanaModalEntrega').show()"/>
+
+                        <p:commandButton icon="pi pi-trash"
+                                         title="Eliminar"
+                                         styleClass="ui-button-danger"
+                                         actionListener="#{webTablaEntregasController.eliminarEntrega(entrega)}"
+                                         update=":formEntregas:tablaEntregas :formEntregas:growlMensajes"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </div>
+
+    <!-- Diálogo para crear/editar entrega -->
+    <p:dialog header="#{webTablaEntregasController.modoEdicion ? 'Editar Entrega' : 'Crear Nueva Entrega'}"
+              widgetVar="ventanaModalEntrega"
+              modal="true"
+              responsive="true"
+              fitViewport="true"
+              width="450"
+              styleClass="card">
+        <h:form id="formModalEntrega">
+            <p:panelGrid columns="2" styleClass="p-fluid" style="width: 100%;">
+                <p:outputLabel for="orderId" value="ID Pedido:" />
                 <p:inputNumber id="orderId"
-                               value="#{entregaBean.entregaSeleccionada.orderId}"
-                               minValue="1"
+                               value="#{webTablaEntregasController.editOrderId}"
                                required="true"
-                               requiredMessage="El ID del pedido es obligatorio">
-                    <p:ajax update="msgOrderId" />
-                </p:inputNumber>
-                <p:message for="orderId" id="msgOrderId" />
+                               requiredMessage="El ID del pedido es obligatorio"
+                               minValue="1"/>
 
-                <h:outputLabel for="employeeId" value="ID del Empleado: *" />
+                <p:outputLabel for="employeeId" value="ID Empleado:" />
                 <p:inputNumber id="employeeId"
-                               value="#{entregaBean.entregaSeleccionada.employeeId}"
-                               minValue="1"
+                               value="#{webTablaEntregasController.editEmployeeId}"
                                required="true"
-                               requiredMessage="El ID del empleado es obligatorio">
-                    <p:ajax update="msgEmployeeId" />
-                </p:inputNumber>
-                <p:message for="employeeId" id="msgEmployeeId" />
+                               requiredMessage="El ID del empleado es obligatorio"
+                               minValue="1"/>
 
-                <h:outputLabel for="deliveryDate" value="Fecha de Entrega: *" />
+                <p:outputLabel for="deliveryDate" value="Fecha de Entrega:" />
                 <p:calendar id="deliveryDate"
-                            value="#{entregaBean.entregaSeleccionada.deliveryDate}"
+                            value="#{webTablaEntregasController.editDeliveryDate}"
                             pattern="dd/MM/yyyy"
                             locale="es"
-                            showOn="button"
                             required="true"
                             requiredMessage="La fecha de entrega es obligatoria">
-                    <p:ajax update="msgDeliveryDate" />
+                    <!-- Usa el conversor estándar para el calendar -->
+                    <f:convertDateTime pattern="yyyy-MM-dd" />
                 </p:calendar>
-                <p:message for="deliveryDate" id="msgDeliveryDate" />
 
-                <h:outputLabel for="deliveryStatus" value="Estado: *" />
+                <p:outputLabel for="deliveryStatus" value="Estado:" />
                 <p:selectOneMenu id="deliveryStatus"
-                                 value="#{entregaBean.entregaSeleccionada.deliveryStatus}"
+                                 value="#{webTablaEntregasController.editDeliveryStatus}"
                                  required="true"
                                  requiredMessage="El estado es obligatorio">
                     <f:selectItem itemLabel="Seleccione estado" itemValue="" />
                     <f:selectItem itemLabel="PENDIENTE" itemValue="PENDING" />
                     <f:selectItem itemLabel="ENTREGADO" itemValue="DELIVERED" />
                     <f:selectItem itemLabel="CANCELADO" itemValue="CANCELLED" />
-                    <p:ajax update="msgDeliveryStatus" />
                 </p:selectOneMenu>
-                <p:message for="deliveryStatus" id="msgDeliveryStatus" />
-            </h:panelGrid>
+            </p:panelGrid>
 
             <f:facet name="footer">
-                <p:commandButton value="#{entregaBean.modoEdicion ? 'Actualizar' : 'Guardar'}"
-                                 icon="pi pi-check"
-                                 action="#{entregaBean.modoEdicion ? entregaBean.actualizarEntrega() : entregaBean.guardarEntrega()}"
-                                 update=":formEntregas:growl :formEntregas:tablaEntregas"
-                                 oncomplete="if(!args.validationFailed) PF('dlgEntrega').hide()"
-                                 process="@form" />
+                <div class="flex justify-content-end gap-2">
+                    <p:commandButton value="Cancelar"
+                                     icon="pi pi-times"
+                                     actionListener="#{webTablaEntregasController.cancelarEntrega}"
+                                     styleClass="ui-button-outlined"
+                                     process="@this"
+                                     oncomplete="PF('ventanaModalEntrega').hide()"/>
 
-                <p:commandButton value="Cancelar"
-                                 icon="pi pi-times"
-                                 immediate="true"
-                                 onclick="PF('dlgEntrega').hide()"
-                                 styleClass="ui-button-secondary" />
+                    <p:commandButton value="#{webTablaEntregasController.modoEdicion ? 'Actualizar' : 'Guardar'}"
+                                     icon="pi pi-check"
+                                     actionListener="#{webTablaEntregasController.guardarEntrega}"
+                                     styleClass="ui-button-success"
+                                     update=":formEntregas:tablaEntregas :formEntregas:growlMensajes"
+                                     oncomplete="if (!args.validationFailed) PF('ventanaModalEntrega').hide()"/>
+                </div>
             </f:facet>
-        </p:dialog>
-
-    </h:form>
-
-    <!-- Estilos adicionales -->
-    <h:outputStylesheet>
-        .ui-panel {
-            margin-bottom: 20px;
-        }
-        .ui-datatable {
-            margin-top: 10px;
-        }
-        .ui-toolbar {
-            margin: 10px 0;
-        }
-        .ui-dialog .ui-panelgrid {
-            width: 100% !important;
-        }
-        .ui-panelgrid td {
-            padding: 5px;
-        }
-    </h:outputStylesheet>
-
+        </h:form>
+    </p:dialog>
 </h:body>
 </html>

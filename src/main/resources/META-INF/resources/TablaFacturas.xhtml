@@ -5,186 +5,157 @@
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-    <title>Gestión de Facturas</title>
+    <title>Gestión de Entregas</title>
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
     <h:outputStylesheet library="css" name="Style_Tablas.css"/>
 </h:head>
-
 <h:body>
     <div class="flex justify-content-center align-items-start min-h-screen p-3">
         <div class="card w-full max-w-7xl p-4">
-            <h:form id="formFacturas">
+            <h:form id="formEntregas">
                 <p:growl id="growlMensajes" showDetail="true"/>
 
                 <div class="flex justify-content-between align-items-center mb-4">
                     <div class="flex-1 text-center">
-                        <h1 class="text-3xl font-semibold">Gestión de Facturas</h1>
+                        <h1 class="text-3xl font-semibold">Gestión de Entregas</h1>
                     </div>
                     <p:commandButton value="Administración"
                                      icon="pi pi-cog"
                                      action="Administracion"
                                      styleClass="ui-button-outlined"/>
                 </div>
+
                 <div class="flex justify-content-end mb-3">
-                    <p:commandButton value="Nueva Factura"
+                    <p:commandButton value="Nueva Entrega"
                                      icon="pi pi-plus"
-                                     actionListener="#{webTablaFacturasController.agregarFactura}"
+                                     actionListener="#{webTablaEntregasController.agregarEntrega}"
                                      styleClass="ui-button-success"
-                                     update="@form"/>
+                                     update=":formModalEntrega"
+                                     oncomplete="PF('ventanaModalEntrega').show()"/>
                 </div>
 
-                <p:dataTable id="tablaFacturas"
-                             var="factura"
-                             value="#{webTablaFacturasController.facturas}"
-                             selection="#{webTablaFacturasController.facturaSeleccionada}"
-                             rowKey="#{factura.id()}"
+                <p:dataTable id="tablaEntregas"
+                             var="entrega"
+                             value="#{webTablaEntregasController.entregas}"
+                             selection="#{webTablaEntregasController.entregaSeleccionada}"
+                             rowKey="#{entrega.id()}"
                              paginator="true"
                              rows="10"
-                             emptyMessage="No se encontraron facturas."
+                             emptyMessage="No se encontraron entregas."
                              reflow="true"
                              styleClass="p-datatable-gridlines"
-                             widgetVar="tablaFacturasWv">
+                             widgetVar="tablaEntregasWv"
+                             filteredValue="#{webTablaEntregasController.entregasFiltradas}">
 
-                    <p:column headerText="ID" sortBy="#{factura.id()}" style="width: 5rem; text-align: center;">
-                        <h:outputText value="#{factura.id()}"/>
+                    <p:column headerText="ID" sortBy="#{entrega.id()}" style="width: 5rem; text-align: center;">
+                        <h:outputText value="#{entrega.id()}"/>
                     </p:column>
 
-                    <p:column headerText="ID Estudiante" sortBy="#{factura.studentId()}" style="width: 8rem;">
-                        <h:outputText value="#{factura.studentId()}"/>
+                    <p:column headerText="ID Pedido" sortBy="#{entrega.orderId()}" style="width: 8rem;">
+                        <h:outputText value="#{entrega.orderId()}"/>
                     </p:column>
 
-                    <p:column headerText="ID Pedido" sortBy="#{factura.ordersId()}" style="width: 8rem;">
-                        <h:outputText value="#{factura.ordersId()}"/>
+                    <p:column headerText="ID Empleado" sortBy="#{entrega.employeeId()}" style="width: 8rem;">
+                        <h:outputText value="#{entrega.employeeId()}"/>
                     </p:column>
 
-                    <p:column headerText="Total" sortBy="#{factura.total()}" style="width: 8rem;" styleClass="price-column">
-                        <h:outputText value="#{factura.total()}">
-                            <f:convertNumber type="currency" currencySymbol="$" minFractionDigits="2"/>
+                    <p:column headerText="Fecha Entrega" sortBy="#{entrega.deliveryDate()}" style="width: 10rem;">
+                        <h:outputText value="#{entrega.deliveryDate()}">
+                            <!-- Usa el conversor personalizado -->
+                            <f:converter converterId="localDateConverter" />
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Tipo de Pago" sortBy="#{factura.paymentType()}" style="width: 12rem; text-align: center;">
-                        <h:outputText value="#{factura.paymentType()}"
-                                      styleClass="#{factura.paymentType() eq 'EFECTIVO' ? 'payment-efectivo' :
-                                                  factura.paymentType() eq 'TARJETA_CREDITO' ? 'payment-tarjeta' :
-                                                  factura.paymentType() eq 'TRANSFERENCIA' ? 'payment-transferencia' : 'payment-movil'}"/>
+                    <p:column headerText="Estado" sortBy="#{entrega.deliveryStatus()}" style="width: 10rem; text-align: center;">
+                        <span class="#{entrega.deliveryStatus() eq 'PENDING' ? 'delivery-pending' :
+                                      entrega.deliveryStatus() eq 'DELIVERED' ? 'delivery-delivered' :
+                                      'delivery-cancelled'}">
+                            #{entrega.deliveryStatus()}
+                        </span>
                     </p:column>
 
                     <p:column headerText="Acciones" exportable="false" style="width: 12rem; text-align: center;">
                         <p:commandButton icon="pi pi-pencil"
                                          title="Editar"
                                          styleClass="ui-button-warning p-mr-2"
-                                         actionListener="#{webTablaFacturasController.prepararEdicion(factura)}"
-                                         update="@form"/>
+                                         actionListener="#{webTablaEntregasController.prepararEdicion(entrega)}"
+                                         update=":formModalEntrega"
+                                         oncomplete="PF('ventanaModalEntrega').show()"/>
 
                         <p:commandButton icon="pi pi-trash"
                                          title="Eliminar"
                                          styleClass="ui-button-danger"
-                                         oncomplete="PF('confirmacionEliminar').show()"
-                                         update=":formConfirmacionEliminar:confirmacionPanel :formConfirmacionEliminar:aceptarEliminacionBtn">
-                            <f:setPropertyActionListener value="#{factura}" target="#{webTablaFacturasController.facturaSeleccionada}"/>
-                        </p:commandButton>
+                                         actionListener="#{webTablaEntregasController.eliminarEntrega(entrega)}"
+                                         update=":formEntregas:tablaEntregas :formEntregas:growlMensajes"/>
                     </p:column>
                 </p:dataTable>
             </h:form>
         </div>
     </div>
 
-    <p:dialog header="#{webTablaFacturasController.facturaSeleccionada eq null ? 'Crear Nueva Factura' : 'Editar Factura'}"
-              widgetVar="ventanaModalFactura"
+    <p:dialog header="#{webTablaEntregasController.modoEdicion ? 'Editar Entrega' : 'Crear Nueva Entrega'}"
+              widgetVar="ventanaModalEntrega"
               modal="true"
               responsive="true"
               fitViewport="true"
               width="450"
               styleClass="card">
-        <h:form id="formModalFactura">
-            <p:panelGrid columns="1" layout="grid" styleClass="p-nogutter p-field">
-                <div class="field mb-3">
-                    <p:outputLabel for="studentId" value="ID Estudiante:" styleClass="block font-semibold mb-2"/>
-                    <p:inputText id="studentId"
-                                 value="#{webTablaFacturasController.editStudentId}"
+        <h:form id="formModalEntrega">
+            <p:panelGrid columns="2" styleClass="p-fluid" style="width: 100%;">
+                <p:outputLabel for="orderId" value="ID Pedido:" />
+                <p:inputNumber id="orderId"
+                               value="#{webTablaEntregasController.editOrderId}"
+                               required="true"
+                               requiredMessage="El ID del pedido es obligatorio"
+                               minValue="1"/>
+
+                <p:outputLabel for="employeeId" value="ID Empleado:" />
+                <p:inputNumber id="employeeId"
+                               value="#{webTablaEntregasController.editEmployeeId}"
+                               required="true"
+                               requiredMessage="El ID del empleado es obligatorio"
+                               minValue="1"/>
+
+                <p:outputLabel for="deliveryDate" value="Fecha de Entrega:" />
+                <p:calendar id="deliveryDate"
+                            value="#{webTablaEntregasController.editDeliveryDate}"
+                            pattern="dd/MM/yyyy"
+                            locale="es"
+                            required="true"
+                            requiredMessage="La fecha de entrega es obligatoria">
+                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                </p:calendar>
+
+                <p:outputLabel for="deliveryStatus" value="Estado:" />
+                <p:selectOneMenu id="deliveryStatus"
+                                 value="#{webTablaEntregasController.editDeliveryStatus}"
                                  required="true"
-                                 requiredMessage="El ID del estudiante es obligatorio"
-                                 styleClass="w-full p-2"/>
-                </div>
-
-                <div class="field mb-3">
-                    <p:outputLabel for="ordersId" value="ID Pedido:" styleClass="block font-semibold mb-2"/>
-                    <p:inputText id="ordersId"
-                                 value="#{webTablaFacturasController.editOrdersId}"
-                                 required="true"
-                                 requiredMessage="El ID del pedido es obligatorio"
-                                 styleClass="w-full p-2"/>
-                </div>
-
-                <div class="field mb-3">
-                    <p:outputLabel for="total" value="Total:" styleClass="block font-semibold mb-2"/>
-                    <p:inputNumber id="total"
-                                   value="#{webTablaFacturasController.editTotal}"
-                                   required="true"
-                                   requiredMessage="El total es obligatorio"
-                                   styleClass="w-full p-2"
-                                   minValue="0"
-                                   maxValue="10000"
-                                   decimalPlaces="2"
-                                   currencySymbol="$"/>
-                </div>
-
-                <div class="field mb-4">
-                    <p:outputLabel for="paymentType" value="Tipo de Pago:" styleClass="block font-semibold mb-2"/>
-                    <p:selectOneMenu id="paymentType"
-                                     value="#{webTablaFacturasController.editPaymentType}"
-                                     required="true"
-                                     requiredMessage="El tipo de pago es obligatorio"
-                                     styleClass="w-full p-2">
-                        <f:selectItems value="#{webTablaFacturasController.tiposPago}" var="tipo"
-                                       itemLabel="#{tipo}" itemValue="#{tipo}"/>
-                    </p:selectOneMenu>
-                </div>
-
+                                 requiredMessage="El estado es obligatorio">
+                    <f:selectItem itemLabel="Seleccione estado" itemValue="" />
+                    <f:selectItem itemLabel="PENDIENTE" itemValue="PENDING" />
+                    <f:selectItem itemLabel="ENTREGADO" itemValue="DELIVERED" />
+                    <f:selectItem itemLabel="CANCELADO" itemValue="CANCELLED" />
+                </p:selectOneMenu>
             </p:panelGrid>
 
-            <div class="flex justify-content-end gap-2 mt-3">
-                <p:commandButton value="Cancelar"
-                                 icon="pi pi-times"
-                                 actionListener="#{webTablaFacturasController.cancelarFactura}"
-                                 styleClass="ui-button-outlined"
-                                 process="@this"
-                                 update="@form"/>
-                <p:commandButton value="Guardar"
-                                 icon="pi pi-check"
-                                 actionListener="#{webTablaFacturasController.guardarFactura}"
-                                 styleClass="ui-button-success"
-                                 update=":formFacturas:tablaFacturas growlMensajes"
-                                 oncomplete="if (!args.validationFailed) PF('ventanaModalFactura').hide()"/>
-            </div>
+            <f:facet name="footer">
+                <div class="flex justify-content-end gap-2">
+                    <p:commandButton value="Cancelar"
+                                     icon="pi pi-times"
+                                     actionListener="#{webTablaEntregasController.cancelarEntrega}"
+                                     styleClass="ui-button-outlined"
+                                     process="@this"
+                                     oncomplete="PF('ventanaModalEntrega').hide()"/>
+
+                    <p:commandButton value="#{webTablaEntregasController.modoEdicion ? 'Actualizar' : 'Guardar'}"
+                                     icon="pi pi-check"
+                                     actionListener="#{webTablaEntregasController.guardarEntrega}"
+                                     styleClass="ui-button-success"
+                                     update=":formEntregas:tablaEntregas :formEntregas:growlMensajes"
+                                     oncomplete="if (!args.validationFailed) PF('ventanaModalEntrega').hide()"/>
+                </div>
+            </f:facet>
         </h:form>
     </p:dialog>
-
-    <p:confirmDialog global="true" widgetVar="confirmacionEliminar" header="Confirmación" severity="alert" styleClass="card">
-        <f:facet name="message">
-            <h:form id="formConfirmacionEliminar">
-                <p:outputPanel id="confirmacionPanel">
-                    <h:outputText value="¿Estás seguro que deseas eliminar la factura ID: #{webTablaFacturasController.facturaSeleccionada.id()} - Estudiante: #{webTablaFacturasController.facturaSeleccionada.studentId()}?"
-                                  rendered="#{webTablaFacturasController.facturaSeleccionada != null}"/>
-                </p:outputPanel>
-
-                <p:commandButton value="Sí"
-                                 id="aceptarEliminacionBtn"
-                                 styleClass="ui-confirmdialog-yes ui-button-danger mr-2"
-                                 icon="pi pi-check"
-                                 actionListener="#{webTablaFacturasController.eliminarFactura}"
-                                 process="@this"
-                                 update=":formFacturas:tablaFacturas growlMensajes"
-                                 oncomplete="PF('confirmacionEliminar').hide();"/>
-
-                <p:commandButton value="No"
-                                 type="button"
-                                 styleClass="ui-confirmdialog-no ui-button-outlined"
-                                 icon="pi pi-times"
-                                 onclick="PF('confirmacionEliminar').hide();"/>
-            </h:form>
-        </f:facet>
-    </p:confirmDialog>
 </h:body>
 </html>

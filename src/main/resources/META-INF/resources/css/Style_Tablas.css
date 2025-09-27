@@ -167,3 +167,34 @@ h1 { color: var(--github-dark-text); }
 .p-confirm-dialog .p-dialog-footer {
     background: var(--github-dark-header) !important;
 }
+
+.delivery-pending {
+    background: var(--github-dark-warning) !important;
+    color: #000 !important;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.delivery-delivered {
+    background: var(--github-dark-success) !important;
+    color: #000 !important;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.delivery-cancelled {
+    background: var(--github-dark-danger) !important;
+    color: #000 !important;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+body::-webkit-scrollbar {
+    width: 12px;
+}
