@@ -67,7 +67,7 @@ public class FacturaController {
     )
     public ResponseEntity<FacturaDto> guardarFactura(
             @Parameter(description = "Datos de la factura a crear")
-            @RequestBody FacturaDto facturaDto) {
+            @RequestBody @Valid FacturaDto facturaDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.facturaService
                 .guardarFactura(facturaDto));
     }

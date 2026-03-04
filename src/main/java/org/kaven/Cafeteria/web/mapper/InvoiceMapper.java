@@ -10,12 +10,12 @@ public class InvoiceMapper {
     @Named("stringAPayment")
     public PaymentType stringAPayment(String type) {
         if (type == null) return null;
-        return switch (type.toUpperCase()) {
+        return switch (type.trim().toUpperCase()) {
             case "EFECTIVO" -> PaymentType.CASH;
             case "TARJETA_CREDITO" -> PaymentType.CREDIT_CARD;
             case "TRANSFERENCIA" -> PaymentType.BANK_TRANSFER;
             case "PAGO_MOVIL" -> PaymentType.MOBILE_PAYMENT;
-            default -> null;
+            default -> throw new IllegalArgumentException("Tipo de pago no reconocido: " + type);
         };
     }
 
