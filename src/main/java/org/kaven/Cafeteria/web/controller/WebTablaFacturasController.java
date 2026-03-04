@@ -99,7 +99,7 @@ public class WebTablaFacturasController implements Serializable {
 
             refresh();
             this.facturaSeleccionada = guardado;
-            PrimeFaces.current().ajax().update("formFacturas:tablaFacturas", "growlMensajes");
+            PrimeFaces.current().ajax().update("formulario-facturas:tabla-facturas", "mensaje_emergente");
             PrimeFaces.current().executeScript("PF('ventanaModalFactura').hide()");
             this.facturaSeleccionada = null; // Limpiar la selección tras cerrar
         } catch (Exception e) {
@@ -114,7 +114,7 @@ public class WebTablaFacturasController implements Serializable {
             this.facturaService.eliminarFactura(this.facturaSeleccionada.id());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Factura Eliminada"));
             refresh();
-            PrimeFaces.current().ajax().update("formFacturas:tablaFacturas", "growlMensajes");
+            PrimeFaces.current().ajax().update("formulario-facturas:tabla-facturas", "mensaje_emergente");
             this.facturaSeleccionada = null;
         } catch (Exception e) {
             logger.error("Error al eliminar factura", e);
